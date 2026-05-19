@@ -18,7 +18,7 @@ const SLIDES = [
   { src: '/images/hero/gallery-5.avif',      label: 'Konzert' },
 ]
 
-const H1_WORDS = ['Ihr', 'Künstler']
+const H1_WORDS = ['WE', 'LOVE', 'EVENTS!']
 
 
 export default function HeroSection({ slides: propSlides }: { slides?: { src: string; label: string }[] }) {
@@ -234,15 +234,13 @@ export default function HeroSection({ slides: propSlides }: { slides?: { src: st
               style={{ height: 'clamp(80px, 11vw, 130px)', width: 'auto' }} />
           </a>
           <p className="mt-3 font-display text-center" style={{ fontSize: 'clamp(13px, 1.8vw, 18px)', letterSpacing: '0.22em', color: 'var(--color-muted)' }}>
-            VIVID MUSIC PRODUCTIONS
-          </p>
-          <p className="mt-1 font-body text-center" style={{ fontSize: 13, letterSpacing: '0.14em', color: 'var(--color-subtle)', textTransform: 'uppercase' }}>
-            Rhein-Main-Gebiet · Darmstadt
+            KÜNSTLERPOOL
           </p>
         </motion.div>
 
         {/* ── Inline Navbar ─────────────────────────────── */}
         <motion.nav
+          id="inline-nav"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3, duration: 0.4 }}
@@ -262,7 +260,7 @@ export default function HeroSection({ slides: propSlides }: { slides?: { src: st
           </a>
 
           {/* Desktop links — centered */}
-          <div className="hidden md:flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
+          <div className="hidden md:flex items-center absolute left-1/2 -translate-x-1/2" style={{ gap: 'clamp(10px, 1.5vw, 32px)' }}>
             <NavLinks color="#ffffff" />
           </div>
           {/* Right side */}
@@ -309,12 +307,16 @@ export default function HeroSection({ slides: propSlides }: { slides?: { src: st
               </div>
               <div className="flex flex-wrap gap-x-3 gap-y-1 mt-1">
                 <motion.span initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.87, duration: 0.5 }} className="italic" style={{ color: 'var(--color-orange)' }}>
-                  direkt
+                  transition={{ delay: 0.87, duration: 0.5 }}>
+                  Ihr Musiker &amp; Band
                 </motion.span>
                 <motion.span initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.95, duration: 0.5 }}>
-                  kontakt
+                  transition={{ delay: 0.95, duration: 0.5 }} className="italic" style={{ color: 'var(--color-orange)' }}>
+                  Direkt
+                </motion.span>
+                <motion.span initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 1.03, duration: 0.5 }}>
+                  Kontakt
                 </motion.span>
               </div>
             </h1>
@@ -322,7 +324,7 @@ export default function HeroSection({ slides: propSlides }: { slides?: { src: st
             <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1.05, duration: 0.5 }}
               className="font-body text-muted mt-6 mb-8" style={{ fontSize: 16, maxWidth: 460, lineHeight: 1.75 }}>
-              Top Livemusik aus Frankfurt am Main für Ihren Event, Ihre Firmenfeier, Ihre Hochzeit oder Ihr Stadtfest. Im VMP-Künstlerpool organisieren sich Profimusiker in Eigenregie.
+              Livemusik auf höchstem Niveau für Ihren Event, Ihre Firmenfeier, Ihre Hochzeit oder Ihr Stadtfest. Im V.M.P-Künstlerpool aus dem Rhein-Main (um Frankfurt, Darmstadt & Aschaffenburg) organisieren sich Profimusiker in Eigenregie. Unsere Tributebands, Coverbands und Partybands werden bundesweit und auch international für High Class Events gebucht.
             </motion.p>
 
             <motion.div
@@ -346,7 +348,7 @@ export default function HeroSection({ slides: propSlides }: { slides?: { src: st
                   Bobby Stöcker
                 </p>
                 <p className="font-body text-muted" style={{ fontSize: 12, lineHeight: 1.4 }}>
-                  Persönlicher Ansprechpartner · seit 20 Jahren
+                  Persönlicher Ansprechpartner · Musikalischer Leiter
                 </p>
               </div>
             </motion.div>

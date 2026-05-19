@@ -150,7 +150,7 @@ export default function TechnikPageClient({ heroUrl, mainUrl, thumbnailUrls, son
               marginBottom: 16,
             }}
           >
-            Technik &<br />Tonstudio
+            Veranstaltungstechnik<br />&amp; Tonstudio
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 14 }}
@@ -223,18 +223,18 @@ export default function TechnikPageClient({ heroUrl, mainUrl, thumbnailUrls, son
               className="lg:mt-0"
             >
               <Eyebrow>Veranstaltungsservice</Eyebrow>
-              <SectionHeading>Bühne, Licht &amp; Beschallung aus einer Hand</SectionHeading>
+              <SectionHeading>Band &amp; Technik aus einer Hand!</SectionHeading>
               <BodyText>
-                Sie möchten eine Band buchen und haben noch keine Bühne, Licht und keine Beschallung für Ihre Gäste? Wir verstehen uns als Volldienstleister in allen Bereichen rund um Ihre Veranstaltung. Wir bieten attraktive Komplettpakete mit Band, Beschallung, Licht und Bühne – realisiert von erfahrenen Veranstaltungsmeistern und -technikern.
+                Sie möchten eine Band buchen und haben noch keine Bühne, Licht und keine Beschallung für Ihre Gäste oder Zuschauer? Wir verstehen uns als Volldienstleister in allen Bereichen rund um Ihre Veranstaltung. Wir bieten attraktive Komplettpakete mit Band, Beschallung, Licht und Bühne – realisiert von erfahrenen Veranstaltungstechnikern.
               </BodyText>
 
               {/* Features */}
               <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginTop: 28 }}>
                 {[
-                  'Professionelle PA-Anlage & Line-Array-Systeme',
-                  'Lichtdesign & Moving-Heads',
-                  'Modulare Bühnensysteme bis 12 × 8 m',
-                  'Eigene Techniker & Veranstaltungsmeister',
+                  'Professionelle Sound Anlagen in alle Größen & Line-Array-Systeme',
+                  'Lichtdesign',
+                  'Modulare oder mobile Bühnensysteme bis 12m × 10m',
+                  'Eigene Toningenieure & Veranstaltungstechniker',
                 ].map((item) => (
                   <div key={item} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                     <div style={{ width: 6, height: 6, borderRadius: '50%', backgroundColor: 'var(--color-orange)', flexShrink: 0 }} />
@@ -260,7 +260,7 @@ export default function TechnikPageClient({ heroUrl, mainUrl, thumbnailUrls, son
             <Eyebrow>Musikproduktion</Eyebrow>
             <SectionHeading>Werbejingles, Demos &amp; Auftragsproduktionen</SectionHeading>
             <BodyText>
-              Seit 20 Jahren produzieren wir Songs für Verlage, Werbeagenturen und andere Künstler. Musik für TV-Werbejingles wie Cliff Duschgel, Focus Kontaktlinsen u.v.m. Fordern Sie Demos an oder vereinbaren Sie einen Termin.
+              Seit über 20 Jahren produzieren wir Songs für Labels, Verlage, Werbeagenturen und Künstler wie Melanie Thornton und The Voice. TV-Werbejingles wie Cliff Duschgel, Focus Kontaktlinsen u.v.m. Fordern Sie Demos an oder vereinbaren Sie einen Termin.
             </BodyText>
           </motion.div>
 
@@ -283,7 +283,7 @@ export default function TechnikPageClient({ heroUrl, mainUrl, thumbnailUrls, son
               { value: '20+', label: 'Jahre Erfahrung' },
               { value: '100+', label: 'Produktionen' },
               { value: 'Gold', label: 'Melanie Thornton – Ready To Fly' },
-              { value: 'TV', label: 'Cliff Duschgel · Focus Kontaktlinsen' },
+              { value: 'TV', label: 'Cliff Duschgel · Focus Kontaktlinsen · Bravo TV · The Voice' },
             ].map(({ value, label }, i) => (
               <div key={label} style={{
                 backgroundColor: i % 2 === 0 ? '#fff' : 'rgba(255,255,255,0.6)',
@@ -297,9 +297,29 @@ export default function TechnikPageClient({ heroUrl, mainUrl, thumbnailUrls, son
           </motion.div>
 
           <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={s2.inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.5, delay: 0.25 }}
+            style={{
+              marginTop: 28,
+              padding: '16px 20px',
+              backgroundColor: '#fff',
+              border: '1px solid var(--color-border)',
+              borderRadius: 12,
+            }}
+          >
+            <p style={{ fontFamily: 'var(--font-body)', fontSize: 11, fontWeight: 700, color: 'var(--color-orange)', letterSpacing: '0.12em', textTransform: 'uppercase' as const, marginBottom: 8 }}>
+              Live-Referenzen
+            </p>
+            <p style={{ fontFamily: 'var(--font-body)', fontSize: 13, color: 'var(--color-muted)', lineHeight: 1.6 }}>
+              Bobby Stöcker wirkte als Gitarrist beim Tommy Musical von The Who im Offenbacher Capitol mit, begleitete Stars wie Bobby Kimball auf der Bühne und veröffentlichte 2022 international unter dem Namen Bobby Stoker sein erstes Solo-Album mit eigenen komponierten Songs.
+            </p>
+          </motion.div>
+
+          <motion.div
             initial={{ opacity: 0 }}
             animate={s2.inView ? { opacity: 1 } : {}}
-            transition={{ duration: 0.4, delay: 0.3 }}
+            transition={{ duration: 0.4, delay: 0.35 }}
           >
             <CtaLink href="/#kontakt">Demo anfragen</CtaLink>
           </motion.div>
@@ -326,7 +346,7 @@ export default function TechnikPageClient({ heroUrl, mainUrl, thumbnailUrls, son
               <Eyebrow>Songwriting &amp; Arrangements</Eyebrow>
               <SectionHeading>Songs für Verlage, Künstler &amp; Werbung</SectionHeading>
               <BodyText>
-                Bobby Stöcker schreibt regelmäßig Songs von Pop &amp; Rock über Dance bis R&amp;B – auch für andere Künstler. Auf Wunsch auch mit Arrangement und Produktion.
+                Bobby Stöcker ist seit 20 Jahren nicht nur Live- bzw. Tourmusiker, sondern auch ein renommierter Songschreiber und Produzent. Von Pop &amp; Rock über Dance bis R&amp;B – Songs hat er auch schon für andere Künstler geschrieben. Auch für Firmen, Nachwuchsbands und Künstler bieten wir Demo Produktionen und Auftragskompositionen an.
               </BodyText>
 
               {/* Gold achievement card */}

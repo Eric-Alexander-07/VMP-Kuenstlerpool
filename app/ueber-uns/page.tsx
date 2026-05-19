@@ -9,7 +9,7 @@ import { storageUrl } from '@/lib/db-images'
 
 export const metadata: Metadata = {
   title: 'Über uns – Vivid Music Productions',
-  description: 'Das Team hinter Vivid Music Productions. 20 Jahre Erfahrung, direkte Kommunikation und Vollservice aus einer Hand.',
+  description: 'Das Team hinter Vivid Music Productions. 20+ Jahre Erfahrung im Event Business, direkte Kommunikation und Vollservice aus einer Hand.',
 }
 
 export default async function UeberUnsPage() {

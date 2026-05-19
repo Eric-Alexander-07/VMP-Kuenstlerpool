@@ -25,7 +25,7 @@ export default function InlineNavBar() {
           <VmpBadge size={110} />
         </a>
 
-        <div className="hidden md:flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
+        <div className="hidden md:flex items-center absolute left-1/2 -translate-x-1/2" style={{ gap: 'clamp(10px, 1.5vw, 32px)' }}>
           <NavLinks color="#ffffff" />
         </div>
 

@@ -222,6 +222,97 @@ function ImageLightbox({ images, startIndex, onClose }: {
   )
 }
 
+// ─── VideoCarousel ────────────────────────────────────────────────────
+
+function VideoCarousel({ videos }: { videos: { url: string; title: string }[] }) {
+  const [active, setActive] = useState(0)
+  const [hovered,      setHovered]      = useState(false)
+  const [hoveredLeft,  setHoveredLeft]  = useState(false)
+  const [hoveredRight, setHoveredRight] = useState(false)
+  const prev = () => setActive(i => (i - 1 + videos.length) % videos.length)
+  const next = () => setActive(i => (i + 1) % videos.length)
+
+  return (
+    <div style={{ marginBottom: 28 }}>
+      <EyebrowLabel>Videos</EyebrowLabel>
+
+      {/* Video + side arrows */}
+      <div
+        style={{ position: 'relative', borderRadius: 12, overflow: 'hidden' }}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => { setHovered(false); setHoveredLeft(false); setHoveredRight(false) }}
+      >
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={active}
+            initial={{ opacity: 0, x: 16 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -16 }}
+            transition={{ duration: 0.25 }}
+          >
+            <YouTubeEmbed url={videos[active].url} title={videos[active].title} large />
+          </motion.div>
+        </AnimatePresence>
+
+        {videos.length > 1 && (
+          <>
+            <button
+              onClick={prev}
+              onMouseEnter={() => setHoveredLeft(true)}
+              onMouseLeave={() => setHoveredLeft(false)}
+              style={{
+                position: 'absolute', left: 0, top: 0, bottom: 0, width: 36,
+                border: 'none', cursor: 'pointer', color: '#fff',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                backgroundColor: hoveredLeft ? 'rgba(139,26,26,0.88)' : 'rgba(28,25,23,0.55)',
+                backdropFilter: 'blur(4px)', WebkitBackdropFilter: 'blur(4px)',
+                opacity: hovered ? 1 : 0,
+                transition: 'background-color 0.25s ease, opacity 0.2s ease',
+                zIndex: 10,
+              }}
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="15 18 9 12 15 6"/>
+              </svg>
+            </button>
+            <button
+              onClick={next}
+              onMouseEnter={() => setHoveredRight(true)}
+              onMouseLeave={() => setHoveredRight(false)}
+              style={{
+                position: 'absolute', right: 0, top: 0, bottom: 0, width: 36,
+                border: 'none', cursor: 'pointer', color: '#fff',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                backgroundColor: hoveredRight ? 'rgba(139,26,26,0.88)' : 'rgba(28,25,23,0.55)',
+                backdropFilter: 'blur(4px)', WebkitBackdropFilter: 'blur(4px)',
+                opacity: hovered ? 1 : 0,
+                transition: 'background-color 0.25s ease, opacity 0.2s ease',
+                zIndex: 10,
+              }}
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="9 18 15 12 9 6"/>
+              </svg>
+            </button>
+          </>
+        )}
+      </div>
+
+      {videos.length > 1 && (
+        <div style={{ display: 'flex', justifyContent: 'center', gap: 6, marginTop: 10 }}>
+          {videos.map((_, i) => (
+            <button key={i} onClick={() => setActive(i)} style={{
+              width: i === active ? 18 : 6, height: 6, borderRadius: 3, border: 'none', cursor: 'pointer', padding: 0,
+              backgroundColor: i === active ? 'var(--color-orange)' : 'var(--color-border)',
+              transition: 'width 0.25s ease, background-color 0.25s ease',
+            }} />
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
 // ─── EyebrowLabel ─────────────────────────────────────────────────────
 
 function EyebrowLabel({ children }: { children: React.ReactNode }) {
@@ -425,35 +516,31 @@ export default function BandPageClient({
             </motion.div>
           )}
 
-          <motion.h1
+          <motion.div
             initial={{ opacity: 0, y: 28 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
-            style={{
+            style={{ display: 'flex', alignItems: 'baseline', flexWrap: 'wrap', columnGap: 14, rowGap: 4, marginBottom: 12 }}
+          >
+            <h1 style={{
               fontFamily: 'var(--font-display)',
               fontSize: 'clamp(38px, 5.5vw, 64px)',
               fontWeight: 700,
               color: '#fff',
               lineHeight: 1.05,
-              marginBottom: 12,
-            }}
-          >
-            {band.name}
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.38 }}
-            style={{
-              fontFamily: 'var(--font-body)',
-              fontSize: 17,
-              color: 'var(--color-orange)',
-              fontStyle: 'italic',
-            }}
-          >
-            {band.tagline}
-          </motion.p>
+              margin: 0,
+            }}>
+              {band.name}
+            </h1>
+            {band.tagline && (
+              <>
+                <span style={{ color: 'rgba(255,255,255,0.5)', fontFamily: 'var(--font-display)', fontSize: 'clamp(22px, 3vw, 38px)', fontWeight: 300, lineHeight: 1 }}>–</span>
+                <span style={{ fontFamily: 'var(--font-body)', fontSize: 'clamp(16px, 1.6vw, 22px)', color: '#fff', fontStyle: 'italic', fontWeight: 300 }}>
+                  {band.tagline}
+                </span>
+              </>
+            )}
+          </motion.div>
         </div>
 
         <motion.div
@@ -485,36 +572,6 @@ export default function BandPageClient({
       </section>
 
       <InlineNavBar />
-
-      {/* ── Info bar ─────────────────────────────────────────── */}
-      <div style={{ backgroundColor: '#161412' }}>
-        <div className="max-w-7xl mx-auto" style={{ overflowX: 'auto', overflowY: 'hidden' }}>
-          <div style={{ display: 'flex', alignItems: 'center', padding: '0 40px', minWidth: 'max-content' }}>
-            {infoItems.map((item, i) => (
-              <motion.div
-                key={item.label}
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: 0.55 + i * 0.07 }}
-                style={{
-                  padding: '18px 0',
-                  marginRight: i < infoItems.length - 1 ? 40 : 0,
-                  paddingRight: i < infoItems.length - 1 ? 40 : 0,
-                  borderRight: i < infoItems.length - 1 ? '1px solid rgba(255,255,255,0.08)' : 'none',
-                  flexShrink: 0,
-                }}
-              >
-                <p style={{ fontSize: 9, color: 'var(--color-orange)', textTransform: 'uppercase', letterSpacing: '0.14em', fontFamily: 'var(--font-body)', marginBottom: 4 }}>
-                  {item.label}
-                </p>
-                <p style={{ fontSize: 14, color: '#fff', fontFamily: 'var(--font-body)', fontWeight: 500 }}>
-                  {item.value}
-                </p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </div>
 
       {/* ── Content grid ─────────────────────────────────────── */}
       <div ref={contentRef} style={{ backgroundColor: 'var(--color-bg)' }}>
@@ -701,21 +758,7 @@ export default function BandPageClient({
 
               {/* Videos */}
               {realVideos.length > 0 && (
-                <div style={{ marginBottom: 28 }}>
-                  <EyebrowLabel>Videos</EyebrowLabel>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                    <YouTubeEmbed url={realVideos[0].url} title={realVideos[0].title} large />
-                    {realVideos.length === 2 && (
-                      <YouTubeEmbed url={realVideos[1].url} title={realVideos[1].title} large />
-                    )}
-                    {realVideos.length >= 3 && (
-                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
-                        <YouTubeEmbed url={realVideos[1].url} title={realVideos[1].title} />
-                        <YouTubeEmbed url={realVideos[2].url} title={realVideos[2].title} />
-                      </div>
-                    )}
-                  </div>
-                </div>
+                <VideoCarousel videos={realVideos} />
               )}
 
               {/* Anfrage-Box */}

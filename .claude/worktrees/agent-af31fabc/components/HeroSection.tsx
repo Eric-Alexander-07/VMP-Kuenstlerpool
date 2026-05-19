@@ -327,7 +327,7 @@ export default function HeroSection() {
                   Bobby Stöcker
                 </p>
                 <p className="font-body text-muted" style={{ fontSize: 12, lineHeight: 1.4 }}>
-                  Persönlicher Ansprechpartner · seit 20 Jahren
+                  Persönlicher Ansprechpartner · Musikalischer Leiter
                 </p>
               </div>
             </motion.div>

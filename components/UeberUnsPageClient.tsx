@@ -21,12 +21,6 @@ const TEAM = [
     role: 'Geschäftsführer & musikalischer Leiter',
     image: '/images/bobby-profile.avif',
   },
-  {
-    name: 'Peter Volk',
-    role: 'Veranstaltungstechnik',
-    image: null,
-    initials: 'PV',
-  },
 ]
 
 const FEATURES = [
@@ -39,8 +33,8 @@ const FEATURES = [
         <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
       </svg>
     ),
-    title: 'Kein Mittelsmann',
-    text: 'Sie sprechen direkt mit den Künstlern. Keine Agenturgebühren, kein Aufpreis — was Sie zahlen, kommt zu 100% der Show zugute.',
+    title: 'Direkter Kontakt',
+    text: 'Sie sprechen direkt mit dem musikalischen Leiter. Wir sind KEINE Agentur, die nur Vermittler sind! Wir kennen trotzdem beide Seiten – die des Musikers und des Veranstalters. Hier können wir Ihnen entscheidende Tipps geben, Sie unterstützen oder das Projekt für Sie in die Hand nehmen.',
   },
   {
     icon: (
@@ -49,8 +43,8 @@ const FEATURES = [
         <polyline points="12 6 12 12 16 14"/>
       </svg>
     ),
-    title: '20 Jahre Erfahrung',
-    text: 'Bobby Stöcker ist seit 2004 in der Live-Musikbranche. Hunderte Events, unzählige zufriedene Kunden — das ist kein Versprechen, das ist Geschichte.',
+    title: '20+ Jahre Erfahrung',
+    text: 'Bobby Stöcker arbeitet bundesweit mit den besten Sängern und Musikern zusammen und stellt sie seit 2001 zu interessanten musikalischen Projekten zusammen. Tausende Events, zufriedene Kunden — das ist kein Versprechen, das ist Geschichte.',
   },
   {
     icon: (
@@ -59,7 +53,7 @@ const FEATURES = [
       </svg>
     ),
     title: 'Vollservice',
-    text: 'Bühne, Licht und Technik aus einer Hand. Wir koordinieren alles — Sie müssen sich um nichts kümmern außer Ihrem Event.',
+    text: 'Band, Ablauf, Technik, Bühne, Ton & Lichttechnik aus einer Hand. Wir müssen nicht, können aber gerne alles für Sie koordinieren. Sie können sich auf uns verlassen und einfach Ihre Veranstaltung genießen.',
   },
 ]
 

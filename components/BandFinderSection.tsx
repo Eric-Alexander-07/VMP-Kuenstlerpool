@@ -7,20 +7,20 @@ import Image from 'next/image'
 const CATEGORIES = [
   {
     key: 'firmenevents',
-    title: 'Firmenevents & Galas',
-    description: 'Bereits gebucht von Audi, Daimler und der Deutschen Bank – Entertainment auf höchstem Niveau für exklusive Anlässe.',
+    title: 'Firmenevents – Galas – Incentives – Messen – Roadshows',
+    description: 'Unsere Bands sind mehr als „nur" Cover- und Partybands! Wir bieten bestes Live-Entertainment. Durch die langjährige Erfahrung unserer Top-Musiker verlassen sich große Firmen & High Class Event Veranstalter immer wieder auf uns bei der musikalischen und technischen Umsetzung Ihrer Events.',
     image: '/images/firmenevents.avif',
   },
   {
     key: 'stadtfeste',
-    title: 'Stadtfeste & Festivals',
-    description: 'Tribute-Acts und Partybands für große Open-Air-Events – europaweit gebucht, mit professioneller Bühnentechnik.',
+    title: 'Stadtfeste & Tribute Festivals',
+    description: 'Tribute Acts nah am Original und Partybands für große Open-Air Events – europaweit gebucht mit professioneller Bühnentechnik.',
     image: '/images/stadtfeste.avif',
   },
   {
     key: 'hochzeiten',
-    title: 'Hochzeiten und Privatveranstaltungen',
-    description: 'Von der romantischen Trauung bis zur ausgelassenen Tanzfläche – wir finden die perfekte Band für Ihren großen Tag.',
+    title: 'Hochzeiten – Geburtstage – Wohnzimmer Konzerte und andere Privatveranstaltungen',
+    description: 'Von der romantischen Trauung bis zur ausgelassenen Tanzfläche – wir finden die perfekte Band für Ihren großen Tag. Auch Stars wie Matthias Steiner und seine Frau, die ehemalige Fernsehjournalistin von N24 Inge Steiner (geborene Posmyk), feierten 2010 ihren großen Tag auf Johann Lafers „Burg Stromburg" mit unserer Band Groove Control.',
     image: '/images/hochzeit.avif',
   },
 ]
@@ -353,21 +353,15 @@ export default function BandFinderSection({ categoryImages }: { categoryImages?:
               <a
                 key={tag.label}
                 href={tag.href}
-                className="font-body px-3.5 py-1.5 rounded-full transition-all"
+                className="font-body px-3.5 py-1.5 rounded-full"
                 style={{
                   fontSize: 12,
                   color: 'var(--color-muted)',
                   border: '1px solid var(--color-border)',
                   backgroundColor: 'var(--color-bg)',
                   textDecoration: 'none',
-                }}
-                onMouseEnter={e => {
-                  e.currentTarget.style.borderColor = 'var(--color-orange)'
-                  e.currentTarget.style.color = 'var(--color-orange)'
-                }}
-                onMouseLeave={e => {
-                  e.currentTarget.style.borderColor = 'var(--color-border)'
-                  e.currentTarget.style.color = 'var(--color-muted)'
+                  cursor: 'default',
+                  pointerEvents: 'none',
                 }}
               >
                 {tag.label}

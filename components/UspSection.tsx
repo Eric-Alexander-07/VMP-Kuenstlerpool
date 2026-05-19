@@ -8,7 +8,7 @@ const SOCIALS = [
     platform: 'Instagram',
     handle: '@vmp.frankfurt',
     description: 'Backstage-Momente, Live-Impressionen und Stories direkt vom Event.',
-    href: 'https://instagram.com',
+    href: 'https://instagram.com/vmp.frankfurt',
     hoverColor: 'rgba(225,48,108,0.18)',
     hoverBorder: 'rgba(225,48,108,0.45)',
     icon: (
@@ -22,9 +22,9 @@ const SOCIALS = [
   },
   {
     platform: 'Facebook',
-    handle: 'Vivid Music Productions',
+    handle: 'Vivid Music Productions (V.M.P) Künstlerpool',
     description: 'Events, Neuigkeiten und direkte Anfragen über unsere Facebook-Seite.',
-    href: 'https://facebook.com',
+    href: 'https://www.facebook.com/VMPKuenstlerpool/',
     hoverColor: 'rgba(24,119,242,0.15)',
     hoverBorder: 'rgba(24,119,242,0.4)',
     icon: (
@@ -36,9 +36,9 @@ const SOCIALS = [
   },
   {
     platform: 'YouTube',
-    handle: 'VMP Frankfurt',
-    description: 'Komplette Showmitschnitte und Probeaufnahmen aller unserer Bands.',
-    href: 'https://youtube.com',
+    handle: 'Vivid Music Productions (V.M.P) Künstlerpool',
+    description: 'Komplette Showmitschnitte aller Bands.',
+    href: 'https://www.youtube.com/@VividMusicProductions',
     hoverColor: 'rgba(255,0,0,0.12)',
     hoverBorder: 'rgba(255,0,0,0.38)',
     icon: (
@@ -83,8 +83,8 @@ export default function UspSection() {
               Bleiben Sie auf dem Laufenden.
             </h2>
           </div>
-          <p className="font-body" style={{ fontSize: 14, color: 'rgba(255,255,255,0.4)', maxWidth: 320, lineHeight: 1.6 }}>
-            Folgen Sie uns für Live-Einblicke, neue Bands und aktuelle Buchungstermine.
+          <p className="font-body" style={{ fontSize: 14, color: 'rgba(255,255,255,0.7)', maxWidth: 380, lineHeight: 1.6 }}>
+            Folgen Sie uns Tour, blicken Sie hinter die Kulissen, Backstage sowie bei Proben, oder bleiben Sie auf dem Laufenden mit den Terminen der Bands, wenn Sie uns bei einem unserer Konzerte besuchen wollen.
           </p>
         </motion.div>
 
@@ -130,19 +130,19 @@ export default function UspSection() {
                   <p className="font-body font-bold text-white" style={{ fontSize: 15 }}>
                     {s.platform}
                   </p>
-                  <p className="font-body" style={{ fontSize: 12, color: 'rgba(255,255,255,0.35)' }}>
+                  <p className="font-body" style={{ fontSize: 12, color: 'rgba(255,255,255,0.65)' }}>
                     {s.handle}
                   </p>
                 </div>
               </div>
 
               {/* Description */}
-              <p className="font-body flex-1" style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)', lineHeight: 1.65 }}>
+              <p className="font-body flex-1" style={{ fontSize: 13, color: 'rgba(255,255,255,0.78)', lineHeight: 1.65 }}>
                 {s.description}
               </p>
 
               {/* CTA */}
-              <div className="flex items-center gap-2 font-body font-semibold" style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)', transition: 'color 0.2s' }}>
+              <div className="flex items-center gap-2 font-body font-semibold" style={{ fontSize: 13, color: 'rgba(255,255,255,0.8)', transition: 'color 0.2s' }}>
                 <span className="group-hover:text-white transition-colors">{s.cta}</span>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
                   style={{ transition: 'transform 0.2s' }}

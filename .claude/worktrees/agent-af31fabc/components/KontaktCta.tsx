@@ -41,7 +41,7 @@ const labelStyle: React.CSSProperties = {
 }
 
 export default function KontaktCta() {
-  const ref    = useRef<HTMLDivElement>(null)
+  const ref = useRef<HTMLDivElement>(null)
   const inView = useInView(ref, { once: true, margin: '-80px' })
 
   const [form, setForm] = useState({ name: '', email: '', anlass: '', message: '' })
@@ -149,7 +149,7 @@ export default function KontaktCta() {
                 Vivid Music Productions
               </p>
               <p className="font-body" style={{ fontSize: 14, color: 'var(--color-orange)', lineHeight: 1.6 }}>
-                Bobby Stoker – Ihr persönlicher Ansprechpartner
+                Bobby Stöcker – Ihr persönlicher Ansprechpartner
                 für Bandanfragen, Verfügbarkeiten und Angebote.
               </p>
             </div>
@@ -165,7 +165,7 @@ export default function KontaktCta() {
                 style={{ width: 36, height: 36, backgroundColor: 'var(--color-orange-light)' }}
               >
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-orange)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.07 1.18 2 2 0 012.06 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"/>
+                  <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.07 1.18 2 2 0 012.06 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z" />
                 </svg>
               </span>
               +49 (0) 69 123 456 789
@@ -179,8 +179,8 @@ export default function KontaktCta() {
                 style={{ backgroundColor: 'var(--color-orange)', fontSize: 14, textDecoration: 'none' }}
               >
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-                  <polyline points="22,6 12,13 2,6"/>
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                  <polyline points="22,6 12,13 2,6" />
                 </svg>
                 E-Mail schreiben
               </a>
@@ -312,7 +312,7 @@ export default function KontaktCta() {
           </motion.div>
 
         </div>
-        </div>{/* /max-w-5xl */}
+      </div>{/* /max-w-5xl */}
     </section>
   )
 }

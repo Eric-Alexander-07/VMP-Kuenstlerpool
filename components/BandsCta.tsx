@@ -94,7 +94,7 @@ export default function BandsCta() {
           transition={{ duration: 0.4, delay: 0.35 }}
           className="flex flex-wrap justify-center gap-x-8 gap-y-2"
         >
-          {['Direktkontakt', 'Keine Agenturgebühren', 'Antwort in 24h', '20 Jahre Erfahrung'].map(item => (
+          {['Direktkontakt', 'Keine Agenturgebühren', 'Antwort in 24h', '20+ Jahre Erfahrung'].map(item => (
             <span key={item} className="font-body flex items-center gap-1.5"
               style={{ fontSize: 12, color: 'var(--color-subtle)' }}>
               <span style={{ color: 'var(--color-orange)' }}>✓</span> {item}

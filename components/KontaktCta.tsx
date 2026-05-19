@@ -6,7 +6,7 @@ import { motion, useInView } from 'framer-motion'
 const TRUST_ITEMS = [
   'Direktkontakt – keine Agenturgebühren',
   'Antwort in der Regel innerhalb von 24 Stunden',
-  '20 Jahre Erfahrung im Veranstaltungsbereich',
+  '20+ Jahre Erfahrung im Veranstaltungsbereich',
 ]
 
 const ANLAESSE = [
@@ -41,7 +41,7 @@ const labelStyle: React.CSSProperties = {
 }
 
 export default function KontaktCta() {
-  const ref    = useRef<HTMLDivElement>(null)
+  const ref = useRef<HTMLDivElement>(null)
   const inView = useInView(ref, { once: true, margin: '-80px' })
 
   const [form, setForm] = useState({ name: '', email: '', anlass: '', message: '' })
@@ -55,7 +55,7 @@ export default function KontaktCta() {
     const body = encodeURIComponent(
       `Name: ${form.name}\nE-Mail: ${form.email}\nAnlass: ${form.anlass}\n\n${form.message}`
     )
-    return `mailto:info@v-m-p.de?subject=${subject}&body=${body}`
+    return `mailto:info@v-m-p.com?subject=${subject}&body=${body}`
   }
 
   const borderFor = (k: string) => focused === k
@@ -149,38 +149,48 @@ export default function KontaktCta() {
                 Vivid Music Productions
               </p>
               <p className="font-body" style={{ fontSize: 14, color: 'var(--color-orange)', lineHeight: 1.6 }}>
-                Bobby Stoker – Ihr persönlicher Ansprechpartner
-                für Bandanfragen, Verfügbarkeiten und Angebote.
+                Bobby Stöcker – Musikalischer Leiter und Ihr persönlicher Ansprechpartner für Bandanfragen, Verfügbarkeiten und Angebote.
               </p>
             </div>
 
             {/* Phone */}
-            <a
-              href="tel:+4969123456789"
-              className="flex items-center gap-3 font-body font-semibold transition-opacity hover:opacity-70"
-              style={{ fontSize: 15, color: 'var(--color-dark)', textDecoration: 'none' }}
-            >
-              <span
-                className="flex items-center justify-center rounded-full flex-shrink-0"
-                style={{ width: 36, height: 36, backgroundColor: 'var(--color-orange-light)' }}
-              >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-orange)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.07 1.18 2 2 0 012.06 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"/>
-                </svg>
-              </span>
-              +49 (0) 69 123 456 789
-            </a>
+            <div className="flex flex-col gap-2">
+              {['+49 (0) 6078-759568', '+49 (0) 177-5719570'].map((num, i) => (
+                <a
+                  key={num}
+                  href={`tel:${num.replace(/[\s\-()]/g, '')}`}
+                  className="flex items-center gap-3 font-body font-semibold transition-opacity hover:opacity-70"
+                  style={{ fontSize: 15, color: 'var(--color-dark)', textDecoration: 'none' }}
+                >
+                  <span
+                    className="flex items-center justify-center rounded-full flex-shrink-0"
+                    style={{ width: 36, height: 36, backgroundColor: 'var(--color-orange-light)' }}
+                  >
+                    {i === 0 ? (
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-orange)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.07 1.18 2 2 0 012.06 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z" />
+                      </svg>
+                    ) : (
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-orange)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/>
+                      </svg>
+                    )}
+                  </span>
+                  {num}
+                </a>
+              ))}
+            </div>
 
             {/* Email button */}
             <div>
               <a
-                href="mailto:info@v-m-p.de"
+                href="mailto:info@v-m-p.com"
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-body font-semibold text-white transition-opacity hover:opacity-85"
                 style={{ backgroundColor: 'var(--color-orange)', fontSize: 14, textDecoration: 'none' }}
               >
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-                  <polyline points="22,6 12,13 2,6"/>
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                  <polyline points="22,6 12,13 2,6" />
                 </svg>
                 E-Mail schreiben
               </a>
@@ -213,19 +223,22 @@ export default function KontaktCta() {
               borderRadius: 10,
               padding: '14px 16px',
             }}>
-              <p className="font-body font-semibold" style={{ fontSize: 12, color: 'var(--color-dark)', marginBottom: 10 }}>
-                Für ein passgenaues Angebot helfen uns folgende Angaben:
+              <p className="font-body" style={{ fontSize: 12, color: 'var(--color-muted)', marginBottom: 10, lineHeight: 1.5 }}>
+                Wir möchten Ihnen gerne schnellst möglich ein passgenaues Angebot machen. Bitte geben Sie uns nach Möglichkeit Auskunft zu folgenden Punkten:
               </p>
               <div className="flex flex-col gap-1.5">
                 {[
-                  'Stadt & Location der Veranstaltung',
-                  'Ungefähre Gästeanzahl',
-                  'Vorhandene Technik & Bühne',
-                  'Gewünschte Besetzung & Budgetrahmen',
-                  'Gewünschte Spieldauer',
-                  'Weitere Künstler an dem Abend?',
-                  'Pausenmusik oder DJ-Service gewünscht?',
-                  'Telefonnummer für Rückfragen',
+                  'Stadt & Location der Veranstaltung.',
+                  'Ungefähre Gästeanzahl.',
+                  'Findet der Event öffentlich, oder im geschlossenen Rahmen statt?',
+                  'Ist bereits Technik vorhanden, oder soll die Band diese mitbringen?',
+                  'Gibt es eine optionale Bühne? Im Sommer bei Open Airs eine Überdachung?',
+                  'Ist die Location ebenerdig anfahrbar, oder gibt es Treppen zu überwinden?',
+                  'Gewünschte Besetzung der Band & optional nach Möglichkeit in etwa den Budgetrahmen. Wir haben einheitliche Preise – so können wir gleich die richtige Größe anbieten.',
+                  'Gewünschte Spieldauer. Unsere Regelspieldauer ist 2×60 min oder 3×40 min Sets oder nach Absprache.',
+                  'Gibt es noch andere Künstler / Musiker, die bei der Veranstaltung auftreten?',
+                  'Ist Pausenmusik oder DJ-Service gewünscht? Wir können Ihnen zusätzlich einen auf das Live Event abgestimmten DJ anbieten.',
+                  'Ganz wichtig! Ihre Telefonnummer für Rückfragen.',
                 ].map(point => (
                   <div key={point} className="flex items-start gap-2">
                     <span style={{ color: 'var(--color-orange)', fontSize: 12, marginTop: 1, flexShrink: 0 }}>→</span>
@@ -343,7 +356,7 @@ export default function KontaktCta() {
           </motion.div>
 
         </div>
-        </div>{/* /max-w-5xl */}
+      </div>{/* /max-w-5xl */}
     </section>
   )
 }

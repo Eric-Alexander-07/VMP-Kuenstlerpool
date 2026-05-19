@@ -9,32 +9,32 @@ import InlineNavBar from './InlineNavBar'
 
 // colSpan / rowSpan define the editorial grid layout (4-column base)
 const PHOTOS: { src: string; label: string; col: number; row: number }[] = [
-  { src: '/images/gallery-1.avif',             label: 'Live Performance',          col: 2, row: 2 },
-  { src: '/images/gallery-2.avif',             label: 'Stadtfest Frankfurt',        col: 1, row: 1 },
-  { src: '/images/gallery-3.avif',             label: 'Open Air 2023',              col: 1, row: 1 },
-  { src: '/images/gallery-4.avif',             label: 'Galanacht Wiesbaden',        col: 1, row: 2 },
-  { src: '/images/gallery-5.avif',             label: 'Sommerfest Rhein-Main',      col: 1, row: 1 },
-  { src: '/images/hero-event.avif',            label: 'VMP Live Event',             col: 2, row: 1 },
-  { src: '/images/empfaenge.avif',             label: 'Eleganter Empfang',          col: 1, row: 1 },
-  { src: '/images/stadtfeste.avif',            label: 'Stadtfest',                  col: 1, row: 1 },
-  { src: '/images/firmenevents.avif',          label: 'Firmenevent',                col: 2, row: 1 },
-  { src: '/images/hochzeit.avif',              label: 'Hochzeitsfeier',             col: 1, row: 2 },
-  { src: '/images/veranstaltungsservice.avif', label: 'Veranstaltungsservice',      col: 1, row: 1 },
-  { src: '/images/groove-control.avif',        label: 'Groove Control',             col: 2, row: 1 },
-  { src: '/images/spirit-of-soul.avif',        label: 'Spirit of Soul',             col: 1, row: 1 },
-  { src: '/images/time-warp.avif',             label: 'Time Warp',                  col: 1, row: 2 },
-  { src: '/images/bobbastic.avif',             label: 'BOBbastic',                  col: 1, row: 1 },
-  { src: '/images/KissTribute.avif',           label: 'The Kiss Tribute Band',      col: 2, row: 1 },
-  { src: '/images/coversnake.avif',            label: 'CoverSnake',                 col: 1, row: 1 },
-  { src: '/images/adams-family.avif',          label: 'The Adams Family',           col: 1, row: 1 },
-  { src: '/images/sir-williams.avif',          label: 'Sir Williams',               col: 2, row: 1 },
-  { src: '/images/bobby-and-friends.avif',     label: 'Bobby & Friends',            col: 1, row: 1 },
-  { src: '/images/marsch-mellows.avif',        label: 'Marsch Mellows',             col: 2, row: 2 },
-  { src: '/images/thin-lizzy-tribute.avif',    label: 'Thin Lizzy Tribute',         col: 1, row: 1 },
-  { src: '/images/melanie-thornton.avif',      label: 'Melanie Thornton Tribute',   col: 1, row: 1 },
-  { src: '/images/bobby-profile.avif',         label: 'Bobby Stoker',               col: 1, row: 2 },
-  { src: '/images/technik-1.avif',             label: 'Tonstudio',                  col: 2, row: 1 },
-  { src: '/images/technik-2.avif',             label: 'PA-Technik',                 col: 1, row: 1 },
+  { src: '/images/gallery-1.avif', label: 'Live Performance', col: 2, row: 2 },
+  { src: '/images/gallery-2.avif', label: 'Stadtfest Frankfurt', col: 1, row: 1 },
+  { src: '/images/gallery-3.avif', label: 'Open Air 2023', col: 1, row: 1 },
+  { src: '/images/gallery-4.avif', label: 'Galanacht Wiesbaden', col: 1, row: 2 },
+  { src: '/images/gallery-5.avif', label: 'Sommerfest Rhein-Main', col: 1, row: 1 },
+  { src: '/images/hero-event.avif', label: 'VMP Live Event', col: 2, row: 1 },
+  { src: '/images/empfaenge.avif', label: 'Eleganter Empfang', col: 1, row: 1 },
+  { src: '/images/stadtfeste.avif', label: 'Stadtfest', col: 1, row: 1 },
+  { src: '/images/firmenevents.avif', label: 'Firmenevent', col: 2, row: 1 },
+  { src: '/images/hochzeit.avif', label: 'Hochzeitsfeier', col: 1, row: 2 },
+  { src: '/images/veranstaltungsservice.avif', label: 'Veranstaltungsservice', col: 1, row: 1 },
+  { src: '/images/groove-control.avif', label: 'Groove Control', col: 2, row: 1 },
+  { src: '/images/spirit-of-soul.avif', label: 'Spirit of Soul', col: 1, row: 1 },
+  { src: '/images/time-warp.avif', label: 'Time Warp', col: 1, row: 2 },
+  { src: '/images/bobbastic.avif', label: 'BOBbastic', col: 1, row: 1 },
+  { src: '/images/KissTribute.avif', label: 'The Kiss Tribute Band', col: 2, row: 1 },
+  { src: '/images/coversnake.avif', label: 'CoverSnake', col: 1, row: 1 },
+  { src: '/images/adams-family.avif', label: 'The Adams Family', col: 1, row: 1 },
+  { src: '/images/sir-williams.avif', label: 'Sir Williams', col: 2, row: 1 },
+  { src: '/images/bobby-and-friends.avif', label: 'Bobby & Friends', col: 1, row: 1 },
+  { src: '/images/marsch-mellows.avif', label: 'Marsch Mellows', col: 2, row: 2 },
+  { src: '/images/thin-lizzy-tribute.avif', label: 'Thin Lizzy Tribute', col: 1, row: 1 },
+  { src: '/images/melanie-thornton.avif', label: 'Melanie Thornton Tribute', col: 1, row: 1 },
+  { src: '/images/bobby-profile.avif', label: 'Bobby Stöcker', col: 1, row: 2 },
+  { src: '/images/technik-1.avif', label: 'Tonstudio', col: 2, row: 1 },
+  { src: '/images/technik-2.avif', label: 'PA-Technik', col: 1, row: 1 },
 ]
 
 
@@ -52,8 +52,8 @@ function Lightbox({ photos, startIndex, onClose }: {
   useEffect(() => {
     document.body.style.overflow = 'hidden'
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape')     onClose()
-      if (e.key === 'ArrowLeft')  prev()
+      if (e.key === 'Escape') onClose()
+      if (e.key === 'ArrowLeft') prev()
       if (e.key === 'ArrowRight') next()
     }
     window.addEventListener('keydown', onKey)
@@ -282,7 +282,7 @@ function PhotoCard({ photo, index, onClick }: {
           display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
         }}>
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
           </svg>
         </div>
       </div>

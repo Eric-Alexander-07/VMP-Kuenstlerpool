@@ -75,10 +75,10 @@ const BANDS_MENU = [
   {
     category: 'Partybands', href: '/bands#partybands',
     bands: [
-      { name: 'Groove Control',  href: '/groove-control' },
       { name: 'Spirit of Soul',  href: '/spirit-of-soul' },
-      { name: 'Time Warp',       href: '/time-warp'      },
+      { name: 'Groove Control',  href: '/groove-control' },
       { name: 'BOBbastic',       href: '/bobbastic'      },
+      { name: 'Time Warp',       href: '/time-warp'      },
     ],
   },
   {
@@ -316,7 +316,7 @@ export function NavLinks({ color = '#fff' }: { color?: string }) {
             <a
               href={item.href}
               className="flex items-center gap-1.5 font-display"
-              style={{ color, fontSize: 19, letterSpacing: '0.08em', textDecoration: 'none', transition: 'opacity 0.15s' }}
+              style={{ color, fontSize: 19, letterSpacing: '0.08em', textDecoration: 'none', transition: 'opacity 0.15s', whiteSpace: 'nowrap' }}
               onMouseEnter={e => (e.currentTarget.style.opacity = '0.7')}
               onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
             >
@@ -332,7 +332,7 @@ export function NavLinks({ color = '#fff' }: { color?: string }) {
         ) : (
           <a key={item.href} href={item.href}
             className="font-display hidden md:block"
-            style={{ color, fontSize: 19, letterSpacing: '0.08em', textDecoration: 'none', transition: 'opacity 0.15s' }}
+            style={{ color, fontSize: 19, letterSpacing: '0.08em', textDecoration: 'none', transition: 'opacity 0.15s', whiteSpace: 'nowrap' }}
             onMouseEnter={e => (e.currentTarget.style.opacity = '0.7')}
             onMouseLeave={e => (e.currentTarget.style.opacity = '1')}>
             {item.label.toUpperCase()}
@@ -376,13 +376,14 @@ export default function Navbar() {
         {visible && (
           <motion.header
             key="navbar"
-            initial={{ y: -56, opacity: 0 }}
+            initial={{ y: '-100%', opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            exit={{ y: -56, opacity: 0 }}
+            exit={{ y: '-100%', opacity: 0 }}
             transition={{ duration: 0.25, ease: 'easeOut' }}
-            className="fixed top-0 left-0 right-0 z-50 flex items-center justify-end px-8 md:px-10 h-16"
-            style={{ backgroundColor: 'var(--color-bg-dark)', boxShadow: '0 2px 20px rgba(0,0,0,0.3)', overflow: 'visible' }}
+            className="fixed top-0 left-0 right-0 z-50 flex items-center"
+            style={{ backgroundColor: 'var(--color-bg-dark)', boxShadow: '0 2px 20px rgba(0,0,0,0.3)', overflow: 'visible', paddingLeft: 120, paddingRight: 16, minHeight: 64, paddingTop: 10, paddingBottom: 10 }}
           >
+            {/* Logo — absolute, doesn't consume flex space */}
             <a href="/" style={{
               textDecoration: 'none',
               position: 'absolute',
@@ -393,13 +394,13 @@ export default function Navbar() {
               <VmpBadge size={88} shadow={false} borderWidth={2} />
             </a>
 
-            {/* Desktop nav — centered */}
-            <nav className="hidden md:flex items-center gap-7 absolute left-1/2 -translate-x-1/2">
+            {/* Desktop nav — wraps to second line if needed */}
+            <nav className="hidden md:flex flex-1 flex-wrap items-center justify-center self-center" style={{ gap: '8px 28px' }}>
               <NavLinks color="#ffffff" />
             </nav>
 
-            {/* Right side */}
-            <div className="flex items-center gap-2">
+            {/* Right side — flex sibling, never overlaps nav */}
+            <div className="flex items-center gap-2 flex-shrink-0 self-center">
               <a href="/#kontakt"
                 className="md:hidden inline-flex items-center px-3 py-1.5 rounded-full font-body font-semibold text-white"
                 style={{ backgroundColor: 'var(--color-orange)', fontSize: 12 }}>

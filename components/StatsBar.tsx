@@ -6,11 +6,6 @@ import { motion, useInView } from 'framer-motion'
 const PROMINENT = ['AUDI', 'PORSCHE', 'VOLKSWAGEN', 'DEUTSCHE BANK', 'SAMSUNG']
 const SECONDARY = ['REWE', 'DEUTSCHE POST', 'DVAG', 'DEBEKA', 'STIHL', 'BRIDGESTONE', 'WACKER CHEMIE', 'SONY ERICSSON', 'GRUNER & JAHR']
 
-const CATEGORIES = [
-  { label: 'Partybands',     href: '/bands#partybands'    },
-  { label: 'Tribute Bands',  href: '/bands#tribute'       },
-  { label: 'Easy Listening', href: '/bands#easy-listening'},
-]
 
 export default function StatsBar() {
   const ref    = useRef<HTMLDivElement>(null)
@@ -80,54 +75,6 @@ export default function StatsBar() {
           </div>
         </motion.div>
 
-        {/* Divider */}
-        <div style={{ height: 1, backgroundColor: 'rgba(255,255,255,0.08)' }} />
-
-        {/* Category chips */}
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.45, delay: 0.25 }}
-          className="flex flex-wrap items-center gap-3"
-        >
-          <span
-            className="font-body font-semibold uppercase"
-            style={{ fontSize: 9, color: '#ffffff', letterSpacing: '0.18em', marginRight: 4 }}
-          >
-            Kategorien
-          </span>
-          {CATEGORIES.map((cat, i) => (
-            <motion.a
-              key={cat.label}
-              href={cat.href}
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={inView ? { opacity: 1, scale: 1 } : {}}
-              transition={{ duration: 0.35, delay: 0.3 + i * 0.08 }}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-body font-bold"
-              style={{
-                fontSize: 13,
-                color: '#ffffff',
-                backgroundColor: 'rgba(255,255,255,0.15)',
-                border: '1px solid rgba(255,255,255,0.35)',
-                textDecoration: 'none',
-                letterSpacing: '0.03em',
-                transition: 'background-color 0.2s, border-color 0.2s, transform 0.2s',
-              }}
-              onMouseEnter={e => {
-                e.currentTarget.style.backgroundColor = '#ffffff'
-                e.currentTarget.style.borderColor = '#ffffff'
-                e.currentTarget.style.transform = 'translateY(-2px)'
-              }}
-              onMouseLeave={e => {
-                e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.15)'
-                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.35)'
-                e.currentTarget.style.transform = 'translateY(0)'
-              }}
-            >
-              {cat.label}
-            </motion.a>
-          ))}
-        </motion.div>
 
       </div>
     </section>

@@ -20,6 +20,7 @@ const TEAM = [
     name: 'Bobby Stöcker',
     role: 'Geschäftsführer & musikalischer Leiter',
     image: '/images/bobby-profile.avif',
+    initials: 'BS',
   },
 ]
 

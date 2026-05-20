@@ -4,6 +4,7 @@ import { useRef, useState } from 'react'
 import { motion, useInView } from 'framer-motion'
 import Image from 'next/image'
 import { NavLinks, MobileMenuDrawer, VmpBadge } from './Navbar'
+import type { BandCardData, BandsMenuEntry } from '@/types/band'
 
 // ─── Ambient glow helper ─────────────────────────────────────────
 
@@ -28,118 +29,84 @@ function Glow({
   )
 }
 
-// ─── Data ────────────────────────────────────────────────────────
+// ─── Static fallback data ─────────────────────────────────────────
 
-const PARTY_BANDS = [
+const PARTY_BANDS: BandCardData[] = [
   {
     name: 'Groove Control',
     tagline: 'Der Allrounder für jede Tanzfläche',
-    genre: 'Soul · Pop · Rock',
-    tag: 'Headliner',
     description: 'Die Allround-Partyband für Unternehmens-Events, Stadtfeste und Hochzeiten. Immer ausgebucht.',
     href: '/groove-control',
     image: '/images/groove-control.avif',
-    bg: '#6B1414',
-    featured: true,
   },
   {
     name: 'Spirit of Soul',
     tagline: 'The finest of Black Music',
-    genre: 'Black Music · R&B · Funk',
-    tag: 'Bühnenshow',
     description: 'Authentischer Soul und Funk – eine Show, die niemanden auf dem Stuhl lässt.',
     href: '/spirit-of-soul',
     image: '/images/spirit-of-soul.avif',
-    bg: '#701616',
-    featured: true,
   },
   {
     name: 'Time Warp',
     tagline: 'Fünf Jahrzehnte. Ein Abend.',
-    genre: '5 Jahrzehnte Hits',
-    tag: 'Crowd Favourite',
     description: 'Von den 60ern bis heute – musikalische Zeitreise durch fünf Jahrzehnte.',
     href: '/time-warp',
     image: '/images/time-warp.avif',
-    bg: '#5C1212',
-    featured: false,
   },
   {
     name: 'BOBbastic',
     tagline: 'Drei Mann. Maximale Energie.',
-    genre: 'Power Rock Trio',
-    tag: 'Energie Pur',
     description: 'Drei Musiker, maximale Energie – klassischer Rock in konzentriertester Form.',
     href: '/bobbastic',
     image: '/images/bobbastic.avif',
-    bg: '#641515',
-    featured: false,
   },
 ]
 
-const TRIBUTE_BANDS = [
+const TRIBUTE_BANDS: BandCardData[] = [
   {
     name: 'The Kiss Tribute Band',
     tagline: 'Die heißeste Show Deutschlands',
-    genre: 'Rock Tribute',
-    tag: 'Pyroshow',
     description: "Deutschlands erfolgreichste Kiss-Tribute-Show – originalgetreues Make-up, Kostüme und feurige Pyroshow.",
     href: '/kiss-tribute',
     image: '/images/KissTribute.avif',
-    bg: '#580F0F',
   },
   {
     name: 'CoverSnake',
     tagline: 'Decades of the Snake',
-    genre: 'Whitesnake Tribute',
-    tag: '6 Profimusiker',
     description: 'Decades of the Snake – authentischer Hard Rock der 80er auf höchstem Niveau.',
     href: '/coversnake',
     image: '/images/coversnake.avif',
-    bg: '#641414',
   },
   {
     name: 'The Adams Family',
     tagline: 'Summer of \'69 – live erlebt',
-    genre: 'Bryan Adams Tribute',
-    tag: 'inkl. Unplugged',
     description: "Summer of '69, Run to You und mehr – inklusive stimmungsvollem Unplugged-Set.",
     href: '/adams-family',
     image: '/images/adams-family.avif',
-    bg: '#5A1212',
   },
   {
     name: 'Sir Williams',
     tagline: 'Feel me, rock me, entertain me',
-    genre: 'Robbie Williams Tribute',
-    tag: '30 Jahre Hits',
     description: 'Die ultimative Robbie Williams Show – charismatisch, mitreißend, authentisch.',
     href: '/sir-williams',
     image: '/images/sir-williams.avif',
-    bg: '#5E1313',
   },
 ]
 
-const EASY_BANDS = [
+const EASY_BANDS: BandCardData[] = [
   {
     name: 'Bobby & Friends',
     tagline: 'Musik, die den Raum füllt',
-    genre: 'Jazz · Acoustic Pop',
-    tag: 'Dinner Lounge',
     description: 'Elegante Loungemusik mit Jazz-Einflüssen – ideal für Empfänge und private Feiern.',
     href: '/bobby-and-friends',
     image: '/images/bobby-and-friends.avif',
-    bg: '#601212',
   },
   {
     name: 'Marsch Mellows',
     tagline: 'Der Walkact, der überrascht',
-    genre: 'Walkact · Empfangsmusik',
-    tag: 'Mobiler Walkact',
     description: 'Überraschend, charmant und ganz ohne Bühne – der besondere Empfangs-Act.',
     href: '/marsch-mellows',
     image: '/images/marsch-mellows.avif',
-    bg: '#5C1010',
   },
 ]
 
@@ -148,7 +115,7 @@ const EASY_BANDS = [
 function BandCard({
   band, index, inView, height = 280,
 }: {
-  band: { name: string; tagline: string; genre: string; tag: string; description: string; href: string; image: string; bg: string; featured?: boolean }
+  band: BandCardData
   index: number
   inView: boolean
   height?: number
@@ -169,17 +136,19 @@ function BandCard({
         height,
         textDecoration: 'none',
         border: '1px solid rgba(255,255,255,0.06)',
-        backgroundColor: band.bg,
+        backgroundColor: '#1A1714',
         flexShrink: 0,
       }}
     >
-      <Image
-        src={band.image}
-        alt={band.name}
-        fill
-        className="object-cover transition-transform duration-500 group-hover:scale-105"
-        sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 20vw"
-      />
+      {band.image && (
+        <Image
+          src={band.image}
+          alt={band.name}
+          fill
+          className="object-cover transition-transform duration-500 group-hover:scale-105"
+          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 20vw"
+        />
+      )}
       {/* Gradient */}
       <div className="absolute inset-0"
         style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 55%, transparent 100%)' }} />
@@ -255,7 +224,7 @@ function SectionHeader({
 
 // ─── Ticker strip ────────────────────────────────────────────────
 
-const TICKER_BANDS = [
+const TICKER_BANDS_STATIC = [
   { name: 'Groove Control',        tagline: 'Der Allrounder für jede Tanzfläche',  href: '/groove-control' },
   { name: 'Spirit of Soul',        tagline: 'The finest of Black Music',            href: '/spirit-of-soul' },
   { name: 'Time Warp',             tagline: 'Fünf Jahrzehnte. Ein Abend.',          href: '/time-warp' },
@@ -268,11 +237,12 @@ const TICKER_BANDS = [
   { name: 'Marsch Mellows',        tagline: 'Der Walkact, der überrascht',          href: '/marsch-mellows' },
 ]
 
-function TickerStrip() {
+function TickerStrip({ tickerBands }: { tickerBands?: { name: string; tagline: string; href: string }[] }) {
+  const data = tickerBands ?? TICKER_BANDS_STATIC
   // Interleave separators between bands
-  const items = TICKER_BANDS.flatMap((b, i) => [
+  const items = data.flatMap((b, i) => [
     b,
-    ...(i < TICKER_BANDS.length - 1 ? [null] : []),
+    ...(i < data.length - 1 ? [null] : []),
   ])
   // Triple for a seamless loop: animate from 0 to -33.33%
   const tripled = [...items, null, ...items, null, ...items]
@@ -317,23 +287,28 @@ function TickerStrip() {
 
 // ─── Main component ───────────────────────────────────────────────
 
-function applyImages<T extends { href: string; image: string }>(
-  bands: T[],
-  bandImages?: Record<string, string>,
-): T[] {
-  if (!bandImages) return bands
-  return bands.map(b => {
-    const slug = b.href.replace('/', '')
-    return bandImages[slug] ? { ...b, image: bandImages[slug] } : b
-  })
-}
-
-export default function BandShowcase({ bandImages }: { bandImages?: Record<string, string> }) {
+export default function BandShowcase({
+  partyBands:   partyBandsProp,
+  tributeBands: tributeBandsProp,
+  easyBands:    easyBandsProp,
+  bandsMenu,
+}: {
+  partyBands?:   BandCardData[]
+  tributeBands?: BandCardData[]
+  easyBands?:    BandCardData[]
+  bandsMenu?:    BandsMenuEntry[]
+}) {
   const [mobileOpen, setMobileOpen] = useState(false)
 
-  const partyBands   = applyImages(PARTY_BANDS,   bandImages)
-  const tributeBands = applyImages(TRIBUTE_BANDS, bandImages)
-  const easyBands    = applyImages(EASY_BANDS,    bandImages)
+  const partyBands   = partyBandsProp   ?? PARTY_BANDS
+  const tributeBands = tributeBandsProp ?? TRIBUTE_BANDS
+  const easyBands    = easyBandsProp    ?? EASY_BANDS
+
+  const tickerBands = [
+    ...partyBands,
+    ...tributeBands,
+    ...easyBands,
+  ].map(b => ({ name: b.name, tagline: b.tagline, href: b.href }))
 
   const introRef   = useRef<HTMLDivElement>(null)
   const partyRef   = useRef<HTMLDivElement>(null)
@@ -347,7 +322,7 @@ export default function BandShowcase({ bandImages }: { bandImages?: Record<strin
 
   return (
     <>
-    <MobileMenuDrawer open={mobileOpen} onClose={() => setMobileOpen(false)} />
+    <MobileMenuDrawer open={mobileOpen} onClose={() => setMobileOpen(false)} bandsMenu={bandsMenu} />
     <div id="bands">
 
       {/* ── Intro strip ──────────────────────────────────── */}
@@ -421,7 +396,7 @@ export default function BandShowcase({ bandImages }: { bandImages?: Record<strin
           <VmpBadge size={110} />
         </a>
         <div className="hidden md:flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
-          <NavLinks color="#ffffff" />
+          <NavLinks color="#ffffff" bandsMenu={bandsMenu} />
         </div>
         <div className="flex items-center gap-2">
           <a href="/#kontakt"
@@ -450,7 +425,7 @@ export default function BandShowcase({ bandImages }: { bandImages?: Record<strin
       </nav>
 
       {/* Ticker */}
-      <TickerStrip />
+      <TickerStrip tickerBands={tickerBands} />
 
       {/* ── 1. Partybands ────────────────────────────────── */}
       <section
@@ -481,12 +456,12 @@ export default function BandShowcase({ bandImages }: { bandImages?: Record<strin
           {/* Desktop: grid */}
           <div className="hidden md:block">
             <div className="grid grid-cols-2 gap-3 mb-3">
-              {partyBands.filter(b => b.featured).map((band, i) => (
+              {partyBands.slice(0, 2).map((band, i) => (
                 <BandCard key={band.name} band={band} index={i} inView={partyInView} height={340} />
               ))}
             </div>
             <div className="grid grid-cols-4 gap-3">
-              {partyBands.filter(b => !b.featured).map((band, i) => (
+              {partyBands.slice(2).map((band, i) => (
                 <BandCard key={band.name} band={band} index={i + 2} inView={partyInView} height={220} />
               ))}
               <div className="col-span-2 flex items-center justify-center rounded-xl"

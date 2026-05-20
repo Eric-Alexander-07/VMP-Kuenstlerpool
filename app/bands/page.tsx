@@ -1,12 +1,13 @@
 import type { Metadata } from 'next'
-import Navbar from '@/components/Navbar'
+import NavbarWrapper from '@/components/NavbarWrapper'
 import BandShowcase from '@/components/BandShowcase'
 import BandsCta from '@/components/BandsCta'
 import VmpFooter from '@/components/VmpFooter'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { storageUrl } from '@/lib/db-images'
+import { getBandsByCategory, getBandsMenuEntries, bandsToBandCards } from '@/lib/bands'
 
-export const dynamic = 'force-dynamic'
+export const revalidate = 3600
 
 export const metadata: Metadata = {
   title: 'Bands – Vivid Music Productions',
@@ -14,24 +15,36 @@ export const metadata: Metadata = {
 }
 
 export default async function BandsPage() {
-  const sb = await createServerSupabaseClient()
-  const { data } = await sb
-    .from('band_images')
-    .select('band_slug, path')
-    .eq('role', 'showcase')
-    .order('sort_order', { ascending: true })
+  const [{ partyBands, tributeBands, easyBands }, bandsMenu, showcaseData] = await Promise.all([
+    getBandsByCategory(),
+    getBandsMenuEntries(),
+    (async () => {
+      const sb = await createServerSupabaseClient()
+      const { data } = await sb
+        .from('band_images')
+        .select('band_slug, path')
+        .eq('role', 'showcase')
+        .order('sort_order', { ascending: true })
+      return data
+    })(),
+  ])
 
-  const bandImages: Record<string, string> = {}
-  data?.forEach((img: { band_slug: string; path: string }) => {
-    if (!bandImages[img.band_slug]) {
-      bandImages[img.band_slug] = storageUrl(img.path)
+  const showcaseImages: Record<string, string> = {}
+  showcaseData?.forEach((img: { band_slug: string; path: string }) => {
+    if (!showcaseImages[img.band_slug]) {
+      showcaseImages[img.band_slug] = storageUrl(img.path)
     }
   })
 
   return (
     <main>
-      <Navbar />
-      <BandShowcase bandImages={Object.keys(bandImages).length ? bandImages : undefined} />
+      <NavbarWrapper />
+      <BandShowcase
+        partyBands={bandsToBandCards(partyBands, showcaseImages)}
+        tributeBands={bandsToBandCards(tributeBands, showcaseImages)}
+        easyBands={bandsToBandCards(easyBands, showcaseImages)}
+        bandsMenu={bandsMenu}
+      />
       <BandsCta />
       <VmpFooter />
     </main>

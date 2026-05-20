@@ -1,84 +1,49 @@
-'use client'
-
 import { PageHeader } from '../_components/AdminShell'
+import { BandCardGrid } from '../_components/BandCardGrid'
+import { createAdminSupabaseClient } from '@/lib/supabase-server'
+import type { BandRow } from '@/types/band'
 
-const BANDS = [
-  { slug: 'groove-control',   name: 'Groove Control',         category: 'Partyband' },
-  { slug: 'spirit-of-soul',   name: 'Spirit of Soul',         category: 'Partyband' },
-  { slug: 'time-warp',        name: 'Time Warp',              category: 'Partyband' },
-  { slug: 'bobbastic',        name: 'BOBbastic',              category: 'Partyband' },
-  { slug: 'kiss-tribute',     name: 'The Kiss Tribute Band',  category: 'Tribute' },
-  { slug: 'coversnake',       name: 'CoverSnake',             category: 'Tribute' },
-  { slug: 'adams-family',     name: 'The Adams Family',       category: 'Tribute' },
-  { slug: 'sir-williams',     name: 'Sir Williams',           category: 'Tribute' },
-  { slug: 'bobby-and-friends', name: 'Bobby & Friends',       category: 'Easy Listening' },
-  { slug: 'marsch-mellows',   name: 'Marsch Mellows',         category: 'Easy Listening' },
-]
+export default async function BandsAdminPage() {
+  const sb = await createAdminSupabaseClient()
+  const { data } = await sb
+    .from('bands')
+    .select('slug, name, category, published, sort_order')
+    .order('category')
+    .order('sort_order')
 
-const CATEGORY_STYLE: Record<string, { bg: string; color: string }> = {
-  'Partyband':      { bg: '#F5E0E0', color: '#8B1A1A' },
-  'Tribute':        { bg: '#EDE9FE', color: '#6D28D9' },
-  'Easy Listening': { bg: '#D1FAE5', color: '#065F46' },
-}
+  const bands = (data ?? []) as Pick<BandRow, 'slug' | 'name' | 'category' | 'published' | 'sort_order'>[]
 
-export default function BandsAdminPage() {
   return (
     <div>
-      <PageHeader
-        title="Bands"
-        subtitle="Bilder und Bewertungen für jede Band verwalten. Band auswählen:"
-      />
-
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))',
-        gap: 12,
-      }}>
-        {BANDS.map(band => {
-          const style = CATEGORY_STYLE[band.category]
-          return (
-            <a
-              key={band.slug}
-              href={`/admin/bands/${band.slug}`}
-              style={{
-                display: 'block', padding: '18px 20px',
-                borderRadius: 10,
-                backgroundColor: '#fff',
-                border: '1px solid #E8D8C8',
-                textDecoration: 'none',
-                transition: 'border-color 0.15s, transform 0.15s, box-shadow 0.15s',
-              }}
-              onMouseEnter={e => {
-                e.currentTarget.style.borderColor = '#8B1A1A'
-                e.currentTarget.style.transform = 'translateY(-2px)'
-                e.currentTarget.style.boxShadow = '0 8px 24px rgba(139,26,26,0.1)'
-              }}
-              onMouseLeave={e => {
-                e.currentTarget.style.borderColor = '#E8D8C8'
-                e.currentTarget.style.transform = 'translateY(0)'
-                e.currentTarget.style.boxShadow = 'none'
-              }}
-            >
-              <span style={{
-                display: 'inline-block', marginBottom: 10,
-                fontSize: 10, fontFamily: 'var(--font-body)', fontWeight: 700,
-                color: style.color,
-                padding: '2px 8px', borderRadius: 4,
-                backgroundColor: style.bg,
-                letterSpacing: '0.08em', textTransform: 'uppercase',
-              }}>
-                {band.category}
-              </span>
-              <p style={{ fontSize: 16, fontFamily: 'var(--font-display)', color: '#1A1A1A', marginBottom: 6, letterSpacing: '0.02em' }}>
-                {band.name}
-              </p>
-              <p style={{ fontSize: 12, color: '#8B1A1A', fontFamily: 'var(--font-body)' }}>
-                Bilder &amp; Bewertungen →
-              </p>
-            </a>
-          )
-        })}
+      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 24 }}>
+        <PageHeader
+          title="Bands"
+          subtitle="Band-Metadaten, Bilder und Bewertungen verwalten."
+        />
+        <a
+          href="/admin/bands/new"
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 6,
+            backgroundColor: '#8B1A1A',
+            color: '#fff',
+            border: 'none',
+            borderRadius: 8,
+            padding: '10px 18px',
+            fontSize: 14,
+            fontFamily: 'var(--font-body)',
+            fontWeight: 600,
+            textDecoration: 'none',
+            flexShrink: 0,
+            marginTop: 4,
+          }}
+        >
+          + Neue Band
+        </a>
       </div>
+
+      <BandCardGrid bands={bands} />
     </div>
   )
 }

@@ -4,34 +4,38 @@ import { ReviewManager } from '../../_components/ReviewManager'
 import { PageHeader } from '../../_components/AdminShell'
 import { ContextBanner } from '../../_components/ContextBanner'
 import { AdminBackLink } from '../../_components/AdminBackLink'
+import BandMetaForm from '../../_components/BandMetaForm'
+import { createAdminSupabaseClient } from '@/lib/supabase-server'
+import { DeleteBandButton } from '../../_components/DeleteBandButton'
+import type { BandRow } from '@/types/band'
 
-const BANDS: Record<string, { name: string; category: string }> = {
-  'groove-control':    { name: 'Groove Control',        category: 'Partyband'      },
-  'spirit-of-soul':    { name: 'Spirit of Soul',        category: 'Partyband'      },
-  'time-warp':         { name: 'Time Warp',             category: 'Partyband'      },
-  'bobbastic':         { name: 'BOBbastic',             category: 'Partyband'      },
-  'kiss-tribute':      { name: 'The Kiss Tribute Band', category: 'Tribute'        },
-  'coversnake':        { name: 'CoverSnake',            category: 'Tribute'        },
-  'adams-family':      { name: 'The Adams Family',      category: 'Tribute'        },
-  'sir-williams':      { name: 'Sir Williams',          category: 'Tribute'        },
-  'bobby-and-friends': { name: 'Bobby & Friends',       category: 'Easy Listening' },
-  'marsch-mellows':    { name: 'Marsch Mellows',        category: 'Easy Listening' },
-}
-
-export function generateStaticParams() {
-  return Object.keys(BANDS).map(slug => ({ slug }))
+export async function generateStaticParams() {
+  const { createClient } = await import('@supabase/supabase-js')
+  const sb = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  )
+  const { data } = await sb.from('bands').select('slug')
+  return (data ?? []).map((r: { slug: string }) => ({ slug: r.slug }))
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
-  const band = BANDS[slug]
-  return { title: band ? `${band.name} — Admin` : 'Band nicht gefunden' }
+  return { title: `${slug} — Admin` }
 }
 
 export default async function BandAdminPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
-  const band = BANDS[slug]
-  if (!band) notFound()
+  const sb = await createAdminSupabaseClient()
+
+  const { data } = await sb
+    .from('bands')
+    .select('*')
+    .eq('slug', slug)
+    .single()
+
+  if (!data) notFound()
+  const band = data as BandRow
 
   return (
     <div>
@@ -41,6 +45,26 @@ export default async function BandAdminPage({ params }: { params: Promise<{ slug
         title={band.name}
         subtitle={band.category}
       />
+
+      {/* ── Metadaten bearbeiten ──────────────────────────── */}
+      <div style={{
+        backgroundColor: '#fff',
+        border: '1px solid #E8D8C8',
+        borderRadius: 12,
+        padding: '28px 32px',
+        marginBottom: 40,
+      }}>
+        <p style={{
+          fontSize: 13,
+          fontWeight: 700,
+          fontFamily: 'var(--font-body)',
+          color: '#1A1A1A',
+          marginBottom: 20,
+        }}>
+          Band-Informationen
+        </p>
+        <BandMetaForm band={band} mode="edit" />
+      </div>
 
       {/* ── Showcase-Bild ──────────────────────────────────── */}
       <ContextBanner
@@ -81,7 +105,7 @@ export default async function BandAdminPage({ params }: { params: Promise<{ slug
         insertExtra={{ band_slug: slug, role: 'hero' }}
         maxImages={1}
         title="Hintergrundbild"
-        description="Hero-Hintergrund der Band-Detailseite (/${slug})."
+        description={`Hero-Hintergrund der Band-Detailseite (/${slug}).`}
       />
 
       <div style={{ borderTop: '1px solid #E8D8C8', margin: '8px 0 40px' }} />
@@ -109,6 +133,20 @@ export default async function BandAdminPage({ params }: { params: Promise<{ slug
 
       {/* ── Bewertungen ────────────────────────────────────── */}
       <ReviewManager bandSlug={slug} />
+
+      {/* ── Gefahrenzone ───────────────────────────────────── */}
+      <div style={{
+        marginTop: 48,
+        padding: '20px 24px',
+        border: '1px solid #FCA5A5',
+        borderRadius: 12,
+        backgroundColor: '#FFF5F5',
+      }}>
+        <p style={{ fontSize: 13, fontWeight: 700, fontFamily: 'var(--font-body)', color: '#991B1B', marginBottom: 12 }}>
+          Gefahrenzone
+        </p>
+        <DeleteBandButton slug={slug} name={band.name} />
+      </div>
     </div>
   )
 }

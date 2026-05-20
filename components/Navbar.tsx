@@ -61,6 +61,12 @@ export function VmpBadge({ size = 48, shadow = true, borderWidth = 4 }: { size?:
 
 // ── Nav data ──────────────────────────────────────────────────────────
 
+export type BandsMenuEntry = {
+  category: string
+  href: string
+  bands: { name: string; href: string }[]
+}
+
 export const NAV_ITEMS = [
   { label: 'Home',                href: '/',            dropdown: false },
   { label: 'Bands',               href: '/bands',       dropdown: true  },
@@ -71,7 +77,7 @@ export const NAV_ITEMS = [
   { label: 'Kontakt',             href: '/#kontakt',    dropdown: false },
 ]
 
-const BANDS_MENU = [
+const BANDS_MENU_STATIC: BandsMenuEntry[] = [
   {
     category: 'Partybands', href: '/bands#partybands',
     bands: [
@@ -101,7 +107,8 @@ const BANDS_MENU = [
 
 // ── Mobile drawer ─────────────────────────────────────────────────────
 
-export function MobileMenuDrawer({ open, onClose }: { open: boolean; onClose: () => void }) {
+export function MobileMenuDrawer({ open, onClose, bandsMenu }: { open: boolean; onClose: () => void; bandsMenu?: BandsMenuEntry[] }) {
+  const menu = bandsMenu ?? BANDS_MENU_STATIC
   const [bandsOpen, setBandsOpen] = useState(false)
 
   useEffect(() => {
@@ -188,7 +195,7 @@ export function MobileMenuDrawer({ open, onClose }: { open: boolean; onClose: ()
                           style={{ overflow: 'hidden' }}
                         >
                           <div className="pt-4 pb-2 pl-3 flex flex-col gap-5">
-                            {BANDS_MENU.map(cat => (
+                            {menu.map(cat => (
                               <div key={cat.category}>
                                 <p style={{
                                   fontSize: 10, color: 'var(--color-orange)', textTransform: 'uppercase',
@@ -244,7 +251,8 @@ export function MobileMenuDrawer({ open, onClose }: { open: boolean; onClose: ()
 
 // ── Bands mega-dropdown ───────────────────────────────────────────────
 
-function BandsMegaMenu({ open }: { open: boolean }) {
+function BandsMegaMenu({ open, bandsMenu }: { open: boolean; bandsMenu?: BandsMenuEntry[] }) {
+  const menu = bandsMenu ?? BANDS_MENU_STATIC
   return (
     <AnimatePresence>
       {open && (
@@ -266,7 +274,7 @@ function BandsMegaMenu({ open }: { open: boolean }) {
           }}
         >
           <div className="grid grid-cols-3 p-6 gap-6">
-            {BANDS_MENU.map(cat => (
+            {menu.map(cat => (
               <div key={cat.category}>
                 <a href={cat.href}
                   className="font-display uppercase block mb-4 transition-opacity hover:opacity-70"
@@ -291,7 +299,7 @@ function BandsMegaMenu({ open }: { open: boolean }) {
             <a href="/bands"
               className="font-body font-semibold block text-center w-full transition-opacity hover:opacity-70"
               style={{ fontSize: 12, color: '#ffffff', textDecoration: 'none' }}>
-              Alle 10 Bands ansehen →
+              Alle {menu.reduce((n, c) => n + c.bands.length, 0)} Bands ansehen →
             </a>
           </div>
         </motion.div>
@@ -302,7 +310,7 @@ function BandsMegaMenu({ open }: { open: boolean }) {
 
 // ── Nav links (desktop only) ──────────────────────────────────────────
 
-export function NavLinks({ color = '#fff' }: { color?: string }) {
+export function NavLinks({ color = '#fff', bandsMenu }: { color?: string; bandsMenu?: BandsMenuEntry[] }) {
   const [bandsOpen, setBandsOpen] = useState(false)
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const open  = () => { if (timerRef.current) clearTimeout(timerRef.current); setBandsOpen(true)  }
@@ -327,7 +335,7 @@ export function NavLinks({ color = '#fff' }: { color?: string }) {
                 <path d="M1 1l3.5 3.5L8 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </a>
-            <BandsMegaMenu open={bandsOpen} />
+            <BandsMegaMenu open={bandsOpen} bandsMenu={bandsMenu} />
           </div>
         ) : (
           <a key={item.href} href={item.href}
@@ -345,7 +353,7 @@ export function NavLinks({ color = '#fff' }: { color?: string }) {
 
 // ── Navbar ────────────────────────────────────────────────────────────
 
-export default function Navbar() {
+export default function Navbar({ bandsMenu }: { bandsMenu?: BandsMenuEntry[] }) {
   const pathname = usePathname()
   const isHome   = pathname === '/'
   const [scrolled, setScrolled]     = useState(false)
@@ -396,7 +404,7 @@ export default function Navbar() {
 
             {/* Desktop nav — wraps to second line if needed */}
             <nav className="hidden md:flex flex-1 flex-wrap items-center justify-center self-center" style={{ gap: '8px 28px' }}>
-              <NavLinks color="#ffffff" />
+              <NavLinks color="#ffffff" bandsMenu={bandsMenu} />
             </nav>
 
             {/* Right side — flex sibling, never overlaps nav */}
@@ -429,7 +437,7 @@ export default function Navbar() {
         )}
       </AnimatePresence>
 
-      <MobileMenuDrawer open={mobileOpen} onClose={() => setMobileOpen(false)} />
+      <MobileMenuDrawer open={mobileOpen} onClose={() => setMobileOpen(false)} bandsMenu={bandsMenu} />
     </>
   )
 }

@@ -1,7 +1,7 @@
 export const dynamic = 'force-dynamic'
 
 import type { Metadata } from 'next'
-import Navbar from '@/components/Navbar'
+import NavbarWrapper from '@/components/NavbarWrapper'
 import VmpFooter from '@/components/VmpFooter'
 import UeberUnsPageClient from '@/components/UeberUnsPageClient'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
@@ -26,7 +26,7 @@ export default async function UeberUnsPage() {
 
   return (
     <>
-      <Navbar />
+      <NavbarWrapper />
       <UeberUnsPageClient
         heroUrl={bySection('hero')[0]}
         introUrl={bySection('intro')[0]}

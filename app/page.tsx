@@ -1,6 +1,6 @@
 export const dynamic = 'force-dynamic'
 
-import Navbar from '@/components/Navbar'
+import NavbarWrapper from '@/components/NavbarWrapper'
 import HeroSection from '@/components/HeroSection'
 import StatsBar from '@/components/StatsBar'
 import BandFinderSection from '@/components/BandFinderSection'
@@ -35,7 +35,7 @@ export default async function HomePage() {
   return (
     <main>
       {/* 1 — Navbar */}
-      <Navbar />
+      <NavbarWrapper />
 
       {/* 2 — Hero */}
       <HeroSection slides={heroSlides} />

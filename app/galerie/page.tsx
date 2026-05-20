@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import Navbar from '@/components/Navbar'
+import NavbarWrapper from '@/components/NavbarWrapper'
 import VmpFooter from '@/components/VmpFooter'
 import GalleryPageClient from '@/components/GalleryPageClient'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
@@ -32,7 +32,7 @@ export default async function GaleriePage() {
 
   return (
     <>
-      <Navbar />
+      <NavbarWrapper />
       <GalleryPageClient photos={photos} headerBg={headerBg} />
       <VmpFooter />
     </>

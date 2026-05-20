@@ -1,13 +1,29 @@
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
-import Navbar from '@/components/Navbar'
+import NavbarWrapper from '@/components/NavbarWrapper'
 import VmpFooter from '@/components/VmpFooter'
 import BandPageClient from '@/components/BandPageClient'
-import { bandsData, bandsBySlug, getCategoryMeta } from '@/lib/bands-data'
+import { getBandBySlug, getRelatedBands } from '@/lib/bands'
+import { bandRowToBand, getCategoryLabel } from '@/types/band'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { storageUrl } from '@/lib/db-images'
 
-export const dynamic = 'force-dynamic'
+export const revalidate = 3600
+
+// ── Static paths ───────────────────────────────────────────────────
+
+export async function generateStaticParams() {
+  const { createClient } = await import('@supabase/supabase-js')
+  const sb = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  )
+  const { data } = await sb
+    .from('bands')
+    .select('slug')
+    .eq('published', true)
+  return (data ?? []).map((r: { slug: string }) => ({ slug: r.slug }))
+}
 
 // ── Metadata ───────────────────────────────────────────────────────
 
@@ -15,11 +31,11 @@ export async function generateMetadata(
   { params }: { params: Promise<{ slug: string }> }
 ): Promise<Metadata> {
   const { slug } = await params
-  const band = bandsBySlug[slug]
+  const band = await getBandBySlug(slug)
   if (!band) return { title: 'Band nicht gefunden – VMP' }
   return {
     title: `${band.name} – Vivid Music Productions`,
-    description: band.tagline,
+    description: band.short_description || band.tagline,
   }
 }
 
@@ -29,40 +45,36 @@ export default async function BandPage(
   { params }: { params: Promise<{ slug: string }> }
 ) {
   const { slug } = await params
-  const band = bandsBySlug[slug]
-  if (!band) notFound()
+  const [bandRow, sb] = await Promise.all([
+    getBandBySlug(slug),
+    createServerSupabaseClient(),
+  ])
+  if (!bandRow) notFound()
 
-  const sb = await createServerSupabaseClient()
   const [{ data: imgData }, { data: reviewData }] = await Promise.all([
     sb.from('band_images').select('path, role').eq('band_slug', slug).order('sort_order', { ascending: true }),
     sb.from('reviews').select('name, rating, text, date, platform').eq('band_slug', slug).order('created_at', { ascending: true }),
   ])
 
   const heroRecord = imgData?.find((img: { role: string }) => img.role === 'hero')
-  const heroUrl = heroRecord ? storageUrl((heroRecord as { path: string }).path) : undefined
-  const dbImages = imgData
+  const heroUrl    = heroRecord ? storageUrl((heroRecord as { path: string }).path) : undefined
+  const dbImages   = imgData
     ?.filter((img: { role: string }) => img.role === 'gallery')
     .map((img: { path: string }) => storageUrl(img.path))
 
   const reviews = (reviewData ?? []) as import('@/lib/bands-data').Review[]
 
-  const { label: categoryLabel } = getCategoryMeta(band.category)
+  const categoryLabel = getCategoryLabel(bandRow.category)
 
-  const related = bandsData
-    .filter((b) => b.category === band.category && b.slug !== band.slug)
-    .slice(0, 3)
+  const relatedRows = await getRelatedBands(slug, bandRow.category)
+  const related = relatedRows.map(bandRowToBand)
 
-  const mailtoHref = `mailto:info@v-m-p.de?subject=Bandanfrage%3A%20${encodeURIComponent(band.name)}&body=Band%3A%20${encodeURIComponent(band.name)}%0AVeranstaltung%3A%20%0ADatum%3A%20%0AOrt%3A%20`
+  const band = bandRowToBand(bandRow)
+
+  const mailtoHref  = `mailto:info@v-m-p.de?subject=Bandanfrage%3A%20${encodeURIComponent(band.name)}&body=Band%3A%20${encodeURIComponent(band.name)}%0AVeranstaltung%3A%20%0ADatum%3A%20%0AOrt%3A%20`
   const whatsappHref = `https://wa.me/4960787595868?text=${encodeURIComponent(`Hallo, ich interessiere mich für ${band.name}.`)}`
-  const fbPageUrl = band.facebookUrl ?? 'https://www.facebook.com/vividmusicproductions'
-  const fbEmbedSrc = `https://www.facebook.com/plugins/page.php?href=${encodeURIComponent(fbPageUrl)}&tabs=timeline&width=340&height=460&small_header=true&adapt_container_width=false&hide_cover=false&show_facepile=false`
-
-  const infoItems = [
-    { label: 'Besetzung',    value: band.besetzung },
-    { label: 'Spielzeit',    value: band.spielzeit },
-    { label: 'Geeignet für', value: band.geeignetFuer.join(' · ') },
-    { label: 'Region',       value: band.region },
-  ]
+  const fbPageUrl   = band.facebookUrl ?? 'https://www.facebook.com/vividmusicproductions'
+  const fbEmbedSrc  = `https://www.facebook.com/plugins/page.php?href=${encodeURIComponent(fbPageUrl)}&tabs=timeline&width=340&height=460&small_header=true&adapt_container_width=false&hide_cover=false&show_facepile=false`
 
   const avgRating = reviews.length
     ? Math.round(reviews.reduce((s, r) => s + r.rating, 0) / reviews.length)
@@ -70,7 +82,7 @@ export default async function BandPage(
 
   return (
     <>
-      <Navbar />
+      <NavbarWrapper />
       <BandPageClient
         band={band}
         related={related}
@@ -79,7 +91,6 @@ export default async function BandPage(
         whatsappHref={whatsappHref}
         fbEmbedSrc={fbEmbedSrc}
         avgRating={avgRating}
-        infoItems={infoItems}
         heroUrl={heroUrl}
         dbImages={dbImages?.length ? dbImages : undefined}
         reviews={reviews}

@@ -410,7 +410,6 @@ interface Props {
   whatsappHref: string
   fbEmbedSrc: string
   avgRating: number | null
-  infoItems: { label: string; value: string }[]
   heroUrl?: string
   dbImages?: string[]
   reviews?: Review[]
@@ -420,7 +419,7 @@ interface Props {
 
 export default function BandPageClient({
   band, related, categoryLabel,
-  mailtoHref, whatsappHref, fbEmbedSrc, avgRating, infoItems,
+  mailtoHref, whatsappHref, fbEmbedSrc, avgRating,
   heroUrl, dbImages, reviews = [],
 }: Props) {
   const contentRef = useRef<HTMLDivElement>(null)

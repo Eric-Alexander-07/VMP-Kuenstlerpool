@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { saveBand } from '@/app/admin/bands/actions'
 import type { BandRow } from '@/types/band'
 
@@ -69,6 +70,7 @@ interface Props {
 }
 
 export default function BandMetaForm({ band, mode, onSaved }: Props) {
+  const router = useRouter()
   const [saving, setSaving]   = useState(false)
   const [message, setMessage] = useState<{ ok: boolean; text: string } | null>(null)
 
@@ -121,7 +123,12 @@ export default function BandMetaForm({ band, mode, onSaved }: Props) {
       setMessage({ ok: false, text: `Fehler: ${result.error}` })
     } else {
       setMessage({ ok: true, text: mode === 'create' ? 'Band erfolgreich erstellt.' : 'Änderungen gespeichert.' })
-      if (onSaved) onSaved(result.slug)
+      if (onSaved) {
+        onSaved(result.slug)
+      } else if (mode === 'edit' && result.slug !== band?.slug) {
+        // Slug changed — navigate to the new admin URL
+        router.push(`/admin/bands/${result.slug}`)
+      }
     }
   }
 

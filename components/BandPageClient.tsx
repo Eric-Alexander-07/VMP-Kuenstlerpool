@@ -114,9 +114,11 @@ function ImageLightbox({ images, startIndex, onClose }: {
   onClose: () => void
 }) {
   const [active, setActive] = useState(startIndex)
+  const touchStartY = useRef(0)
   const prev = useCallback(() => setActive((i) => (i - 1 + images.length) % images.length), [images.length])
   const next = useCallback(() => setActive((i) => (i + 1) % images.length), [images.length])
 
+  // Keyboard navigation
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape')     onClose()
@@ -126,6 +128,30 @@ function ImageLightbox({ images, startIndex, onClose }: {
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
   }, [onClose, prev, next])
+
+  // Lock body scroll (iOS-safe: position fixed)
+  useEffect(() => {
+    const scrollY = window.scrollY
+    document.body.style.overflow = 'hidden'
+    document.body.style.position = 'fixed'
+    document.body.style.top = `-${scrollY}px`
+    document.body.style.width = '100%'
+    return () => {
+      document.body.style.overflow = ''
+      document.body.style.position = ''
+      document.body.style.top = ''
+      document.body.style.width = ''
+      window.scrollTo(0, scrollY)
+    }
+  }, [])
+
+  // Swipe down to close
+  function onTouchStart(e: React.TouchEvent) {
+    touchStartY.current = e.touches[0].clientY
+  }
+  function onTouchEnd(e: React.TouchEvent) {
+    if (e.changedTouches[0].clientY - touchStartY.current > 64) onClose()
+  }
 
   return (
     <motion.div
@@ -137,12 +163,20 @@ function ImageLightbox({ images, startIndex, onClose }: {
       aria-modal="true"
       aria-label="Bildansicht"
       className="fixed inset-0 flex items-center justify-center"
-      style={{ background: 'rgba(10,8,6,0.94)', zIndex: 2000, backdropFilter: 'blur(6px)', WebkitBackdropFilter: 'blur(6px)' }}
+      style={{
+        background: 'rgba(10,8,6,0.94)',
+        zIndex: 2000,
+        backdropFilter: 'blur(6px)',
+        WebkitBackdropFilter: 'blur(6px)',
+        cursor: 'pointer', // iOS: makes div tappable
+      }}
       onClick={onClose}
+      onTouchStart={onTouchStart}
+      onTouchEnd={onTouchEnd}
     >
       {/* Image */}
       <div
-        style={{ position: 'relative', width: 'min(92vw, 1100px)', height: 'min(82vh, 760px)' }}
+        style={{ position: 'relative', width: 'min(92vw, 1100px)', height: 'min(72vh, 760px)' }}
         onClick={(e) => e.stopPropagation()}
       >
         <AnimatePresence mode="wait">
@@ -166,58 +200,82 @@ function ImageLightbox({ images, startIndex, onClose }: {
         </AnimatePresence>
       </div>
 
-      {/* Close */}
-      <button onClick={onClose} aria-label="Schließen" style={{
-        position: 'fixed', top: 20, right: 24, width: 40, height: 40,
-        borderRadius: '50%', background: 'rgba(255,255,255,0.12)',
-        border: '1px solid rgba(255,255,255,0.2)', color: '#fff',
-        fontSize: 20, cursor: 'pointer', display: 'flex',
-        alignItems: 'center', justifyContent: 'center',
-        backdropFilter: 'blur(4px)', WebkitBackdropFilter: 'blur(4px)',
-      }}
-        onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(255,255,255,0.22)')}
-        onMouseLeave={(e) => (e.currentTarget.style.background = 'rgba(255,255,255,0.12)')}
+      {/* Close — positioned below Dynamic Island / notch */}
+      <button
+        onClick={(e) => { e.stopPropagation(); onClose() }}
+        aria-label="Schließen"
+        style={{
+          position: 'fixed',
+          top: 'calc(env(safe-area-inset-top, 20px) + 16px)',
+          right: 'max(24px, env(safe-area-inset-right, 24px))',
+          width: 48, height: 48,
+          borderRadius: '50%',
+          background: 'rgba(255,255,255,0.15)',
+          border: '1px solid rgba(255,255,255,0.25)',
+          color: '#fff',
+          fontSize: 20,
+          cursor: 'pointer',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          backdropFilter: 'blur(4px)', WebkitBackdropFilter: 'blur(4px)',
+          WebkitTapHighlightColor: 'transparent',
+          touchAction: 'manipulation',
+          zIndex: 2010,
+        }}
       >✕</button>
 
       {/* Prev */}
       {images.length > 1 && (
-        <button onClick={(e) => { e.stopPropagation(); prev() }} aria-label="Vorheriges Bild" style={{
-          position: 'fixed', left: 16, top: '50%', transform: 'translateY(-50%)',
-          width: 48, height: 48, borderRadius: '50%',
-          background: 'rgba(255,255,255,0.10)', border: '1px solid rgba(255,255,255,0.18)',
-          color: '#fff', fontSize: 22, cursor: 'pointer', display: 'flex',
-          alignItems: 'center', justifyContent: 'center',
-          backdropFilter: 'blur(4px)', WebkitBackdropFilter: 'blur(4px)',
-        }}
-          onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(255,255,255,0.22)')}
-          onMouseLeave={(e) => (e.currentTarget.style.background = 'rgba(255,255,255,0.10)')}
+        <button
+          onClick={(e) => { e.stopPropagation(); prev() }}
+          aria-label="Vorheriges Bild"
+          style={{
+            position: 'fixed', left: 'max(16px, env(safe-area-inset-left, 16px))', top: '50%', transform: 'translateY(-50%)',
+            width: 52, height: 52, borderRadius: '50%',
+            background: 'rgba(255,255,255,0.10)', border: '1px solid rgba(255,255,255,0.18)',
+            color: '#fff', fontSize: 22, cursor: 'pointer', display: 'flex',
+            alignItems: 'center', justifyContent: 'center',
+            backdropFilter: 'blur(4px)', WebkitBackdropFilter: 'blur(4px)',
+            WebkitTapHighlightColor: 'transparent', touchAction: 'manipulation',
+            zIndex: 2010,
+          }}
         >‹</button>
       )}
 
       {/* Next */}
       {images.length > 1 && (
-        <button onClick={(e) => { e.stopPropagation(); next() }} aria-label="Nächstes Bild" style={{
-          position: 'fixed', right: 16, top: '50%', transform: 'translateY(-50%)',
-          width: 48, height: 48, borderRadius: '50%',
-          background: 'rgba(255,255,255,0.10)', border: '1px solid rgba(255,255,255,0.18)',
-          color: '#fff', fontSize: 22, cursor: 'pointer', display: 'flex',
-          alignItems: 'center', justifyContent: 'center',
-          backdropFilter: 'blur(4px)', WebkitBackdropFilter: 'blur(4px)',
-        }}
-          onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(255,255,255,0.22)')}
-          onMouseLeave={(e) => (e.currentTarget.style.background = 'rgba(255,255,255,0.10)')}
+        <button
+          onClick={(e) => { e.stopPropagation(); next() }}
+          aria-label="Nächstes Bild"
+          style={{
+            position: 'fixed', right: 'max(16px, env(safe-area-inset-right, 16px))', top: '50%', transform: 'translateY(-50%)',
+            width: 52, height: 52, borderRadius: '50%',
+            background: 'rgba(255,255,255,0.10)', border: '1px solid rgba(255,255,255,0.18)',
+            color: '#fff', fontSize: 22, cursor: 'pointer', display: 'flex',
+            alignItems: 'center', justifyContent: 'center',
+            backdropFilter: 'blur(4px)', WebkitBackdropFilter: 'blur(4px)',
+            WebkitTapHighlightColor: 'transparent', touchAction: 'manipulation',
+            zIndex: 2010,
+          }}
         >›</button>
       )}
 
-      {/* Counter */}
-      {images.length > 1 && (
-        <div style={{
-          position: 'fixed', bottom: 20, left: '50%', transform: 'translateX(-50%)',
-          color: 'rgba(255,255,255,0.5)', fontFamily: 'var(--font-body)', fontSize: 12,
-        }}>
-          {active + 1} / {images.length}
-        </div>
-      )}
+      {/* Counter + mobile close hint */}
+      <div style={{
+        position: 'fixed',
+        bottom: 'calc(env(safe-area-inset-bottom, 0px) + 24px)',
+        left: '50%', transform: 'translateX(-50%)',
+        display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6,
+        zIndex: 2010,
+      }}>
+        {images.length > 1 && (
+          <span style={{ color: 'rgba(255,255,255,0.5)', fontFamily: 'var(--font-body)', fontSize: 12 }}>
+            {active + 1} / {images.length}
+          </span>
+        )}
+        <span style={{ color: 'rgba(255,255,255,0.28)', fontFamily: 'var(--font-body)', fontSize: 10, letterSpacing: '0.06em' }}>
+          Tippen zum Schließen
+        </span>
+      </div>
     </motion.div>
   )
 }

@@ -261,12 +261,15 @@ export default function KontaktCta() {
             {/* Name + Email row */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label style={labelStyle}>
+                <label htmlFor="kontakt-name" style={labelStyle}>
                   Name <span style={{ color: 'var(--color-orange)' }}>*</span>
                 </label>
                 <input
+                  id="kontakt-name"
                   type="text"
                   placeholder="Ihr Name"
+                  required
+                  aria-required="true"
                   value={form.name}
                   onChange={set('name')}
                   onFocus={() => setFocused('name')}
@@ -275,12 +278,15 @@ export default function KontaktCta() {
                 />
               </div>
               <div>
-                <label style={labelStyle}>
+                <label htmlFor="kontakt-email" style={labelStyle}>
                   E-Mail <span style={{ color: 'var(--color-orange)' }}>*</span>
                 </label>
                 <input
+                  id="kontakt-email"
                   type="email"
                   placeholder="ihre@email.de"
+                  required
+                  aria-required="true"
                   value={form.email}
                   onChange={set('email')}
                   onFocus={() => setFocused('email')}
@@ -292,8 +298,9 @@ export default function KontaktCta() {
 
             {/* Anlass */}
             <div>
-              <label style={labelStyle}>Anlass</label>
+              <label htmlFor="kontakt-anlass" style={labelStyle}>Anlass</label>
               <select
+                id="kontakt-anlass"
                 value={form.anlass}
                 onChange={set('anlass')}
                 onFocus={() => setFocused('anlass')}
@@ -318,8 +325,9 @@ export default function KontaktCta() {
 
             {/* Message */}
             <div>
-              <label style={labelStyle}>Ihre Nachricht</label>
+              <label htmlFor="kontakt-nachricht" style={labelStyle}>Ihre Nachricht</label>
               <textarea
+                id="kontakt-nachricht"
                 rows={6}
                 placeholder="Bitte schildern Sie Ihre Veranstaltung und gehen Sie auf die obigen Punkte ein …"
                 value={form.message}

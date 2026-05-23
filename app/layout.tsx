@@ -1,6 +1,21 @@
 import type { Metadata, Viewport } from 'next'
+import { Bebas_Neue, Inter } from 'next/font/google'
 import './globals.css'
 import SmoothScrollProvider from '@/components/SmoothScrollProvider'
+
+const bebasNeue = Bebas_Neue({
+  weight: '400',
+  subsets: ['latin'],
+  variable: '--font-bebas',
+  display: 'swap',
+})
+
+const inter = Inter({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-inter',
+  display: 'swap',
+})
 
 // Safari/iOS: viewport-fit=cover enables content behind the notch safe area
 export const viewport: Viewport = {
@@ -34,15 +49,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="de">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap"
-          rel="stylesheet"
-        />
-      </head>
+    <html lang="de" className={`${bebasNeue.variable} ${inter.variable}`}>
       <body>
         <SmoothScrollProvider>
           {children}

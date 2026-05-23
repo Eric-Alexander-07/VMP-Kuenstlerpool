@@ -198,6 +198,7 @@ function AudioPlayer() {
         <div className="flex items-center gap-3 px-4 pt-4 pb-3">
           <button
             onClick={toggle}
+            aria-label={playing ? 'Pause' : 'Abspielen'}
             className="flex items-center justify-center rounded-full flex-shrink-0"
             style={{
               width: 34, height: 34,
@@ -224,7 +225,7 @@ function AudioPlayer() {
             <p className="font-body font-semibold text-white truncate" style={{ fontSize: 12 }}>
               Mal reinhören
             </p>
-            <p className="font-body" style={{ fontSize: 10, color: 'rgba(255,255,255,0.35)', marginTop: 1 }}>
+            <p className="font-body" style={{ fontSize: 10, color: 'rgba(255,255,255,0.65)', marginTop: 1 }}>
               Groove Control · Live-Demo
             </p>
           </div>

@@ -66,7 +66,7 @@ export default function VmpFooter() {
                 style={{ height: 46, width: 'auto' }}
               />
             </a>
-            <p className="font-body" style={{ fontSize: 13, color: 'rgba(255,255,255,0.38)', lineHeight: 1.65 }}>
+            <p className="font-body" style={{ fontSize: 13, color: 'rgba(255,255,255,0.55)', lineHeight: 1.65 }}>
               Beste Qualität an Live-Musik – direkt gebucht.<br />
               64823 Groß-Umstadt · Rhein Main Gebiet · seit 2001
             </p>
@@ -83,7 +83,7 @@ export default function VmpFooter() {
                   style={{
                     width: 38, height: 38,
                     backgroundColor: 'rgba(255,255,255,0.06)',
-                    color: 'rgba(255,255,255,0.45)',
+                    color: 'rgba(255,255,255,0.65)',
                     border: '1px solid rgba(255,255,255,0.08)',
                     transition: 'background-color 0.2s, color 0.2s',
                   }}
@@ -93,7 +93,7 @@ export default function VmpFooter() {
                   }}
                   onMouseLeave={e => {
                     e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.06)'
-                    e.currentTarget.style.color = 'rgba(255,255,255,0.45)'
+                    e.currentTarget.style.color = 'rgba(255,255,255,0.65)'
                   }}
                 >
                   {s.icon}
@@ -109,9 +109,9 @@ export default function VmpFooter() {
                 key={l.href + l.label}
                 href={l.href}
                 className="font-body transition-colors"
-                style={{ fontSize: 13, color: 'rgba(255,255,255,0.45)', textDecoration: 'none' }}
+                style={{ fontSize: 13, color: 'rgba(255,255,255,0.65)', textDecoration: 'none' }}
                 onMouseEnter={e => (e.currentTarget.style.color = '#fff')}
-                onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.45)')}
+                onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.65)')}
               >
                 {l.label}
               </a>
@@ -161,7 +161,7 @@ export default function VmpFooter() {
           className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6"
           style={{ borderTop: '1px solid rgba(255,255,255,0.07)' }}
         >
-          <p className="font-body" style={{ fontSize: 12, color: 'rgba(255,255,255,0.25)' }}>
+          <p className="font-body" style={{ fontSize: 12, color: 'rgba(255,255,255,0.50)' }}>
             © {new Date().getFullYear()} Vivid Music Productions. Alle Rechte vorbehalten.
           </p>
           <div className="flex gap-6 items-center">
@@ -170,9 +170,9 @@ export default function VmpFooter() {
                 key={l}
                 href={`/${l.toLowerCase()}`}
                 className="font-body transition-colors"
-                style={{ fontSize: 12, color: 'rgba(255,255,255,0.25)', textDecoration: 'none' }}
-                onMouseEnter={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.6)')}
-                onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.25)')}
+                style={{ fontSize: 12, color: 'rgba(255,255,255,0.50)', textDecoration: 'none' }}
+                onMouseEnter={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.9)')}
+                onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.50)')}
               >
                 {l}
               </a>

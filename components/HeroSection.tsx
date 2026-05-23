@@ -494,6 +494,8 @@ export default function HeroSection({ slides: propSlides, bandsMenu }: { slides?
               {slides.map((_, i) => (
                 <button key={i} onClick={() => { setDirection(i > active ? 1 : -1); setActive(i) }}
                   className="rounded-full"
+                  aria-label={`Slide ${i + 1} von ${slides.length}`}
+                  aria-current={i === active ? 'true' : undefined}
                   style={{
                     width: i === active ? 20 : 7, height: 7, border: 'none', cursor: 'pointer',
                     backgroundColor: i === active ? 'var(--color-orange)' : 'rgba(255,255,255,0.4)',

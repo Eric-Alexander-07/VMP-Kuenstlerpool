@@ -45,7 +45,9 @@
       "Bash(node --env-file=.env.local scripts/seed-bands.mjs)",
       "Bash(Remove-Item \"c:\\\\Users\\\\eschu\\\\Desktop\\\\Unternehmensstruktur\\\\07-Projekte\\\\Schuck-Webdesign\\\\Bobby_Stoker\\\\VMP\\\\scripts\\\\seed-bands.mjs\")",
       "Bash(node --env-file=.env.local -e ' *)",
-      "Bash(node --env-file=.env.local -e \"console.log\\(process.env.NEXT_PUBLIC_SUPABASE_URL\\)\")"
+      "Bash(node --env-file=.env.local -e \"console.log\\(process.env.NEXT_PUBLIC_SUPABASE_URL\\)\")",
+      "Bash(Select-Object Name, PSIsContainer)",
+      "Bash(npm uninstall *)"
     ],
     "additionalDirectories": [
       "C:\\Users\\eschu\\.claude",

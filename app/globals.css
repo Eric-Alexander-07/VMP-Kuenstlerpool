@@ -28,8 +28,8 @@
   --color-border:       #E8D8C8;   /* Cards, Sections */
   --color-border-strong:#D4C4B0;   /* Hover, Fokus */
 
-  --font-display: 'Bebas Neue', 'Arial Narrow', sans-serif;
-  --font-body:    'Inter', system-ui, sans-serif;
+  --font-display: var(--font-bebas), 'Arial Narrow', sans-serif;
+  --font-body:    var(--font-inter), system-ui, sans-serif;
 }
 
 

@@ -6,9 +6,9 @@ import { motion, useInView } from 'framer-motion'
 const SOCIALS = [
   {
     platform: 'Instagram',
-    handle: '@vmp.frankfurt',
+    handle: '@bobbystoker',
     description: 'Backstage-Momente, Live-Impressionen und Stories direkt vom Event.',
-    href: 'https://instagram.com/vmp.frankfurt',
+    href: 'https://www.instagram.com/bobbystoker',
     hoverColor: 'rgba(225,48,108,0.18)',
     hoverBorder: 'rgba(225,48,108,0.45)',
     icon: (

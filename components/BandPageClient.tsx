@@ -1,7 +1,7 @@
 'use client'
 
 import { useRef, useState, useEffect, useCallback } from 'react'
-import { motion, useInView, AnimatePresence } from 'framer-motion'
+import { motion, useInView, AnimatePresence, LayoutGroup } from 'framer-motion'
 import Image from 'next/image'
 import type { Band, Review } from '@/lib/bands-data'
 import InlineNavBar from './InlineNavBar'
@@ -283,10 +283,11 @@ function ImageLightbox({ images, startIndex, onClose }: {
 
 // ─── VideoPlaylist (sidebar) ──────────────────────────────────────────
 
-function VideoPlaylist({ videos, active, onSelect }: {
+function VideoPlaylist({ videos, active, onSelect, isExpanded = false }: {
   videos: { url: string; title: string }[]
   active: number | null
   onSelect: (i: number) => void
+  isExpanded?: boolean
 }) {
   const [fetchedTitles, setFetchedTitles] = useState<Record<number, string>>({})
   const [autoplay, setAutoplay] = useState(false)
@@ -320,12 +321,19 @@ function VideoPlaylist({ videos, active, onSelect }: {
 
       {/* Player — always visible, switches on playlist click */}
       {active !== null && (
-        <div style={{ borderRadius: 10, overflow: 'hidden', marginBottom: 10, backgroundColor: '#0a0a0a' }}>
+        <div style={{ borderRadius: 10, overflow: 'hidden', marginBottom: 10, backgroundColor: '#0a0a0a', position: 'relative' }}>
           <AnimatePresence mode="wait">
             <motion.div key={active} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.15 }}>
               <YouTubeEmbed url={videos[active].url} title={label(videos[active], active)} large autoplay={autoplay} />
             </motion.div>
           </AnimatePresence>
+          {/* Invisible overlay catches direct clicks on the player when not yet expanded */}
+          {!isExpanded && (
+            <div
+              onClick={() => handleSelect(active)}
+              style={{ position: 'absolute', inset: 0, zIndex: 2, cursor: 'pointer' }}
+            />
+          )}
         </div>
       )}
 
@@ -473,6 +481,12 @@ export default function BandPageClient({
 
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
   const [activeVideo, setActiveVideo] = useState<number | null>(() => realVideos.length > 0 ? 0 : null)
+  const [videoExpanded, setVideoExpanded] = useState(false)
+
+  const handleVideoSelect = useCallback((i: number) => {
+    setActiveVideo(i)
+    setVideoExpanded(true)
+  }, [])
   const openLightbox = useCallback((i: number) => setLightboxIndex(i), [])
   const closeLightbox = useCallback(() => setLightboxIndex(null), [])
 
@@ -618,10 +632,11 @@ export default function BandPageClient({
       {/* ── Content grid ─────────────────────────────────────── */}
       <div ref={contentRef} style={{ backgroundColor: 'var(--color-bg)' }}>
         <div className="max-w-7xl mx-auto" style={{ padding: '60px 40px' }}>
-          <div className="lg:grid" style={{ gap: 56, gridTemplateColumns: '1fr 360px' }}>
+          <LayoutGroup>
+          <div className="lg:grid" style={{ gap: 56, gridTemplateColumns: videoExpanded ? '2fr 3fr' : '1fr 360px' }}>
 
             {/* ── Left column ── */}
-            <div>
+            <motion.div layout transition={{ layout: { duration: 0.45, ease: [0.32, 0, 0.67, 0] } }}>
 
               {/* Photo grid */}
               {galleryImages.length > 0 && (
@@ -788,19 +803,20 @@ export default function BandPageClient({
                   </div>
                 </motion.div>
               )}
-            </div>
+            </motion.div>
 
             {/* ── Right sidebar ── */}
             <motion.div
+              layout
               className="mt-12 lg:mt-0"
               initial={{ opacity: 0, x: 28 }}
               animate={contentInView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.55, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.55, delay: 0.12, ease: [0.22, 1, 0.36, 1], layout: { duration: 0.45, ease: [0.32, 0, 0.67, 0] } }}
             >
 
               {/* Videos */}
               {realVideos.length > 0 && (
-                <VideoPlaylist videos={realVideos} active={activeVideo} onSelect={setActiveVideo} />
+                <VideoPlaylist videos={realVideos} active={activeVideo} onSelect={handleVideoSelect} isExpanded={videoExpanded} />
               )}
 
               {/* Anfrage-Box */}
@@ -889,6 +905,7 @@ export default function BandPageClient({
 
             </motion.div>
           </div>
+          </LayoutGroup>
         </div>
       </div>
 

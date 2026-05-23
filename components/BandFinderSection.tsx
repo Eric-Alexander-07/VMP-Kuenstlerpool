@@ -263,7 +263,22 @@ function CategoryImageSlider({ images, title }: { images: string[]; title: strin
 
 // ── Main ─────────────────────────────────────────────────────────────────
 
-export default function BandFinderSection({ categoryImages }: { categoryImages?: Record<string, string[]> }) {
+type WeeklyBandData = {
+  name: string
+  genre: string
+  category: string
+  description: string
+  href: string
+  image: string
+}
+
+export default function BandFinderSection({
+  categoryImages,
+  weeklyBand: weeklyBandProp,
+}: {
+  categoryImages?: Record<string, string[]>
+  weeklyBand?: WeeklyBandData
+}) {
   const ref = useRef<HTMLDivElement>(null)
   const inView = useInView(ref, { once: true, margin: '-80px' })
 
@@ -386,7 +401,7 @@ export default function BandFinderSection({ categoryImages }: { categoryImages?:
         }}
       >
         {(() => {
-          const band = getBandOfWeek()
+          const band = weeklyBandProp ?? getBandOfWeek()
           return (
             <div className="w-full rounded-2xl overflow-hidden"
               style={{

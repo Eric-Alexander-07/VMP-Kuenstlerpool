@@ -3,7 +3,7 @@ import type { Metadata } from 'next'
 import NavbarWrapper from '@/components/NavbarWrapper'
 import VmpFooter from '@/components/VmpFooter'
 import BandPageClient from '@/components/BandPageClient'
-import { getBandBySlug, getRelatedBands } from '@/lib/bands'
+import { getBandBySlug, getRelatedBands, getBandsMenuEntries } from '@/lib/bands'
 import { bandRowToBand, getCategoryLabel } from '@/types/band'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { storageUrl } from '@/lib/db-images'
@@ -45,9 +45,10 @@ export default async function BandPage(
   { params }: { params: Promise<{ slug: string }> }
 ) {
   const { slug } = await params
-  const [bandRow, sb] = await Promise.all([
+  const [bandRow, sb, bandsMenu] = await Promise.all([
     getBandBySlug(slug),
     createServerSupabaseClient(),
+    getBandsMenuEntries(),
   ])
   if (!bandRow) notFound()
 
@@ -67,12 +68,34 @@ export default async function BandPage(
   const categoryLabel = getCategoryLabel(bandRow.category)
 
   const relatedRows = await getRelatedBands(slug, bandRow.category)
-  const related = relatedRows.map(bandRowToBand)
+
+  // Fetch the first available image for each related band
+  const relatedSlugs = relatedRows.map(b => b.slug)
+  let relatedImageMap: Record<string, string> = {}
+  if (relatedSlugs.length > 0) {
+    const { data: relatedImgs } = await sb
+      .from('band_images')
+      .select('band_slug, path, role')
+      .in('band_slug', relatedSlugs)
+      .order('sort_order', { ascending: true })
+
+    // Prefer hero image, fall back to first gallery image
+    ;(relatedImgs ?? []).forEach((img: { band_slug: string; path: string; role: string }) => {
+      if (!relatedImageMap[img.band_slug] || img.role === 'hero') {
+        relatedImageMap[img.band_slug] = storageUrl(img.path)
+      }
+    })
+  }
+
+  const related = relatedRows.map(row => {
+    const b = bandRowToBand(row)
+    const img = relatedImageMap[row.slug]
+    return img ? { ...b, images: [img] } : b
+  })
 
   const band = bandRowToBand(bandRow)
 
   const mailtoHref  = `mailto:info@v-m-p.de?subject=Bandanfrage%3A%20${encodeURIComponent(band.name)}&body=Band%3A%20${encodeURIComponent(band.name)}%0AVeranstaltung%3A%20%0ADatum%3A%20%0AOrt%3A%20`
-  const whatsappHref = `https://wa.me/4960787595868?text=${encodeURIComponent(`Hallo, ich interessiere mich für ${band.name}.`)}`
   const fbPageUrl   = band.facebookUrl ?? 'https://www.facebook.com/vividmusicproductions'
   const fbEmbedSrc  = `https://www.facebook.com/plugins/page.php?href=${encodeURIComponent(fbPageUrl)}&tabs=timeline&width=340&height=460&small_header=true&adapt_container_width=false&hide_cover=false&show_facepile=false`
 
@@ -88,12 +111,12 @@ export default async function BandPage(
         related={related}
         categoryLabel={categoryLabel}
         mailtoHref={mailtoHref}
-        whatsappHref={whatsappHref}
         fbEmbedSrc={fbEmbedSrc}
         avgRating={avgRating}
         heroUrl={heroUrl}
         dbImages={dbImages?.length ? dbImages : undefined}
         reviews={reviews}
+        bandsMenu={bandsMenu}
       />
       <VmpFooter />
     </>

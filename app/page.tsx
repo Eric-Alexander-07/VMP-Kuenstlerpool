@@ -9,13 +9,15 @@ import KontaktCta from '@/components/KontaktCta'
 import VmpFooter from '@/components/VmpFooter'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { storageUrl } from '@/lib/db-images'
+import { getBandsMenuEntries } from '@/lib/bands'
 
 export default async function HomePage() {
   const sb = await createServerSupabaseClient()
 
-  const [{ data: heroData }, { data: eventData }] = await Promise.all([
+  const [{ data: heroData }, { data: eventData }, bandsMenu] = await Promise.all([
     sb.from('hero_images').select('path, label').order('sort_order', { ascending: true }),
     sb.from('event_images').select('path, category').order('sort_order', { ascending: true }),
+    getBandsMenuEntries(),
   ])
 
   const heroSlides = heroData?.length
@@ -38,7 +40,7 @@ export default async function HomePage() {
       <NavbarWrapper />
 
       {/* 2 — Hero */}
-      <HeroSection slides={heroSlides} />
+      <HeroSection slides={heroSlides} bandsMenu={bandsMenu} />
 
       {/* 3 — Stats Bar (Gebucht von + Kategorie-Chips) */}
       <StatsBar />

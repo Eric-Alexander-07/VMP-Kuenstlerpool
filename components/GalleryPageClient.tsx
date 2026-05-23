@@ -4,6 +4,7 @@ import { useState, useCallback, useEffect, useRef } from 'react'
 import { motion, AnimatePresence, useInView } from 'framer-motion'
 import Image from 'next/image'
 import InlineNavBar from './InlineNavBar'
+import type { BandsMenuEntry } from './Navbar'
 
 // ─── Data ─────────────────────────────────────────────────────────────
 
@@ -297,9 +298,11 @@ type PhotoEntry = { src: string; label: string; col: number; row: number }
 export default function GalleryPageClient({
   photos: photoProp,
   headerBg,
+  bandsMenu,
 }: {
   photos?: PhotoEntry[]
   headerBg?: string
+  bandsMenu?: BandsMenuEntry[]
 }) {
   const photos = photoProp?.length ? photoProp : PHOTOS
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
@@ -365,7 +368,7 @@ export default function GalleryPageClient({
         </div>
       </section>
 
-      <InlineNavBar />
+      <InlineNavBar bandsMenu={bandsMenu} />
 
       {/* ── Masonry grid ──────────────────────────────────────────── */}
       <div style={{ background: 'var(--color-bg)', minHeight: '60vh', position: 'relative' }}>

@@ -1,5 +1,7 @@
+export const revalidate = 60
+
 import type { Metadata } from 'next'
-import Navbar from '@/components/Navbar'
+import NavbarWrapper from '@/components/NavbarWrapper'
 import VmpFooter from '@/components/VmpFooter'
 
 export const metadata: Metadata = {
@@ -9,7 +11,7 @@ export const metadata: Metadata = {
 export default function DatenschutzPage() {
   return (
     <main>
-      <Navbar />
+      <NavbarWrapper />
       <section
         className="w-full px-6 py-24 md:py-32"
         style={{ backgroundColor: 'var(--color-bg)', minHeight: '70vh' }}

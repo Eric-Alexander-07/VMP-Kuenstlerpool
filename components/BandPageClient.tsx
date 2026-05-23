@@ -5,6 +5,7 @@ import { motion, useInView, AnimatePresence } from 'framer-motion'
 import Image from 'next/image'
 import type { Band, Review } from '@/lib/bands-data'
 import InlineNavBar from './InlineNavBar'
+import type { BandsMenuEntry } from './Navbar'
 
 // ─── Stars ────────────────────────────────────────────────────────────
 
@@ -90,13 +91,13 @@ function getYouTubeId(url: string): string | null {
   return m?.[1] ?? null
 }
 
-function YouTubeEmbed({ url, title, large = false }: { url: string; title: string; large?: boolean }) {
+function YouTubeEmbed({ url, title, large = false, autoplay = false }: { url: string; title: string; large?: boolean; autoplay?: boolean }) {
   const id = getYouTubeId(url)
   if (!id) return null
   return (
     <div style={{ aspectRatio: '16/9', borderRadius: large ? 12 : 8, overflow: 'hidden', position: 'relative', backgroundColor: '#0a0a0a' }}>
       <iframe
-        src={`https://www.youtube.com/embed/${id}`}
+        src={`https://www.youtube.com/embed/${id}${autoplay ? '?autoplay=1' : ''}`}
         title={title}
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowFullScreen
@@ -280,93 +281,76 @@ function ImageLightbox({ images, startIndex, onClose }: {
   )
 }
 
-// ─── VideoCarousel ────────────────────────────────────────────────────
+// ─── VideoPlaylist (sidebar) ──────────────────────────────────────────
 
-function VideoCarousel({ videos }: { videos: { url: string; title: string }[] }) {
-  const [active, setActive] = useState(0)
-  const [hovered,      setHovered]      = useState(false)
-  const [hoveredLeft,  setHoveredLeft]  = useState(false)
-  const [hoveredRight, setHoveredRight] = useState(false)
-  const prev = () => setActive(i => (i - 1 + videos.length) % videos.length)
-  const next = () => setActive(i => (i + 1) % videos.length)
+function VideoPlaylist({ videos, active, onSelect }: {
+  videos: { url: string; title: string }[]
+  active: number | null
+  onSelect: (i: number) => void
+}) {
+  const [fetchedTitles, setFetchedTitles] = useState<Record<number, string>>({})
+  const [autoplay, setAutoplay] = useState(false)
+
+  const handleSelect = (i: number) => {
+    setAutoplay(true)
+    onSelect(i)
+  }
+
+  useEffect(() => {
+    const missing = videos
+      .map((v, i) => ({ i, id: getYouTubeId(v.url), hasTitle: !!v.title?.trim() }))
+      .filter(x => x.id && !x.hasTitle)
+    if (missing.length === 0) return
+    missing.forEach(({ i, id }) => {
+      fetch(`https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${id}&format=json`)
+        .then(r => r.json())
+        .then((d: { title: string }) => setFetchedTitles(prev => ({ ...prev, [i]: d.title })))
+        .catch(() => {})
+    })
+  }, [videos])
+
+  const label = (v: { title: string }, i: number) =>
+    v.title?.trim() || fetchedTitles[i] || `Video ${i + 1}`
 
   return (
-    <div style={{ marginBottom: 28 }}>
-      <EyebrowLabel>Videos</EyebrowLabel>
+    <div style={{ marginBottom: 20 }}>
+      <p style={{ fontSize: 10, fontWeight: 700, color: '#8B1A1A', textTransform: 'uppercase' as const, letterSpacing: '0.1em', fontFamily: 'var(--font-body)', marginBottom: 10 }}>
+        Videos & Hörproben <span style={{ color: '#A09080', fontWeight: 400 }}>({videos.length})</span>
+      </p>
 
-      {/* Video + side arrows */}
-      <div
-        style={{ position: 'relative', borderRadius: 12, overflow: 'hidden' }}
-        onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => { setHovered(false); setHoveredLeft(false); setHoveredRight(false) }}
-      >
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={active}
-            initial={{ opacity: 0, x: 16 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -16 }}
-            transition={{ duration: 0.25 }}
-          >
-            <YouTubeEmbed url={videos[active].url} title={videos[active].title} large />
-          </motion.div>
-        </AnimatePresence>
-
-        {videos.length > 1 && (
-          <>
-            <button
-              onClick={prev}
-              onMouseEnter={() => setHoveredLeft(true)}
-              onMouseLeave={() => setHoveredLeft(false)}
-              style={{
-                position: 'absolute', left: 0, top: 0, bottom: 0, width: 36,
-                border: 'none', cursor: 'pointer', color: '#fff',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                backgroundColor: hoveredLeft ? 'rgba(139,26,26,0.88)' : 'rgba(28,25,23,0.55)',
-                backdropFilter: 'blur(4px)', WebkitBackdropFilter: 'blur(4px)',
-                opacity: hovered ? 1 : 0,
-                transition: 'background-color 0.25s ease, opacity 0.2s ease',
-                zIndex: 10,
-              }}
-            >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="15 18 9 12 15 6"/>
-              </svg>
-            </button>
-            <button
-              onClick={next}
-              onMouseEnter={() => setHoveredRight(true)}
-              onMouseLeave={() => setHoveredRight(false)}
-              style={{
-                position: 'absolute', right: 0, top: 0, bottom: 0, width: 36,
-                border: 'none', cursor: 'pointer', color: '#fff',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                backgroundColor: hoveredRight ? 'rgba(139,26,26,0.88)' : 'rgba(28,25,23,0.55)',
-                backdropFilter: 'blur(4px)', WebkitBackdropFilter: 'blur(4px)',
-                opacity: hovered ? 1 : 0,
-                transition: 'background-color 0.25s ease, opacity 0.2s ease',
-                zIndex: 10,
-              }}
-            >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="9 18 15 12 9 6"/>
-              </svg>
-            </button>
-          </>
-        )}
-      </div>
-
-      {videos.length > 1 && (
-        <div style={{ display: 'flex', justifyContent: 'center', gap: 6, marginTop: 10 }}>
-          {videos.map((_, i) => (
-            <button key={i} onClick={() => setActive(i)} style={{
-              width: i === active ? 18 : 6, height: 6, borderRadius: 3, border: 'none', cursor: 'pointer', padding: 0,
-              backgroundColor: i === active ? 'var(--color-orange)' : 'var(--color-border)',
-              transition: 'width 0.25s ease, background-color 0.25s ease',
-            }} />
-          ))}
+      {/* Player — always visible, switches on playlist click */}
+      {active !== null && (
+        <div style={{ borderRadius: 10, overflow: 'hidden', marginBottom: 10, backgroundColor: '#0a0a0a' }}>
+          <AnimatePresence mode="wait">
+            <motion.div key={active} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.15 }}>
+              <YouTubeEmbed url={videos[active].url} title={label(videos[active], active)} large autoplay={autoplay} />
+            </motion.div>
+          </AnimatePresence>
         </div>
       )}
+
+      {/* Playlist */}
+      <div style={{ backgroundColor: '#fff', border: '1px solid #EAE3D8', borderRadius: 12, overflow: 'hidden' }}>
+        {videos.map((video, i) => (
+          <button key={i} onClick={() => handleSelect(i)} style={{
+            width: '100%', textAlign: 'left', padding: '10px 14px',
+            borderTop: i > 0 ? '1px solid #F0E8DF' : '0px solid transparent',
+            borderRight: '0px solid transparent', borderBottom: '0px solid transparent',
+            borderLeft: `3px solid ${i === active ? '#8B1A1A' : 'transparent'}`,
+            backgroundColor: i === active ? 'rgba(139,26,26,0.04)' : 'transparent',
+            cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 10,
+            WebkitTapHighlightColor: 'transparent', touchAction: 'manipulation',
+            transition: 'background-color 0.15s',
+          }}>
+            <span style={{ flexShrink: 0, fontSize: 8, color: i === active ? '#8B1A1A' : '#C4B5A5' }}>
+              {i === active ? '▶' : '▷'}
+            </span>
+            <span style={{ fontSize: 12, color: i === active ? '#1A1A1A' : '#6B4F3A', fontFamily: 'var(--font-body)', fontWeight: i === active ? 600 : 400, lineHeight: 1.4 }}>
+              {label(video, i)}
+            </span>
+          </button>
+        ))}
+      </div>
     </div>
   )
 }
@@ -465,31 +449,32 @@ interface Props {
   related: Band[]
   categoryLabel: string
   mailtoHref: string
-  whatsappHref: string
   fbEmbedSrc: string
   avgRating: number | null
   heroUrl?: string
   dbImages?: string[]
   reviews?: Review[]
+  bandsMenu?: BandsMenuEntry[]
 }
 
 // ─── Main ─────────────────────────────────────────────────────────────
 
 export default function BandPageClient({
   band, related, categoryLabel,
-  mailtoHref, whatsappHref, fbEmbedSrc, avgRating,
-  heroUrl, dbImages, reviews = [],
+  mailtoHref, fbEmbedSrc, avgRating,
+  heroUrl, dbImages, reviews = [], bandsMenu,
 }: Props) {
   const contentRef = useRef<HTMLDivElement>(null)
   const relatedRef = useRef<HTMLElement>(null)
   const contentInView = useInView(contentRef, { once: true, margin: '-60px' })
   const relatedInView = useInView(relatedRef, { once: true, margin: '-60px' })
 
+  const realVideos = band.videos.filter(v => getYouTubeId(v.url))
+
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
+  const [activeVideo, setActiveVideo] = useState<number | null>(() => realVideos.length > 0 ? 0 : null)
   const openLightbox = useCallback((i: number) => setLightboxIndex(i), [])
   const closeLightbox = useCallback(() => setLightboxIndex(null), [])
-
-  const realVideos = band.videos.filter(v => getYouTubeId(v.url))
 
   const galleryImages = dbImages?.length ? dbImages : band.images.filter(Boolean)
 
@@ -628,7 +613,7 @@ export default function BandPageClient({
         </motion.div>
       </section>
 
-      <InlineNavBar />
+      <InlineNavBar bandsMenu={bandsMenu} />
 
       {/* ── Content grid ─────────────────────────────────────── */}
       <div ref={contentRef} style={{ backgroundColor: 'var(--color-bg)' }}>
@@ -815,7 +800,7 @@ export default function BandPageClient({
 
               {/* Videos */}
               {realVideos.length > 0 && (
-                <VideoCarousel videos={realVideos} />
+                <VideoPlaylist videos={realVideos} active={activeVideo} onSelect={setActiveVideo} />
               )}
 
               {/* Anfrage-Box */}
@@ -876,26 +861,6 @@ export default function BandPageClient({
                   Per E-Mail anfragen
                 </motion.a>
 
-                {/* WhatsApp */}
-                <motion.a
-                  href={whatsappHref}
-                  whileHover={{ scale: 1.02, borderColor: 'rgba(234,88,12,0.65)', backgroundColor: 'rgba(234,88,12,0.06)' }}
-                  whileTap={{ scale: 0.97 }}
-                  style={{
-                    display: 'block',
-                    border: '1px solid rgba(234,88,12,0.35)',
-                    color: 'var(--color-orange)',
-                    borderRadius: 10,
-                    padding: '13px',
-                    textAlign: 'center',
-                    textDecoration: 'none',
-                    fontFamily: 'var(--font-body)',
-                    fontSize: 14,
-                    fontWeight: 500,
-                  }}
-                >
-                  WhatsApp
-                </motion.a>
               </div>
 
               {/* Facebook Embed */}

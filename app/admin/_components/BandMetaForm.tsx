@@ -84,22 +84,14 @@ export default function BandMetaForm({ band, mode, onSaved }: Props) {
   const [description,      setDescription]      = useState(band?.description      ?? '')
   const [facebookUrl,      setFacebookUrl]      = useState(band?.facebook_url     ?? '')
   const [repertoire,       setRepertoire]       = useState(band?.repertoire?.join('\n') ?? '')
-  const [youtubeLinks,     setYoutubeLinks]     = useState(
-    band?.youtube_links.map(v => `${v.url}|${v.title}`).join('\n') ?? ''
+  const [youtubeLinks, setYoutubeLinks] = useState<{ url: string; title: string }[]>(
+    band?.youtube_links.length ? band.youtube_links : []
   )
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setSaving(true)
     setMessage(null)
-
-    const parsedVideos = youtubeLinks
-      .split('\n')
-      .map(line => {
-        const [url, ...titleParts] = line.split('|')
-        return { url: url?.trim() ?? '', title: titleParts.join('|').trim() }
-      })
-      .filter(v => v.url)
 
     const payload = {
       slug:              slug.trim().toLowerCase().replace(/\s+/g, '-'),
@@ -112,7 +104,7 @@ export default function BandMetaForm({ band, mode, onSaved }: Props) {
       description:       description.trim(),
       facebook_url:      facebookUrl.trim() || null,
       repertoire:        repertoire.split('\n').map(s => s.trim()).filter(Boolean),
-      youtube_links:     parsedVideos,
+      youtube_links:     youtubeLinks.filter(v => v.url.trim()),
     }
 
     const result = await saveBand(payload, mode, band?.slug)
@@ -225,17 +217,55 @@ export default function BandMetaForm({ band, mode, onSaved }: Props) {
           />
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-          <label htmlFor="youtube_links" style={label}>YouTube-Videos (URL|Titel, eine Zeile pro Video)</label>
-          <p style={{ fontSize: 11, color: '#A09080', fontFamily: 'var(--font-body)', marginBottom: 2 }}>
-            Format: https://youtube.com/watch?v=xxx|Videotitel
-          </p>
-          <textarea
-            id="youtube_links"
-            rows={4}
-            value={youtubeLinks}
-            onChange={e => setYoutubeLinks(e.target.value)}
-            style={{ ...field, resize: 'vertical' }}
-          />
+          <p style={label}>YouTube-Videos</p>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            {youtubeLinks.map((v, i) => (
+              <div key={i} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr auto', gap: 8, alignItems: 'center' }}>
+                <input
+                  type="url"
+                  placeholder="https://youtube.com/watch?v=..."
+                  value={v.url}
+                  onChange={e => setYoutubeLinks(prev => prev.map((x, j) => j === i ? { ...x, url: e.target.value } : x))}
+                  style={field}
+                />
+                <input
+                  type="text"
+                  placeholder="Titel (optional)"
+                  value={v.title}
+                  onChange={e => setYoutubeLinks(prev => prev.map((x, j) => j === i ? { ...x, title: e.target.value } : x))}
+                  style={field}
+                />
+                <button
+                  type="button"
+                  onClick={() => setYoutubeLinks(prev => prev.filter((_, j) => j !== i))}
+                  style={{
+                    width: 32, height: 32, border: '1px solid #E8D8C8', borderRadius: 6,
+                    background: '#fff', color: '#8B1A1A', cursor: 'pointer', fontSize: 14,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+                  }}
+                  title="Entfernen"
+                >✕</button>
+              </div>
+            ))}
+            <button
+              type="button"
+              onClick={() => setYoutubeLinks(prev => [...prev, { url: '', title: '' }])}
+              style={{
+                alignSelf: 'flex-start',
+                padding: '7px 16px',
+                border: '1px dashed #C4A882',
+                borderRadius: 8,
+                background: 'transparent',
+                color: '#8B1A1A',
+                fontSize: 13,
+                fontFamily: 'var(--font-body)',
+                fontWeight: 500,
+                cursor: 'pointer',
+              }}
+            >
+              + Video hinzufügen
+            </button>
+          </div>
         </div>
       </section>
 

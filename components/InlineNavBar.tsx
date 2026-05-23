@@ -2,13 +2,14 @@
 
 import { useState } from 'react'
 import { NavLinks, MobileMenuDrawer, VmpBadge } from './Navbar'
+import type { BandsMenuEntry } from './Navbar'
 
-export default function InlineNavBar() {
+export default function InlineNavBar({ bandsMenu }: { bandsMenu?: BandsMenuEntry[] }) {
   const [mobileOpen, setMobileOpen] = useState(false)
 
   return (
     <>
-      <MobileMenuDrawer open={mobileOpen} onClose={() => setMobileOpen(false)} />
+      <MobileMenuDrawer open={mobileOpen} onClose={() => setMobileOpen(false)} bandsMenu={bandsMenu} />
       <nav
         id="inline-nav"
         className="w-full flex items-center justify-between relative"
@@ -26,7 +27,7 @@ export default function InlineNavBar() {
         </a>
 
         <div className="hidden md:flex items-center absolute left-1/2 -translate-x-1/2" style={{ gap: 'clamp(10px, 1.5vw, 32px)' }}>
-          <NavLinks color="#ffffff" />
+          <NavLinks color="#ffffff" bandsMenu={bandsMenu} />
         </div>
 
         <div className="flex items-center gap-2">

@@ -6,6 +6,7 @@ import VmpFooter from '@/components/VmpFooter'
 import TechnikPageClient from '@/components/TechnikPageClient'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { storageUrl } from '@/lib/db-images'
+import { getBandsMenuEntries } from '@/lib/bands'
 
 export const metadata: Metadata = {
   title: 'Technik & Tonstudio – Vivid Music Productions',
@@ -14,11 +15,10 @@ export const metadata: Metadata = {
 
 export default async function TechnikPage() {
   const sb = await createServerSupabaseClient()
-  const { data } = await sb
-    .from('page_images')
-    .select('path, section')
-    .eq('page', 'technik')
-    .order('sort_order', { ascending: true })
+  const [{ data }, bandsMenu] = await Promise.all([
+    sb.from('page_images').select('path, section').eq('page', 'technik').order('sort_order', { ascending: true }),
+    getBandsMenuEntries(),
+  ])
 
   const bySection = (section: string) =>
     (data ?? []).filter((img: { section: string }) => img.section === section)
@@ -32,6 +32,7 @@ export default async function TechnikPage() {
         mainUrl={bySection('main')[0]}
         thumbnailUrls={bySection('thumbnails')}
         songwritingUrl={bySection('songwriting')[0]}
+        bandsMenu={bandsMenu}
       />
       <VmpFooter />
     </>

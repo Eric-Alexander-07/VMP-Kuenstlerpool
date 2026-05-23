@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Image from 'next/image'
 import { NavLinks, MobileMenuDrawer, VmpBadge } from './Navbar'
+import type { BandsMenuEntry } from './Navbar'
 
 const SLIDES = [
   { src: '/images/hero/hero-event.avif',     label: 'Live auf der Bühne' },
@@ -21,7 +22,7 @@ const SLIDES = [
 const H1_WORDS = ['WE', 'LOVE', 'EVENTS!']
 
 
-export default function HeroSection({ slides: propSlides }: { slides?: { src: string; label: string }[] }) {
+export default function HeroSection({ slides: propSlides, bandsMenu }: { slides?: { src: string; label: string }[]; bandsMenu?: BandsMenuEntry[] }) {
   const slides = propSlides?.length ? propSlides : SLIDES
 
   const [active, setActive]           = useState(0)
@@ -84,7 +85,7 @@ export default function HeroSection({ slides: propSlides }: { slides?: { src: st
 
   return (
     <>
-      <MobileMenuDrawer open={mobileOpen} onClose={() => setMobileOpen(false)} />
+      <MobileMenuDrawer open={mobileOpen} onClose={() => setMobileOpen(false)} bandsMenu={bandsMenu} />
 
       {/* ── Lightbox ─────────────────────────────────────── */}
       <AnimatePresence>
@@ -261,7 +262,7 @@ export default function HeroSection({ slides: propSlides }: { slides?: { src: st
 
           {/* Desktop links — centered */}
           <div className="hidden md:flex items-center absolute left-1/2 -translate-x-1/2" style={{ gap: 'clamp(10px, 1.5vw, 32px)' }}>
-            <NavLinks color="#ffffff" />
+            <NavLinks color="#ffffff" bandsMenu={bandsMenu} />
           </div>
           {/* Right side */}
           <div className="flex items-center gap-2">

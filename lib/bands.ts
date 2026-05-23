@@ -28,8 +28,8 @@ export const getBandsForNav = unstable_cache(
     }
     return (data ?? []) as BandNav[]
   },
-  ['bands-nav'],
-  { revalidate: 3600, tags: ['bands-nav'] }
+  ['bands-nav-3'],
+  { revalidate: 60, tags: ['bands-nav'] }
 )
 
 // ── getBandsMenuEntries ────────────────────────────────────────────────
@@ -67,8 +67,8 @@ export const getBandsByCategory = unstable_cache(
       easyBands:    rows.filter(b => b.category === 'easy-listening'),
     }
   },
-  ['bands-category'],
-  { revalidate: 3600, tags: ['bands-category'] }
+  ['bands-category-3'],
+  { revalidate: 60, tags: ['bands-category'] }
 )
 
 // ── getBandBySlug ─────────────────────────────────────────────────────

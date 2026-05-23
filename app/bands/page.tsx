@@ -1,3 +1,5 @@
+export const revalidate = 60
+
 import type { Metadata } from 'next'
 import NavbarWrapper from '@/components/NavbarWrapper'
 import BandShowcase from '@/components/BandShowcase'
@@ -6,8 +8,6 @@ import VmpFooter from '@/components/VmpFooter'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { storageUrl } from '@/lib/db-images'
 import { getBandsByCategory, getBandsMenuEntries, bandsToBandCards } from '@/lib/bands'
-
-export const revalidate = 3600
 
 export const metadata: Metadata = {
   title: 'Bands – Vivid Music Productions',

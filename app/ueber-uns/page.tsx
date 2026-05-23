@@ -6,6 +6,7 @@ import VmpFooter from '@/components/VmpFooter'
 import UeberUnsPageClient from '@/components/UeberUnsPageClient'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { storageUrl } from '@/lib/db-images'
+import { getBandsMenuEntries } from '@/lib/bands'
 
 export const metadata: Metadata = {
   title: 'Über uns – Vivid Music Productions',
@@ -14,11 +15,10 @@ export const metadata: Metadata = {
 
 export default async function UeberUnsPage() {
   const sb = await createServerSupabaseClient()
-  const { data } = await sb
-    .from('page_images')
-    .select('path, section')
-    .eq('page', 'ueber-uns')
-    .order('sort_order', { ascending: true })
+  const [{ data }, bandsMenu] = await Promise.all([
+    sb.from('page_images').select('path, section').eq('page', 'ueber-uns').order('sort_order', { ascending: true }),
+    getBandsMenuEntries(),
+  ])
 
   const bySection = (section: string) =>
     (data ?? []).filter((img: { section: string }) => img.section === section)
@@ -31,6 +31,7 @@ export default async function UeberUnsPage() {
         heroUrl={bySection('hero')[0]}
         introUrl={bySection('intro')[0]}
         teamUrls={bySection('team')}
+        bandsMenu={bandsMenu}
       />
       <VmpFooter />
     </>

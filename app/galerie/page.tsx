@@ -1,9 +1,12 @@
+export const revalidate = 60
+
 import type { Metadata } from 'next'
 import NavbarWrapper from '@/components/NavbarWrapper'
 import VmpFooter from '@/components/VmpFooter'
 import GalleryPageClient from '@/components/GalleryPageClient'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { storageUrl, assignGridSpan } from '@/lib/db-images'
+import { getBandsMenuEntries } from '@/lib/bands'
 
 export const dynamic = 'force-dynamic'
 
@@ -15,9 +18,10 @@ export const metadata: Metadata = {
 export default async function GaleriePage() {
   const sb = await createServerSupabaseClient()
 
-  const [{ data: headerData }, { data: gridData }] = await Promise.all([
+  const [{ data: headerData }, { data: gridData }, bandsMenu] = await Promise.all([
     sb.from('gallery_images').select('path').eq('image_type', 'header').order('sort_order', { ascending: true }).limit(1),
     sb.from('gallery_images').select('path').eq('image_type', 'grid').order('sort_order', { ascending: true }),
+    getBandsMenuEntries(),
   ])
 
   const headerBg = headerData?.[0] ? storageUrl((headerData[0] as { path: string }).path) : undefined
@@ -33,7 +37,7 @@ export default async function GaleriePage() {
   return (
     <>
       <NavbarWrapper />
-      <GalleryPageClient photos={photos} headerBg={headerBg} />
+      <GalleryPageClient photos={photos} headerBg={headerBg} bandsMenu={bandsMenu} />
       <VmpFooter />
     </>
   )

@@ -4,6 +4,7 @@ import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 import Image from 'next/image'
 import InlineNavBar from './InlineNavBar'
+import type { BandsMenuEntry } from './Navbar'
 
 // ─── Helpers ──────────────────────────────────────────────────────────
 
@@ -91,11 +92,12 @@ interface Props {
   mainUrl?: string
   thumbnailUrls?: string[]
   songwritingUrl?: string
+  bandsMenu?: BandsMenuEntry[]
 }
 
 // ─── Main ─────────────────────────────────────────────────────────────
 
-export default function TechnikPageClient({ heroUrl, mainUrl, thumbnailUrls, songwritingUrl }: Props) {
+export default function TechnikPageClient({ heroUrl, mainUrl, thumbnailUrls, songwritingUrl, bandsMenu }: Props) {
 
   const s1 = useSection()
   const s2 = useSection()
@@ -163,7 +165,7 @@ export default function TechnikPageClient({ heroUrl, mainUrl, thumbnailUrls, son
         </div>
       </section>
 
-      <InlineNavBar />
+      <InlineNavBar bandsMenu={bandsMenu} />
 
       {/* ── Section 1: Veranstaltungsservice ─────────────────────── */}
       <section style={{ background: 'var(--color-bg)', padding: '80px 0', position: 'relative' }}>

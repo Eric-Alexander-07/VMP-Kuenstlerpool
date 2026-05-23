@@ -4,6 +4,7 @@ import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 import Image from 'next/image'
 import InlineNavBar from './InlineNavBar'
+import type { BandsMenuEntry } from './Navbar'
 
 // ─── Helpers ──────────────────────────────────────────────────────────
 
@@ -64,11 +65,12 @@ interface Props {
   heroUrl?: string
   introUrl?: string
   teamUrls?: string[]
+  bandsMenu?: BandsMenuEntry[]
 }
 
 // ─── Main ──────────────────────────────────────────────────────────────
 
-export default function UeberUnsPageClient({ heroUrl, introUrl, teamUrls }: Props) {
+export default function UeberUnsPageClient({ heroUrl, introUrl, teamUrls, bandsMenu }: Props) {
   const intro = useSection()
   const team  = useSection()
   const usp   = useSection()
@@ -129,7 +131,7 @@ export default function UeberUnsPageClient({ heroUrl, introUrl, teamUrls }: Prop
         </div>
       </section>
 
-      <InlineNavBar />
+      <InlineNavBar bandsMenu={bandsMenu} />
 
       {/* ── Intro / Philosophy ────────────────────────────────────── */}
       <section style={{ background: 'var(--color-bg)', padding: '80px 0', position: 'relative' }}>

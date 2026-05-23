@@ -5,7 +5,12 @@ import NavbarWrapper from '@/components/NavbarWrapper'
 import VmpFooter from '@/components/VmpFooter'
 
 export const metadata: Metadata = {
-  title: 'Datenschutz – Vivid Music Productions',
+  title: 'Datenschutzerklärung – Vivid Music Productions',
+  description: 'Datenschutzerklärung von Vivid Music Productions gemäß DSGVO. Informationen zur Erhebung, Verarbeitung und Nutzung personenbezogener Daten.',
+  robots: {
+    index: false,
+    follow: false,
+  },
 }
 
 export default function DatenschutzPage() {

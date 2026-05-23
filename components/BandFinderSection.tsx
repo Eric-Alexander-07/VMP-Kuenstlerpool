@@ -130,6 +130,17 @@ const slideVariants = {
   exit:  (d: number) => ({ x: d > 0 ? '-100%' : '100%' }),
 }
 
+// Returns which dot indices to show — max 7, centred around active
+function visibleDots(total: number, active: number, max = 7): number[] {
+  if (total <= max) return Array.from({ length: total }, (_, i) => i)
+  const half = Math.floor(max / 2)
+  let start = active - half
+  if (start < 0) start = 0
+  let end = start + max - 1
+  if (end >= total) { end = total - 1; start = end - max + 1 }
+  return Array.from({ length: max }, (_, i) => start + i)
+}
+
 function CategoryImageSlider({ images, title }: { images: string[]; title: string }) {
   const [active, setActive] = useState(0)
   const [dir, setDir]       = useState(1)
@@ -236,25 +247,38 @@ function CategoryImageSlider({ images, title }: { images: string[]; title: strin
             )}
           </AnimatePresence>
 
-          {/* Dots */}
-          <div style={{
-            position: 'absolute', bottom: 8, left: 0, right: 0, zIndex: 10,
-            display: 'flex', justifyContent: 'center', gap: 4, pointerEvents: 'none',
-          }}>
-            {images.map((_, i) => (
-              <button
-                key={i}
-                onClick={e => { e.stopPropagation(); go(i) }}
-                style={{
-                  width: i === active ? 16 : 5, height: 5, borderRadius: 3,
-                  border: 'none', cursor: 'pointer', padding: 0,
-                  backgroundColor: i === active ? 'var(--color-orange)' : 'rgba(255,255,255,0.65)',
-                  transition: 'width 0.3s ease, background-color 0.3s ease',
-                  pointerEvents: 'auto',
-                }}
-              />
-            ))}
-          </div>
+          {/* Dots — windowed (max 7) so they never overflow the image */}
+          {(() => {
+            const vis = visibleDots(images.length, active)
+            return (
+              <div style={{
+                position: 'absolute', bottom: 8, left: 0, right: 0, zIndex: 10,
+                display: 'flex', justifyContent: 'center', gap: 4, pointerEvents: 'none',
+              }}>
+                {vis.map((i) => {
+                  const isEdge = (i === vis[0] && vis[0] > 0) || (i === vis[vis.length - 1] && vis[vis.length - 1] < images.length - 1)
+                  const w = i === active ? 16 : isEdge ? 3 : 5
+                  const h = isEdge ? 3 : 5
+                  return (
+                    <button
+                      key={i}
+                      onClick={e => { e.stopPropagation(); go(i) }}
+                      aria-label={`Bild ${i + 1} von ${images.length}`}
+                      aria-current={i === active ? 'true' : undefined}
+                      style={{
+                        width: w, height: h, borderRadius: 3,
+                        border: 'none', cursor: 'pointer', padding: 0,
+                        backgroundColor: i === active ? 'var(--color-orange)' : 'rgba(255,255,255,0.65)',
+                        transition: 'width 0.3s ease, background-color 0.3s ease',
+                        pointerEvents: 'auto',
+                        alignSelf: 'center',
+                      }}
+                    />
+                  )
+                })}
+              </div>
+            )
+          })()}
         </>
       )}
     </div>

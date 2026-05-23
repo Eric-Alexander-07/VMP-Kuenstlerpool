@@ -10,8 +10,24 @@ import { storageUrl } from '@/lib/db-images'
 import { getBandsByCategory, getBandsMenuEntries, bandsToBandCards } from '@/lib/bands'
 
 export const metadata: Metadata = {
-  title: 'Bands – Vivid Music Productions',
-  description: '10 Profi-Bands für Firmenevents, Hochzeiten und Festivals – direkt buchbar über Vivid Music Productions im Rhein-Main-Gebiet.',
+  title: 'Alle Bands & Künstler buchen | Vivid Music Productions',
+  description: 'Entdecken Sie unser Ensemble: Partybands, Tribute Bands und Easy Listening – 10 Profi-Formationen für Firmenevents, Hochzeiten und Festivals direkt buchbar im Rhein-Main-Gebiet.',
+  keywords: ['Bands buchen', 'Partyband Frankfurt', 'Tribute Band buchen', 'Hochzeitsband Rhein-Main', 'Liveband mieten', 'Vivid Music Productions'],
+  openGraph: {
+    title: 'Alle Bands & Künstler | Vivid Music Productions',
+    description: 'Partybands, Tribute Bands und Easy Listening – 10 Profi-Formationen direkt buchbar im Rhein-Main-Gebiet.',
+    url: 'https://v-m-p.de/bands',
+    type: 'website',
+    images: [{ url: '/og-image.jpg', width: 1200, height: 630, alt: 'VMP Bands & Künstler' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Alle Bands & Künstler | VMP',
+    description: 'Partybands, Tribute Bands und Easy Listening – direkt buchbar im Rhein-Main-Gebiet.',
+  },
+  alternates: {
+    canonical: 'https://v-m-p.de/bands',
+  },
 }
 
 export default async function BandsPage() {

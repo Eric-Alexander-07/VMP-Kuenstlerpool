@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
+import { createClient } from '@supabase/supabase-js'
 import NavbarWrapper from '@/components/NavbarWrapper'
 import VmpFooter from '@/components/VmpFooter'
 import BandPageClient from '@/components/BandPageClient'
@@ -8,12 +9,13 @@ import { bandRowToBand, getCategoryLabel } from '@/types/band'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { storageUrl } from '@/lib/db-images'
 
+const BASE_URL = 'https://v-m-p.de'
+
 export const revalidate = 3600
 
 // ── Static paths ───────────────────────────────────────────────────
 
 export async function generateStaticParams() {
-  const { createClient } = await import('@supabase/supabase-js')
   const sb = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
@@ -32,10 +34,55 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const { slug } = await params
   const band = await getBandBySlug(slug)
-  if (!band) return { title: 'Band nicht gefunden – VMP' }
+  if (!band) return { title: 'Künstler nicht gefunden | VMP', robots: { index: false } }
+
+  // Fetch hero image for OG (public client — safe at build time)
+  const sb = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  )
+  const { data: heroImg } = await sb
+    .from('band_images')
+    .select('path')
+    .eq('band_slug', slug)
+    .eq('role', 'hero')
+    .limit(1)
+    .single()
+
+  const ogImageUrl = heroImg ? storageUrl((heroImg as { path: string }).path) : '/og-image.jpg'
+  const description = band.short_description || band.tagline
+  const title = `${band.name} buchen – Live Musik im Rhein-Main-Gebiet | VMP`
+  const url = `${BASE_URL}/${slug}`
+  const categoryLabel = getCategoryLabel(band.category)
+
   return {
-    title: `${band.name} – Vivid Music Productions`,
-    description: band.short_description || band.tagline,
+    title,
+    description,
+    keywords: [
+      `${band.name} buchen`,
+      band.name,
+      `${band.name} Live Musik`,
+      categoryLabel,
+      `${categoryLabel} Frankfurt`,
+      'Band buchen Frankfurt',
+      'Live Musik Rhein-Main',
+      'Vivid Music Productions',
+    ],
+    openGraph: {
+      title,
+      description,
+      url,
+      type: 'profile',
+      images: [{ url: ogImageUrl, width: 1200, height: 630, alt: `${band.name} – Live Musik` }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+    },
+    alternates: {
+      canonical: url,
+    },
   }
 }
 
@@ -103,8 +150,27 @@ export default async function BandPage(
     ? Math.round(reviews.reduce((s, r) => s + r.rating, 0) / reviews.length)
     : null
 
+  const musicGroupSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'MusicGroup',
+    name: band.name,
+    description: band.description || band.tagline,
+    genre: getCategoryLabel(bandRow.category),
+    url: `${BASE_URL}/${slug}`,
+    ...(heroUrl && { image: heroUrl }),
+    memberOf: {
+      '@type': 'Organization',
+      name: 'Vivid Music Productions',
+      url: BASE_URL,
+    },
+  }
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(musicGroupSchema) }}
+      />
       <NavbarWrapper />
       <BandPageClient
         band={band}

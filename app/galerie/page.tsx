@@ -8,11 +8,25 @@ import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { storageUrl, assignGridSpan } from '@/lib/db-images'
 import { getBandsMenuEntries } from '@/lib/bands'
 
-export const dynamic = 'force-dynamic'
-
 export const metadata: Metadata = {
-  title: 'Galerie – Vivid Music Productions',
-  description: 'Eindrücke von unvergesslichen Live-Events, Bands und dem Tonstudio von Vivid Music Productions.',
+  title: 'Galerie – Live-Events & Bands | Vivid Music Productions',
+  description: 'Fotogalerie von Vivid Music Productions – Eindrücke aus unvergesslichen Live-Events, Konzerten und dem Tonstudio im Rhein-Main-Gebiet.',
+  keywords: ['VMP Galerie', 'Live Event Fotos Frankfurt', 'Bandfotos', 'Konzertfotos Rhein-Main'],
+  openGraph: {
+    title: 'Galerie – Live-Events & Bands | VMP',
+    description: 'Eindrücke aus unvergesslichen Live-Events, Konzerten und dem Tonstudio von Vivid Music Productions.',
+    url: 'https://v-m-p.de/galerie',
+    type: 'website',
+    images: [{ url: '/og-image.jpg', width: 1200, height: 630, alt: 'VMP Galerie – Live Events' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Galerie | Vivid Music Productions',
+    description: 'Eindrücke aus unvergesslichen Live-Events und dem Tonstudio.',
+  },
+  alternates: {
+    canonical: 'https://v-m-p.de/galerie',
+  },
 }
 
 export default async function GaleriePage() {

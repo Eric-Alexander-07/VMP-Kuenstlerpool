@@ -27,14 +27,29 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   title: 'Vivid Music Productions – Livemusik im Rhein-Main-Gebiet',
   description:
-    'Seit 20 Jahren Ihr Partner für unvergessliche Live-Events. 10 Bands in den Kategorien Easy Listening, Partybands und Tribute Bands.',
+    'Seit 20 Jahren Ihr Partner für unvergessliche Live-Events. Partybands, Tribute Bands und Easy Listening – direkt buchbar im Rhein-Main-Gebiet.',
   metadataBase: new URL('https://v-m-p.de'),
   openGraph: {
-    title: 'Vivid Music Productions',
+    title: 'Vivid Music Productions – Livemusik im Rhein-Main-Gebiet',
     description:
-      'Livemusik auf höchstem Niveau – seit 20 Jahren Ihr Partner für unvergessliche Events.',
+      'Seit 20 Jahren Ihr Partner für unvergessliche Live-Events. Partybands, Tribute Bands und Easy Listening – direkt buchbar im Rhein-Main-Gebiet.',
     type: 'website',
     locale: 'de_DE',
+    siteName: 'Vivid Music Productions',
+    images: [
+      {
+        url: '/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Vivid Music Productions – Live Musik im Rhein-Main-Gebiet',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Vivid Music Productions – Livemusik im Rhein-Main-Gebiet',
+    description:
+      'Seit 20 Jahren Ihr Partner für unvergessliche Live-Events. Partybands, Tribute Bands und Easy Listening – direkt buchbar.',
   },
   // iOS home-screen bookmark: standalone mode + translucent status bar
   other: {

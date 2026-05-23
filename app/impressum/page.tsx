@@ -6,6 +6,11 @@ import VmpFooter from '@/components/VmpFooter'
 
 export const metadata: Metadata = {
   title: 'Impressum – Vivid Music Productions',
+  description: 'Impressum und Anbieterkennzeichnung gemäß § 5 TMG für Vivid Music Productions, Inhaber Bernhard Stöcker, Groß-Umstadt.',
+  robots: {
+    index: false,
+    follow: false,
+  },
 }
 
 export default function ImpressumPage() {

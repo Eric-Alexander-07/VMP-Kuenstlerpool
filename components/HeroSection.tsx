@@ -6,6 +6,16 @@ import Image from 'next/image'
 import { NavLinks, MobileMenuDrawer, VmpBadge } from './Navbar'
 import type { BandsMenuEntry } from './Navbar'
 
+function visibleDots(total: number, active: number, max = 7): number[] {
+  if (total <= max) return Array.from({ length: total }, (_, i) => i)
+  const half = Math.floor(max / 2)
+  let start = active - half
+  if (start < 0) start = 0
+  let end = start + max - 1
+  if (end >= total) { end = total - 1; start = end - max + 1 }
+  return Array.from({ length: max }, (_, i) => start + i)
+}
+
 const SLIDES = [
   { src: '/images/hero/hero-event.avif',     label: 'Live auf der Bühne' },
   { src: '/images/hero/firmenevents.avif',   label: 'Firmenevents & Galas' },
@@ -489,20 +499,34 @@ export default function HeroSection({ slides: propSlides, bandsMenu }: { slides?
               </AnimatePresence>
             </div>
 
-            {/* Dots */}
-            <div className="absolute bottom-8 right-8 z-10 flex gap-2">
-              {slides.map((_, i) => (
-                <button key={i} onClick={() => { setDirection(i > active ? 1 : -1); setActive(i) }}
-                  className="rounded-full"
-                  aria-label={`Slide ${i + 1} von ${slides.length}`}
-                  aria-current={i === active ? 'true' : undefined}
-                  style={{
-                    width: i === active ? 20 : 7, height: 7, border: 'none', cursor: 'pointer',
-                    backgroundColor: i === active ? 'var(--color-orange)' : 'rgba(255,255,255,0.4)',
-                    transition: 'width 0.3s ease, background-color 0.3s ease',
-                  }} />
-              ))}
-            </div>
+            {/* Dots — windowed (max 7), centred so they never overflow */}
+            {(() => {
+              const vis = visibleDots(slides.length, active)
+              return (
+                <div className="absolute bottom-8 left-0 right-0 z-10 flex justify-center gap-2">
+                  {vis.map((i) => {
+                    const isEdge = (i === vis[0] && vis[0] > 0) || (i === vis[vis.length - 1] && vis[vis.length - 1] < slides.length - 1)
+                    const w = i === active ? 20 : isEdge ? 4 : 7
+                    const h = isEdge ? 4 : 7
+                    return (
+                      <button
+                        key={i}
+                        onClick={() => { setDirection(i > active ? 1 : -1); setActive(i) }}
+                        className="rounded-full"
+                        aria-label={`Slide ${i + 1} von ${slides.length}`}
+                        aria-current={i === active ? 'true' : undefined}
+                        style={{
+                          width: w, height: h, border: 'none', cursor: 'pointer',
+                          backgroundColor: i === active ? 'var(--color-orange)' : 'rgba(255,255,255,0.4)',
+                          transition: 'width 0.3s ease, background-color 0.3s ease',
+                          alignSelf: 'center',
+                        }}
+                      />
+                    )
+                  })}
+                </div>
+              )
+            })()}
 
             {/* Click-to-open hint */}
             <AnimatePresence>

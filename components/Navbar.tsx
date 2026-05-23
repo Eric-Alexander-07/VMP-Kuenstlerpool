@@ -208,13 +208,28 @@ export function MobileMenuDrawer({ open, onClose, bandsMenu }: { open: boolean; 
                                   {cat.bands.map(band => (
                                     <a key={band.name} href={band.href} onClick={onClose}
                                       className="font-body"
-                                      style={{ fontSize: 15, color: 'rgba(255,255,255,0.55)', textDecoration: 'none' }}>
+                                      style={{ fontSize: 15, color: '#ffffff', textDecoration: 'none' }}>
                                       {band.name}
                                     </a>
                                   ))}
                                 </div>
                               </div>
                             ))}
+                            <a href="/bands" onClick={onClose}
+                              className="font-body font-semibold text-center block"
+                              style={{
+                                fontSize: 13,
+                                color: '#fff',
+                                textDecoration: 'none',
+                                backgroundColor: 'rgba(234,88,12,0.15)',
+                                border: '1px solid rgba(234,88,12,0.3)',
+                                borderRadius: 8,
+                                padding: '10px 14px',
+                                marginTop: 4,
+                              }}
+                            >
+                              Alle Bands ansehen →
+                            </a>
                           </div>
                         </motion.div>
                       )}

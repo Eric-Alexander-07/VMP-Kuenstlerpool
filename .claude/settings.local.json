@@ -50,7 +50,10 @@
       "Bash(npm uninstall *)",
       "Bash(Select-Object Name, FullName)",
       "Bash(Remove-Item \"c:\\\\Users\\\\eschu\\\\Desktop\\\\Unternehmensstruktur\\\\07-Projekte\\\\Schuck-Webdesign\\\\Bobby_Stoker\\\\VMP\\\\public\\\\Song1.mp3\" -ErrorAction Stop)",
-      "Bash(Write-Output \"Deleted\")"
+      "Bash(Write-Output \"Deleted\")",
+      "Bash(pandoc --version)",
+      "Bash(python -c \"import docx; print\\('ok'\\)\")",
+      "Bash(pip install *)"
     ],
     "additionalDirectories": [
       "C:\\Users\\eschu\\.claude",

@@ -385,13 +385,10 @@ export default function GalleryPageClient({
           mixBlendMode: 'multiply' as const,
         }} />
         <div className="max-w-7xl mx-auto" style={{ padding: '40px 20px 80px', position: 'relative' }}>
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(4, 1fr)',
-            gridAutoRows: '200px',
-            gap: 8,
-            gridAutoFlow: 'dense',
-          }}>
+          <div
+            className="grid grid-cols-2 md:grid-cols-4 [grid-auto-rows:160px] md:[grid-auto-rows:200px]"
+            style={{ gap: 8, gridAutoFlow: 'dense' }}
+          >
             {photos.map((photo, i) => (
               <PhotoCard
                 key={photo.src}

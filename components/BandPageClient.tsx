@@ -535,7 +535,7 @@ export default function BandPageClient({
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, rgba(28,25,23,0.5) 0%, transparent 50%)', zIndex: 1 }} />
 
         {/* Content */}
-        <div style={{ position: 'absolute', bottom: 48, left: 40, right: 200, zIndex: 2 }}>
+        <div className="absolute bottom-12 left-5 right-5 md:left-10 md:right-[200px] z-[2]">
           {categoryLabel && (
             <motion.span
               initial={{ opacity: 0, y: -14 }}
@@ -603,7 +603,7 @@ export default function BandPageClient({
           initial={{ opacity: 0, scale: 0.92 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5, delay: 0.5 }}
-          style={{ position: 'absolute', bottom: 48, right: 40, zIndex: 2 }}
+          className="hidden md:block absolute bottom-12 right-10 z-[2]"
         >
           <motion.a
             href="#anfrage"
@@ -644,19 +644,16 @@ export default function BandPageClient({
                 initial={{ opacity: 0, y: 24 }}
                 animate={contentInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.5 }}
-                style={{
-                  display: 'grid',
-                  gridTemplateColumns: galleryImages.length > 1 ? '1fr 1fr' : '1fr',
-                  gridTemplateRows: galleryImages.length > 1 ? '240px 150px' : '360px',
-                  gap: 10,
-                  marginBottom: 52,
-                }}
+                className={galleryImages.length > 1
+                  ? 'grid grid-cols-2 gap-2.5 mb-[52px] [grid-template-rows:220px_140px] md:[grid-template-rows:240px_150px]'
+                  : 'mb-[52px] h-[360px]'
+                }
               >
                 {/* Main image — spans both rows when grid has 2 cols */}
                 <button
                   onClick={() => openLightbox(0)}
-                  className="group"
-                  style={{ gridRow: galleryImages.length > 1 ? '1 / 3' : undefined, borderRadius: 12, overflow: 'hidden', backgroundColor: '#E8E0D4', position: 'relative', border: 'none', padding: 0, cursor: 'pointer' }}
+                  className={`group ${galleryImages.length > 1 ? 'col-span-2 md:col-span-1 md:row-span-2' : 'w-full h-full'}`}
+                  style={{ borderRadius: 12, overflow: 'hidden', backgroundColor: '#E8E0D4', position: 'relative', border: 'none', padding: 0, cursor: 'pointer' }}
                 >
                   <Image src={galleryImages[0]} alt={band.name} fill
                     className="object-cover transition-transform duration-500 group-hover:scale-105"
@@ -754,7 +751,7 @@ export default function BandPageClient({
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
                   {band.repertoire.map((tag, i) => (
                     <motion.span
-                      key={tag}
+                      key={`${tag}-${i}`}
                       initial={{ opacity: 0, scale: 0.88 }}
                       animate={contentInView ? { opacity: 1, scale: 1 } : {}}
                       transition={{ duration: 0.3, delay: 0.18 + i * 0.04 }}
@@ -930,9 +927,14 @@ export default function BandPageClient({
               </h2>
             </motion.div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div
+              className="flex gap-4 overflow-x-auto pb-2 sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:overflow-x-visible sm:pb-0"
+              style={{ scrollbarWidth: 'none' }}
+            >
               {related.map((b, i) => (
-                <RelatedBandCard key={b.slug} band={b} index={i} inView={relatedInView} />
+                <div key={b.slug} className="flex-shrink-0 w-[280px] sm:w-auto">
+                  <RelatedBandCard band={b} index={i} inView={relatedInView} />
+                </div>
               ))}
             </div>
           </div>

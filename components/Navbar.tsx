@@ -335,11 +335,11 @@ export function NavLinks({ color = '#fff', bandsMenu }: { color?: string; bandsM
     <>
       {NAV_ITEMS.map(item =>
         item.dropdown ? (
-          <div key="bands-trigger" className="relative hidden md:block" onMouseEnter={open} onMouseLeave={close}>
+          <div key="bands-trigger" className="relative hidden lg:block" onMouseEnter={open} onMouseLeave={close}>
             <a
               href={item.href}
               className="flex items-center gap-1.5 font-display"
-              style={{ color, fontSize: 19, letterSpacing: '0.08em', textDecoration: 'none', transition: 'opacity 0.15s', whiteSpace: 'nowrap' }}
+              style={{ color, fontSize: 'clamp(13px, 1.5vw, 19px)', letterSpacing: '0.08em', textDecoration: 'none', transition: 'opacity 0.15s', whiteSpace: 'nowrap' }}
               onMouseEnter={e => (e.currentTarget.style.opacity = '0.7')}
               onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
             >
@@ -354,8 +354,8 @@ export function NavLinks({ color = '#fff', bandsMenu }: { color?: string; bandsM
           </div>
         ) : (
           <a key={item.href} href={item.href}
-            className="font-display hidden md:block"
-            style={{ color, fontSize: 19, letterSpacing: '0.08em', textDecoration: 'none', transition: 'opacity 0.15s', whiteSpace: 'nowrap' }}
+            className="font-display hidden lg:block"
+            style={{ color, fontSize: 'clamp(13px, 1.5vw, 19px)', letterSpacing: '0.08em', textDecoration: 'none', transition: 'opacity 0.15s', whiteSpace: 'nowrap' }}
             onMouseEnter={e => (e.currentTarget.style.opacity = '0.7')}
             onMouseLeave={e => (e.currentTarget.style.opacity = '1')}>
             {item.label.toUpperCase()}
@@ -417,20 +417,20 @@ export default function Navbar({ bandsMenu }: { bandsMenu?: BandsMenuEntry[] }) 
               <VmpBadge size={88} shadow={false} borderWidth={2} />
             </a>
 
-            {/* Desktop nav — wraps to second line if needed */}
-            <nav className="hidden md:flex flex-1 flex-wrap items-center justify-center self-center" style={{ gap: '8px 28px' }}>
+            {/* Desktop nav — shown at lg (1024px+), font scales via clamp so items fit */}
+            <nav className="hidden lg:flex flex-1 flex-wrap items-center justify-center self-center" style={{ gap: 'clamp(4px, 0.6vw, 8px) clamp(8px, 2.2vw, 28px)' }}>
               <NavLinks color="#ffffff" bandsMenu={bandsMenu} />
             </nav>
 
             {/* Right side — flex sibling, never overlaps nav */}
-            <div className="flex items-center gap-2 flex-shrink-0 self-center">
+            <div className="flex items-center gap-2 flex-shrink-0 self-center ml-auto">
               <a href="/#kontakt"
-                className="md:hidden inline-flex items-center px-3 py-1.5 rounded-full font-body font-semibold text-white"
+                className="lg:hidden inline-flex items-center px-3 py-1.5 rounded-full font-body font-semibold text-white"
                 style={{ backgroundColor: 'var(--color-orange)', fontSize: 12 }}>
                 ANFRAGEN
               </a>
               <button
-                className="md:hidden flex items-center justify-center"
+                className="lg:hidden flex items-center justify-center"
                 onClick={() => setMobileOpen(true)}
                 aria-label="Menü öffnen"
                 style={{ width: 36, height: 36, background: 'none', border: 'none',
@@ -443,7 +443,7 @@ export default function Navbar({ bandsMenu }: { bandsMenu?: BandsMenuEntry[] }) 
                 </svg>
               </button>
               <a href="/#kontakt"
-                className="hidden md:inline-flex items-center px-4 py-1.5 rounded-full font-body font-semibold text-white text-sm"
+                className="hidden lg:inline-flex items-center px-3 py-1.5 xl:px-4 xl:py-2 rounded-full font-body font-semibold text-white text-xs xl:text-sm"
                 style={{ backgroundColor: 'var(--color-orange)' }}>
                 ANFRAGEN
               </a>

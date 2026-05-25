@@ -255,7 +255,7 @@ export default function HeroSection({ slides: propSlides, bandsMenu }: { slides?
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3, duration: 0.4 }}
-          className="w-full flex items-center justify-between relative"
+          className="w-full flex items-center relative"
           style={{ backgroundColor: 'var(--color-bg-dark)', height: 64, paddingLeft: 168, paddingRight: 24, overflow: 'visible', zIndex: 30 }}
         >
           {/* VMP-Kreis — zentriert in Navbar, ragt oben+unten gleich weit raus */}
@@ -270,19 +270,19 @@ export default function HeroSection({ slides: propSlides, bandsMenu }: { slides?
             <VmpBadge size={110} />
           </a>
 
-          {/* Desktop links — centered */}
-          <div className="hidden md:flex items-center absolute left-1/2 -translate-x-1/2" style={{ gap: 'clamp(10px, 1.5vw, 32px)' }}>
+          {/* Desktop links — flex-1, not absolute, so can never overlap the CTA */}
+          <div className="hidden lg:flex flex-1 flex-wrap items-center justify-center" style={{ gap: 'clamp(8px, 1.3vw, 32px)' }}>
             <NavLinks color="#ffffff" bandsMenu={bandsMenu} />
           </div>
-          {/* Right side */}
-          <div className="flex items-center gap-2">
+          {/* Right side — ml-auto anchors it to the right edge on all viewports */}
+          <div className="flex items-center gap-2 flex-shrink-0 ml-auto">
             <a href="#kontakt"
-              className="md:hidden inline-flex items-center px-3 py-1.5 rounded-full font-body font-semibold text-white"
+              className="lg:hidden inline-flex items-center px-3 py-1.5 rounded-full font-body font-semibold text-white"
               style={{ backgroundColor: 'var(--color-orange)', fontSize: 12 }}>
               Anfragen
             </a>
             <button
-              className="md:hidden flex items-center justify-center"
+              className="lg:hidden flex items-center justify-center"
               onClick={() => setMobileOpen(true)}
               aria-label="Menü öffnen"
               style={{ width: 36, height: 36, background: 'none', border: 'none',
@@ -295,7 +295,7 @@ export default function HeroSection({ slides: propSlides, bandsMenu }: { slides?
               </svg>
             </button>
             <a href="#kontakt"
-              className="hidden md:inline-flex items-center px-5 py-2 rounded-full font-body font-semibold text-white text-sm"
+              className="hidden lg:inline-flex items-center px-3 py-1.5 xl:px-5 xl:py-2 rounded-full font-body font-semibold text-white text-xs xl:text-sm"
               style={{ backgroundColor: 'var(--color-orange)' }}>
               Anfragen
             </a>

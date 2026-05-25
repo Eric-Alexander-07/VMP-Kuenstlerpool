@@ -269,11 +269,8 @@ export default function UeberUnsPageClient({ heroUrl, introUrl, teamUrls, bandsM
                 transition={{ duration: 0.5 }}
                 style={{ marginBottom: 48 }}
               >
-                <p style={{ fontSize: 10, color: 'var(--color-orange)', textTransform: 'uppercase', letterSpacing: '0.2em', fontWeight: 600, fontFamily: 'var(--font-body)', marginBottom: 10 }}>
-                  Unser Team
-                </p>
                 <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(28px, 4vw, 44px)', fontWeight: 700, color: 'var(--color-dark)', lineHeight: 1.1 }}>
-                  Die Menschen dahinter
+                  Geschäftsführer & musikalischer Leiter
                 </h2>
               </motion.div>
 
@@ -324,12 +321,6 @@ export default function UeberUnsPageClient({ heroUrl, introUrl, teamUrls, bandsM
                           {member.name}
                         </p>
                       </div>
-                    </div>
-                    {/* Role */}
-                    <div style={{ padding: '14px 20px 18px' }}>
-                      <p style={{ fontFamily: 'var(--font-body)', fontSize: 13, color: 'var(--color-muted)', lineHeight: 1.5 }}>
-                        {member.role}
-                      </p>
                     </div>
                   </motion.div>
                   )

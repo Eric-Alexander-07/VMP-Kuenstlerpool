@@ -439,13 +439,17 @@ export default function BandFinderSection({
             >
               {/* Image */}
               <div className="relative w-full overflow-hidden" style={{ height: 240, flexShrink: 0 }}>
-                <Image
-                  src={band.image}
-                  alt={band.name}
-                  fill
-                  style={{ objectFit: 'cover' }}
-                  sizes="28vw"
-                />
+                {band.image ? (
+                  <Image
+                    src={band.image}
+                    alt={band.name}
+                    fill
+                    style={{ objectFit: 'cover' }}
+                    sizes="28vw"
+                  />
+                ) : (
+                  <div className="absolute inset-0" style={{ backgroundColor: '#1A1714' }} />
+                )}
                 <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 55%)' }} />
                 {/* Badge */}
                 <div className="absolute top-3 left-3 flex items-center gap-1.5 px-2.5 py-1 rounded-full"
@@ -474,18 +478,19 @@ export default function BandFinderSection({
                 <p className="font-body mb-3" style={{ fontSize: 10, color: 'var(--color-orange)', letterSpacing: '0.1em', textTransform: 'uppercase', fontWeight: 600 }}>
                   {band.genre}
                 </p>
-                <p className="font-body mb-4 flex-1" style={{ fontSize: 12, color: 'var(--color-muted)', lineHeight: 1.65 }}>
+                <p className="font-body mb-4 line-clamp-4" style={{ fontSize: 12, color: 'var(--color-muted)', lineHeight: 1.65 }}>
                   {band.description}
                 </p>
                 <a
                   href={band.href}
-                  className="flex items-center justify-center w-full rounded-full font-body font-bold text-white"
+                  className="flex items-center justify-center w-full rounded-full font-body font-bold text-white mt-auto"
                   style={{
                     backgroundColor: 'var(--color-bg-dark)',
                     fontSize: 12,
                     padding: '10px 16px',
                     textDecoration: 'none',
                     transition: 'opacity 0.2s',
+                    flexShrink: 0,
                   }}
                   onMouseEnter={e => { e.currentTarget.style.opacity = '0.85' }}
                   onMouseLeave={e => { e.currentTarget.style.opacity = '1' }}

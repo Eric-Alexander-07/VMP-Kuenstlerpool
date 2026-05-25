@@ -83,6 +83,7 @@ export default function BandMetaForm({ band, mode, onSaved }: Props) {
   const [shortDescription, setShortDescription] = useState(band?.short_description ?? '')
   const [description,      setDescription]      = useState(band?.description      ?? '')
   const [facebookUrl,      setFacebookUrl]      = useState(band?.facebook_url     ?? '')
+  const [instagramUrl,     setInstagramUrl]     = useState(band?.instagram_url    ?? '')
   const [repertoire,       setRepertoire]       = useState(band?.repertoire?.join('\n') ?? '')
   const [youtubeLinks, setYoutubeLinks] = useState<{ url: string; title: string }[]>(
     band?.youtube_links.length ? band.youtube_links : []
@@ -103,6 +104,7 @@ export default function BandMetaForm({ band, mode, onSaved }: Props) {
       short_description: shortDescription.trim(),
       description:       description.trim(),
       facebook_url:      facebookUrl.trim() || null,
+      instagram_url:     instagramUrl.trim() || null,
       repertoire:        repertoire.split('\n').map(s => s.trim()).filter(Boolean),
       youtube_links:     youtubeLinks.filter(v => v.url.trim()),
     }
@@ -202,8 +204,9 @@ export default function BandMetaForm({ band, mode, onSaved }: Props) {
       {/* ── Details ──────────────────────────────────────── */}
       <section>
         <p style={sectionLabel}>Details</p>
-        <div style={{ marginBottom: 16 }}>
-          <Field id="facebook_url" label="Facebook URL" value={facebookUrl} onChange={setFacebookUrl} />
+        <div style={{ ...grid2, marginBottom: 16 }}>
+          <Field id="facebook_url"  label="Facebook URL"  value={facebookUrl}  onChange={setFacebookUrl} />
+          <Field id="instagram_url" label="Instagram URL" value={instagramUrl} onChange={setInstagramUrl} />
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 4, marginBottom: 16 }}>
           <label htmlFor="repertoire" style={label}>Repertoire-Chips (eine Zeile pro Chip)</label>

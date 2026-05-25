@@ -24,6 +24,7 @@ export interface Band {
   news: { date: string; headline: string }[]
   reviews?: Review[]
   facebookUrl?: string
+  instagramUrl?: string
 }
 
 // ── Category helpers ───────────────────────────────────────────────

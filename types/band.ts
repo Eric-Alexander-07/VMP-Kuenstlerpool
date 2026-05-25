@@ -12,6 +12,7 @@ export type BandRow = {
   short_description: string
   repertoire: string[]
   facebook_url: string | null
+  instagram_url: string | null
   youtube_links: { url: string; title: string }[]
   created_at: string
   updated_at: string
@@ -79,6 +80,7 @@ export function bandRowToBand(row: BandRow): import('@/lib/bands-data').Band {
     videos: row.youtube_links,
     news: [],
     facebookUrl: row.facebook_url ?? undefined,
+    instagramUrl: row.instagram_url ?? undefined,
   }
 }
 

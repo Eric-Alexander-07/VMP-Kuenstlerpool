@@ -457,7 +457,8 @@ interface Props {
   related: Band[]
   categoryLabel: string
   mailtoHref: string
-  fbEmbedSrc: string
+  fbEmbedSrc?: string
+  instagramUrl?: string
   avgRating: number | null
   heroUrl?: string
   dbImages?: string[]
@@ -469,7 +470,7 @@ interface Props {
 
 export default function BandPageClient({
   band, related, categoryLabel,
-  mailtoHref, fbEmbedSrc, avgRating,
+  mailtoHref, fbEmbedSrc, instagramUrl, avgRating,
   heroUrl, dbImages, reviews = [], bandsMenu,
 }: Props) {
   const contentRef = useRef<HTMLDivElement>(null)
@@ -730,14 +731,21 @@ export default function BandPageClient({
                 style={{ marginBottom: 44 }}
               >
                 <EyebrowLabel>Über die Band</EyebrowLabel>
-                <p style={{
-                  fontFamily: 'var(--font-body)',
-                  fontSize: 15,
-                  color: 'var(--color-muted)',
-                  lineHeight: 1.75,
-                }}>
-                  {band.description.split('\n\n')[0]}
-                </p>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+                  {band.description.split('\n\n').filter(Boolean).map((paragraph, i) => (
+                    <p key={i} style={{
+                      fontFamily: 'var(--font-body)',
+                      fontSize: 15,
+                      color: 'var(--color-muted)',
+                      lineHeight: 1.75,
+                      margin: 0,
+                    }}>
+                      {paragraph.split('\n').map((line, j, arr) => (
+                        <span key={j}>{line}{j < arr.length - 1 && <br />}</span>
+                      ))}
+                    </p>
+                  ))}
+                </div>
               </motion.div>
 
               {/* Repertoire */}
@@ -876,29 +884,76 @@ export default function BandPageClient({
 
               </div>
 
+              {/* Instagram Link */}
+              {instagramUrl && (
+                <a
+                  href={instagramUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 14,
+                    borderRadius: 16,
+                    padding: '14px 18px',
+                    marginBottom: 20,
+                    textDecoration: 'none',
+                    backgroundColor: '#fff',
+                    border: '1px solid #E5DDD5',
+                    overflow: 'hidden',
+                    position: 'relative',
+                    transition: 'transform 0.2s, box-shadow 0.2s',
+                  }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)'; (e.currentTarget as HTMLElement).style.boxShadow = '0 6px 20px rgba(131,58,180,0.15)' }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform = 'translateY(0)'; (e.currentTarget as HTMLElement).style.boxShadow = 'none' }}
+                >
+                  {/* Subtle gradient wash */}
+                  <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, rgba(131,58,180,0.05) 0%, rgba(252,176,69,0.05) 100%)', pointerEvents: 'none' }} />
+                  {/* Icon */}
+                  <div style={{ width: 38, height: 38, borderRadius: '50%', background: 'linear-gradient(135deg, #833ab4 0%, #fd1d1d 50%, #fcb045 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, position: 'relative' }}>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                      <circle cx="12" cy="12" r="4"/>
+                      <circle cx="17.5" cy="6.5" r="0.5" fill="#fff" stroke="none"/>
+                    </svg>
+                  </div>
+                  {/* Text */}
+                  <div style={{ position: 'relative' }}>
+                    <p style={{ fontFamily: 'var(--font-body)', fontSize: 13, fontWeight: 700, color: '#1C1917', margin: 0, lineHeight: 1.3 }}>
+                      Instagram
+                    </p>
+                    <p style={{ fontFamily: 'var(--font-body)', fontSize: 11, color: '#8B6F5C', margin: 0, marginTop: 2 }}>
+                      Profil besuchen →
+                    </p>
+                  </div>
+                </a>
+              )}
+
               {/* Facebook Embed */}
-              <div style={{
-                borderRadius: 16,
-                overflow: 'hidden',
-                border: '1px solid #E5DDD5',
-                backgroundColor: '#fff',
-              }}>
-                <div style={{ padding: '14px 18px 10px', borderBottom: '1px solid #E8E0D4', display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="#1877F2">
-                    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
-                  </svg>
-                  <span style={{ fontFamily: 'var(--font-body)', fontSize: 12, fontWeight: 600, color: '#1C1917' }}>
-                    Facebook
-                  </span>
+              {fbEmbedSrc && (
+                <div style={{
+                  borderRadius: 16,
+                  overflow: 'hidden',
+                  border: '1px solid #E5DDD5',
+                  backgroundColor: '#fff',
+                }}>
+                  <div style={{ padding: '14px 18px 10px', borderBottom: '1px solid #E8E0D4', display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="#1877F2">
+                      <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+                    </svg>
+                    <span style={{ fontFamily: 'var(--font-body)', fontSize: 12, fontWeight: 600, color: '#1C1917' }}>
+                      Facebook
+                    </span>
+                  </div>
+                  <iframe
+                    src={fbEmbedSrc}
+                    width="340"
+                    height="460"
+                    style={{ border: 'none', overflow: 'hidden', display: 'block', width: '100%' }}
+                    allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+                  />
                 </div>
-                <iframe
-                  src={fbEmbedSrc}
-                  width="340"
-                  height="460"
-                  style={{ border: 'none', overflow: 'hidden', display: 'block', width: '100%' }}
-                  allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-                />
-              </div>
+              )}
 
             </motion.div>
           </div>

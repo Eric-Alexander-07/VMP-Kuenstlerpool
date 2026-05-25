@@ -15,6 +15,7 @@ export interface BandPayload {
   short_description: string
   description: string
   facebook_url: string | null
+  instagram_url: string | null
   repertoire: string[]
   youtube_links: { url: string; title: string }[]
 }

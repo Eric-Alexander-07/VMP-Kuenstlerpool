@@ -143,8 +143,9 @@ export default async function BandPage(
   const band = bandRowToBand(bandRow)
 
   const mailtoHref  = `mailto:info@v-m-p.de?subject=Bandanfrage%3A%20${encodeURIComponent(band.name)}&body=Band%3A%20${encodeURIComponent(band.name)}%0AVeranstaltung%3A%20%0ADatum%3A%20%0AOrt%3A%20`
-  const fbPageUrl   = band.facebookUrl ?? 'https://www.facebook.com/vividmusicproductions'
-  const fbEmbedSrc  = `https://www.facebook.com/plugins/page.php?href=${encodeURIComponent(fbPageUrl)}&tabs=timeline&width=340&height=460&small_header=true&adapt_container_width=false&hide_cover=false&show_facepile=false`
+  const fbEmbedSrc  = band.facebookUrl
+    ? `https://www.facebook.com/plugins/page.php?href=${encodeURIComponent(band.facebookUrl)}&tabs=timeline&width=340&height=460&small_header=true&adapt_container_width=false&hide_cover=false&show_facepile=false`
+    : undefined
 
   const avgRating = reviews.length
     ? Math.round(reviews.reduce((s, r) => s + r.rating, 0) / reviews.length)
@@ -178,6 +179,7 @@ export default async function BandPage(
         categoryLabel={categoryLabel}
         mailtoHref={mailtoHref}
         fbEmbedSrc={fbEmbedSrc}
+        instagramUrl={band.instagramUrl}
         avgRating={avgRating}
         heroUrl={heroUrl}
         dbImages={dbImages?.length ? dbImages : undefined}

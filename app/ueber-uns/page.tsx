@@ -9,11 +9,20 @@ import { storageUrl } from '@/lib/db-images'
 import { getBandsMenuEntries } from '@/lib/bands'
 
 export const metadata: Metadata = {
-  title: 'Über uns – 20 Jahre Live-Events im Rhein-Main-Gebiet | VMP',
+  title: 'Über uns – Livemusik im Rhein-Main-Gebiet │ VMP',
   description: 'Lernen Sie das Team hinter Vivid Music Productions kennen: 20+ Jahre Erfahrung im Event-Business, direkte Kommunikation ohne Agenturgebühren und Vollservice aus einer Hand.',
-  keywords: ['Vivid Music Productions Team', 'Bobby Stöcker', 'Künstlerpool Frankfurt', 'Über uns VMP', 'Live Musik Agentur Rhein-Main'],
+  keywords: [
+    'Vivid Music Productions Team',
+    'Bobby Stöcker',
+    'Künstlerpool Frankfurt',
+    'Geschäftsführer',
+    'Über uns VMP',
+    'Live Musik Agentur Rhein-Main',
+    'Musikalischer Leiter',
+    'Musical Director',
+  ],
   openGraph: {
-    title: 'Über uns – Vivid Music Productions',
+    title: 'Über uns – Livemusik im Rhein-Main-Gebiet │ VMP',
     description: '20+ Jahre Erfahrung im Event-Business. Direkter Kontakt, keine Agenturgebühren, Vollservice aus einer Hand.',
     url: 'https://v-m-p.de/ueber-uns',
     type: 'profile',
@@ -21,7 +30,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Über uns | Vivid Music Productions',
+    title: 'Über uns │ Vivid Music Productions',
     description: '20+ Jahre Erfahrung im Event-Business. Direkter Kontakt, keine Agenturgebühren.',
   },
   alternates: {

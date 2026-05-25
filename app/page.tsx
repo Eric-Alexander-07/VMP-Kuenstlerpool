@@ -4,32 +4,33 @@ import type { Metadata } from 'next'
 import NavbarWrapper from '@/components/NavbarWrapper'
 
 export const metadata: Metadata = {
-  title: 'Livemusik buchen im Rhein-Main-Gebiet | Vivid Music Productions',
+  title: 'Livemusik aus dem Rhein-Main-Gebiet bundesweit für Events buchen │ Vivid Music Productions',
   description:
-    'Vivid Music Productions – Ihr Künstlerpool für Live-Events seit 20 Jahren. Partybands, Tribute Bands und Easy Listening direkt buchbar in Frankfurt und Rhein-Main. Jetzt unverbindlich anfragen.',
+    'Profimusiker & Live Bands auf höchstem Niveau für Firmenfeiern, Hochzeiten, Stadtfeste und High Class Events. Partybands, Coverbands und Tribute Bands aus Frankfurt, Darmstadt, Aschaffenburg für Ihren Event.',
   keywords: [
     'Band buchen Frankfurt',
-    'Liveband Rhein-Main',
+    'Livemusik Rhein-Main',
     'Hochzeitsband Frankfurt',
-    'Coverband buchen',
-    'Partyband mieten',
-    'Live Musik Event',
-    'Vivid Music Productions',
+    'Coverband Aschaffenburg',
+    'Band buchen Darmstadt',
+    'Partyband für Firmenfeier',
+    'Eventband Livemusik',
     'VMP Künstlerpool',
+    'Tribute Band Darmstadt',
   ],
   openGraph: {
-    title: 'Livemusik buchen im Rhein-Main-Gebiet | Vivid Music Productions',
+    title: 'Livemusik aus dem Rhein-Main-Gebiet bundesweit für Events buchen │ Vivid Music Productions',
     description:
-      'Partybands, Tribute Bands und Easy Listening – direkt buchbar seit 20 Jahren. Keine Agenturgebühren, direkter Kontakt.',
+      'Profimusiker & Live Bands auf höchstem Niveau für Firmenfeiern, Hochzeiten, Stadtfeste und High Class Events. Partybands, Coverbands und Tribute Bands aus Frankfurt, Darmstadt, Aschaffenburg.',
     url: 'https://v-m-p.de',
     type: 'website',
     images: [{ url: '/og-image.jpg', width: 1200, height: 630, alt: 'Vivid Music Productions – Live Musik Frankfurt' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Livemusik buchen im Rhein-Main-Gebiet | VMP',
+    title: 'Livemusik aus dem Rhein-Main-Gebiet bundesweit für Events buchen │ VMP',
     description:
-      'Partybands, Tribute Bands und Easy Listening – direkt buchbar seit 20 Jahren.',
+      'Profimusiker & Live Bands auf höchstem Niveau für Firmenfeiern, Hochzeiten, Stadtfeste und High Class Events.',
   },
   alternates: {
     canonical: 'https://v-m-p.de',

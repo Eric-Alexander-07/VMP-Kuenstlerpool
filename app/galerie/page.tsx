@@ -9,11 +9,20 @@ import { storageUrl, assignGridSpan } from '@/lib/db-images'
 import { getBandsMenuEntries } from '@/lib/bands'
 
 export const metadata: Metadata = {
-  title: 'Galerie – Live-Events & Bands | Vivid Music Productions',
+  title: 'Galerie – Live-Events & Bands │ Vivid Music Productions',
   description: 'Fotogalerie von Vivid Music Productions – Eindrücke aus unvergesslichen Live-Events, Konzerten und dem Tonstudio im Rhein-Main-Gebiet.',
-  keywords: ['VMP Galerie', 'Live Event Fotos Frankfurt', 'Bandfotos', 'Konzertfotos Rhein-Main'],
+  keywords: [
+    'VMP Galerie',
+    'Live Event Fotos Frankfurt',
+    'Konzertfotos Rhein-Main',
+    'Tonstudio',
+    'Werbejingles',
+    'Musikproduktion',
+    'Radiowerbung',
+    'Bandfotos',
+  ],
   openGraph: {
-    title: 'Galerie – Live-Events & Bands | VMP',
+    title: 'Galerie – Live-Events & Bands │ Vivid Music Productions',
     description: 'Eindrücke aus unvergesslichen Live-Events, Konzerten und dem Tonstudio von Vivid Music Productions.',
     url: 'https://v-m-p.de/galerie',
     type: 'website',
@@ -21,7 +30,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Galerie | Vivid Music Productions',
+    title: 'Galerie │ Vivid Music Productions',
     description: 'Eindrücke aus unvergesslichen Live-Events und dem Tonstudio.',
   },
   alternates: {

@@ -10,20 +10,31 @@ import { storageUrl } from '@/lib/db-images'
 import { getBandsByCategory, getBandsMenuEntries, bandsToBandCards } from '@/lib/bands'
 
 export const metadata: Metadata = {
-  title: 'Alle Bands & Künstler buchen | Vivid Music Productions',
-  description: 'Entdecken Sie unser Ensemble: Partybands, Tribute Bands und Easy Listening – 10 Profi-Formationen für Firmenevents, Hochzeiten und Festivals direkt buchbar im Rhein-Main-Gebiet.',
-  keywords: ['Bands buchen', 'Partyband Frankfurt', 'Tribute Band buchen', 'Hochzeitsband Rhein-Main', 'Liveband mieten', 'Vivid Music Productions'],
+  title: 'Unser Band Repertoire buchen │ Vivid Music Productions',
+  description: 'Entdecken Sie unser Band Repertoire in mehreren Kategorien: Partybands, Tribute Bands und Easy Listening für Firmenfeiern, Hochzeiten, Stadtfeste und High Class Events aller Art.',
+  keywords: [
+    'Bands buchen',
+    'Partyband Frankfurt',
+    'Tribute Band buchen',
+    'Eventband Darmstadt',
+    'Musik Band',
+    'Hochzeitsband Rhein-Main',
+    'Liveband Darmstadt',
+    'Vivid Music Productions',
+    'Livemusik Aschaffenburg',
+    'Akustik Band Dinner Lounge',
+  ],
   openGraph: {
-    title: 'Alle Bands & Künstler | Vivid Music Productions',
-    description: 'Partybands, Tribute Bands und Easy Listening – 10 Profi-Formationen direkt buchbar im Rhein-Main-Gebiet.',
+    title: 'Unser Band Repertoire buchen │ Vivid Music Productions',
+    description: 'Partybands, Tribute Bands und Easy Listening für Firmenfeiern, Hochzeiten, Stadtfeste und High Class Events aller Art.',
     url: 'https://v-m-p.de/bands',
     type: 'website',
     images: [{ url: '/og-image.jpg', width: 1200, height: 630, alt: 'VMP Bands & Künstler' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Alle Bands & Künstler | VMP',
-    description: 'Partybands, Tribute Bands und Easy Listening – direkt buchbar im Rhein-Main-Gebiet.',
+    title: 'Unser Band Repertoire buchen │ VMP',
+    description: 'Partybands, Tribute Bands und Easy Listening für Firmenfeiern, Hochzeiten, Stadtfeste und High Class Events.',
   },
   alternates: {
     canonical: 'https://v-m-p.de/bands',

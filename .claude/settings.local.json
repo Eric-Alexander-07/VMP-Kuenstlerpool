@@ -55,7 +55,9 @@
       "Bash(python -c \"import docx; print\\('ok'\\)\")",
       "Bash(pip install *)",
       "Bash(Get-ChildItem -Path \"c:\\\\Users\\\\eschu\\\\Desktop\\\\Unternehmensstruktur\\\\07-Projekte\\\\Schuck-Webdesign\\\\Bobby_Stoker\\\\VMP\" -Recurse -Force)",
-      "Bash(Format-Table -AutoSize)"
+      "Bash(Format-Table -AutoSize)",
+      "Bash(Select-Object -ExpandProperty FullName)",
+      "Bash(Sort-Object)"
     ],
     "additionalDirectories": [
       "C:\\Users\\eschu\\.claude",

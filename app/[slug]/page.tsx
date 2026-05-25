@@ -51,7 +51,7 @@ export async function generateMetadata(
 
   const ogImageUrl = heroImg ? storageUrl((heroImg as { path: string }).path) : '/og-image.jpg'
   const description = band.short_description || band.tagline
-  const title = `${band.name} buchen – Live Musik im Rhein-Main-Gebiet | VMP`
+  const title = `${band.name} │ VMP`
   const url = `${BASE_URL}/${slug}`
   const categoryLabel = getCategoryLabel(band.category)
 
@@ -61,7 +61,7 @@ export async function generateMetadata(
     keywords: [
       `${band.name} buchen`,
       band.name,
-      `${band.name} Live Musik`,
+      `${band.name} Eventband`,
       categoryLabel,
       `${categoryLabel} Frankfurt`,
       'Band buchen Frankfurt',

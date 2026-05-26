@@ -63,15 +63,22 @@ function ReviewCard({ review, index }: { review: Review; index: number }) {
           {review.platform}
         </span>
       </div>
-      <p style={{
-        fontFamily: 'var(--font-body)',
-        fontSize: 13,
-        color: '#4A3F35',
-        lineHeight: 1.65,
-        fontStyle: 'italic',
-      }}>
-        „{review.text}"
-      </p>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+        {review.text.split('\n\n').filter(Boolean).map((paragraph, i, arr) => (
+          <p key={i} style={{
+            fontFamily: 'var(--font-body)',
+            fontSize: 13,
+            color: '#4A3F35',
+            lineHeight: 1.65,
+            fontStyle: 'italic',
+            margin: 0,
+          }}>
+            {i === 0 && '„'}{paragraph.split('\n').map((line, j, lines) => (
+              <span key={j}>{line}{j < lines.length - 1 && <br />}</span>
+            ))}{i === arr.length - 1 && '"'}
+          </p>
+        ))}
+      </div>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 2 }}>
         <span style={{ fontFamily: 'var(--font-body)', fontSize: 12, fontWeight: 600, color: '#1C1917' }}>
           {review.name}

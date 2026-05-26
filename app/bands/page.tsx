@@ -27,7 +27,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Unser Band Repertoire buchen │ Vivid Music Productions',
     description: 'Partybands, Tribute Bands und Easy Listening für Firmenfeiern, Hochzeiten, Stadtfeste und High Class Events aller Art.',
-    url: 'https://v-m-p.de/bands',
+    url: 'https://v-m-p.com/bands',
     type: 'website',
     images: [{ url: '/og-image.jpg', width: 1200, height: 630, alt: 'VMP Bands & Künstler' }],
   },
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
     description: 'Partybands, Tribute Bands und Easy Listening für Firmenfeiern, Hochzeiten, Stadtfeste und High Class Events.',
   },
   alternates: {
-    canonical: 'https://v-m-p.de/bands',
+    canonical: 'https://v-m-p.com/bands',
   },
 }
 

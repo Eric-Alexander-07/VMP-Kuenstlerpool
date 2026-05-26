@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Galerie – Live-Events & Bands │ Vivid Music Productions',
     description: 'Eindrücke aus unvergesslichen Live-Events, Konzerten und dem Tonstudio von Vivid Music Productions.',
-    url: 'https://v-m-p.de/galerie',
+    url: 'https://v-m-p.com/galerie',
     type: 'website',
     images: [{ url: '/og-image.jpg', width: 1200, height: 630, alt: 'VMP Galerie – Live Events' }],
   },
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     description: 'Eindrücke aus unvergesslichen Live-Events und dem Tonstudio.',
   },
   alternates: {
-    canonical: 'https://v-m-p.de/galerie',
+    canonical: 'https://v-m-p.com/galerie',
   },
 }
 
@@ -51,10 +51,10 @@ export default async function GaleriePage() {
 
   const photos = gridData?.length
     ? gridData.map((img: { path: string }, i: number) => ({
-        src: storageUrl(img.path),
-        label: '',
-        ...assignGridSpan(i),
-      }))
+      src: storageUrl(img.path),
+      label: '',
+      ...assignGridSpan(i),
+    }))
     : undefined
 
   return (

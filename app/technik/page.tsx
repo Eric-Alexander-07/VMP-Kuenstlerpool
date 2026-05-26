@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Veranstaltungstechnik – Vollservice für Live-Events und Tonstudio │ VMP',
     description: 'Gesamtpakete mit Liveband und PA-Beschallungstechnik aus einer Hand: Bühne, Ton- und Lichttechnik sowie Tonstudio mit Musikproduktion und Jingle Erstellung.',
-    url: 'https://v-m-p.de/technik',
+    url: 'https://v-m-p.com/technik',
     type: 'website',
     images: [{ url: '/og-image.jpg', width: 1200, height: 630, alt: 'VMP Veranstaltungstechnik & Tonstudio' }],
   },
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     description: 'Gesamtpakete mit Liveband, PA-Beschallungstechnik und Tonstudio aus einer Hand.',
   },
   alternates: {
-    canonical: 'https://v-m-p.de/technik',
+    canonical: 'https://v-m-p.com/technik',
   },
 }
 
@@ -49,7 +49,7 @@ export default async function TechnikPage() {
 
   const bySection = (section: string) =>
     (data ?? []).filter((img: { section: string }) => img.section === section)
-               .map((img: { path: string }) => storageUrl(img.path))
+      .map((img: { path: string }) => storageUrl(img.path))
 
   return (
     <>

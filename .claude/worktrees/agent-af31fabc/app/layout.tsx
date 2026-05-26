@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   title: 'Vivid Music Productions – Livemusik im Rhein-Main-Gebiet',
   description:
     'Seit 20 Jahren Ihr Partner für unvergessliche Live-Events. 10 Bands in den Kategorien Easy Listening, Partybands und Tribute Bands.',
-  metadataBase: new URL('https://v-m-p.de'),
+  metadataBase: new URL('https://v-m-p.com'),
   openGraph: {
     title: 'Vivid Music Productions',
     description:

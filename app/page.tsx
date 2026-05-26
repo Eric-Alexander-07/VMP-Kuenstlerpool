@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     title: 'Livemusik aus dem Rhein-Main-Gebiet bundesweit für Events buchen │ Vivid Music Productions',
     description:
       'Profimusiker & Live Bands auf höchstem Niveau für Firmenfeiern, Hochzeiten, Stadtfeste und High Class Events. Partybands, Coverbands und Tribute Bands aus Frankfurt, Darmstadt, Aschaffenburg.',
-    url: 'https://v-m-p.de',
+    url: 'https://v-m-p.com',
     type: 'website',
     images: [{ url: '/og-image.jpg', width: 1200, height: 630, alt: 'Vivid Music Productions – Live Musik Frankfurt' }],
   },
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
       'Profimusiker & Live Bands auf höchstem Niveau für Firmenfeiern, Hochzeiten, Stadtfeste und High Class Events.',
   },
   alternates: {
-    canonical: 'https://v-m-p.de',
+    canonical: 'https://v-m-p.com',
   },
 }
 import HeroSection from '@/components/HeroSection'
@@ -79,9 +79,9 @@ export default async function HomePage() {
 
   const heroSlides = heroData?.length
     ? heroData.map((img: { path: string; label: string }) => ({
-        src: storageUrl(img.path),
-        label: img.label,
-      }))
+      src: storageUrl(img.path),
+      label: img.label,
+    }))
     : undefined
 
   const categoryImages: Record<string, string[]> = {}
@@ -96,7 +96,7 @@ export default async function HomePage() {
     '@type': 'LocalBusiness',
     name: 'Vivid Music Productions',
     description: 'Künstlerpool für professionelle Live-Musik im Rhein-Main-Gebiet – Partybands, Tribute Bands und Easy Listening seit 20 Jahren.',
-    url: 'https://v-m-p.de',
+    url: 'https://v-m-p.com',
     telephone: '+4960787595688',
     email: 'info@v-m-p.com',
     address: {

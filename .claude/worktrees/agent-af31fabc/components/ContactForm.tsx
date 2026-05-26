@@ -33,7 +33,7 @@ export default function ContactForm() {
       ].join('\n')
     )
     window.location.href =
-      `mailto:info@v-m-p.de?subject=${subject}&body=${body}`
+      `mailto:info@v-m-p.com?subject=${subject}&body=${body}`
   }
 
   return (

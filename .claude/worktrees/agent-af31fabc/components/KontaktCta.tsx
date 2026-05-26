@@ -55,7 +55,7 @@ export default function KontaktCta() {
     const body = encodeURIComponent(
       `Name: ${form.name}\nE-Mail: ${form.email}\nAnlass: ${form.anlass}\n\n${form.message}`
     )
-    return `mailto:info@v-m-p.de?subject=${subject}&body=${body}`
+    return `mailto:info@v-m-p.com?subject=${subject}&body=${body}`
   }
 
   const borderFor = (k: string) => focused === k
@@ -174,7 +174,7 @@ export default function KontaktCta() {
             {/* Email button */}
             <div>
               <a
-                href="mailto:info@v-m-p.de"
+                href="mailto:info@v-m-p.com"
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-body font-semibold text-white transition-opacity hover:opacity-85"
                 style={{ backgroundColor: 'var(--color-orange)', fontSize: 14, textDecoration: 'none' }}
               >

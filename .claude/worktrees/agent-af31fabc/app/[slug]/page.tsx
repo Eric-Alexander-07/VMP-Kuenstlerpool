@@ -40,16 +40,16 @@ export default async function BandPage(
     .filter((b) => b.category === band.category && b.slug !== band.slug)
     .slice(0, 3)
 
-  const mailtoHref = `mailto:info@v-m-p.de?subject=Bandanfrage%3A%20${encodeURIComponent(band.name)}&body=Band%3A%20${encodeURIComponent(band.name)}%0AVeranstaltung%3A%20%0ADatum%3A%20%0AOrt%3A%20`
+  const mailtoHref = `mailto:info@v-m-p.com?subject=Bandanfrage%3A%20${encodeURIComponent(band.name)}&body=Band%3A%20${encodeURIComponent(band.name)}%0AVeranstaltung%3A%20%0ADatum%3A%20%0AOrt%3A%20`
   const whatsappHref = `https://wa.me/4960787595868?text=${encodeURIComponent(`Hallo, ich interessiere mich für ${band.name}.`)}`
   const fbPageUrl = band.facebookUrl ?? 'https://www.facebook.com/vividmusicproductions'
   const fbEmbedSrc = `https://www.facebook.com/plugins/page.php?href=${encodeURIComponent(fbPageUrl)}&tabs=timeline&width=340&height=460&small_header=true&adapt_container_width=false&hide_cover=false&show_facepile=false`
 
   const infoItems = [
-    { label: 'Besetzung',    value: band.besetzung },
-    { label: 'Spielzeit',    value: band.spielzeit },
+    { label: 'Besetzung', value: band.besetzung },
+    { label: 'Spielzeit', value: band.spielzeit },
     { label: 'Geeignet für', value: band.geeignetFuer.join(' · ') },
-    { label: 'Region',       value: band.region },
+    { label: 'Region', value: band.region },
   ]
 
   const avgRating = band.reviews?.length

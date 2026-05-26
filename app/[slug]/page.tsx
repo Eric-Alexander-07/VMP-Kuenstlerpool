@@ -9,7 +9,7 @@ import { bandRowToBand, getCategoryLabel } from '@/types/band'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { storageUrl } from '@/lib/db-images'
 
-const BASE_URL = 'https://v-m-p.de'
+const BASE_URL = 'https://v-m-p.com'
 
 export const revalidate = 3600
 
@@ -105,8 +105,8 @@ export default async function BandPage(
   ])
 
   const heroRecord = imgData?.find((img: { role: string }) => img.role === 'hero')
-  const heroUrl    = heroRecord ? storageUrl((heroRecord as { path: string }).path) : undefined
-  const dbImages   = imgData
+  const heroUrl = heroRecord ? storageUrl((heroRecord as { path: string }).path) : undefined
+  const dbImages = imgData
     ?.filter((img: { role: string }) => img.role === 'gallery')
     .map((img: { path: string }) => storageUrl(img.path))
 
@@ -126,12 +126,12 @@ export default async function BandPage(
       .in('band_slug', relatedSlugs)
       .order('sort_order', { ascending: true })
 
-    // Prefer hero image, fall back to first gallery image
-    ;(relatedImgs ?? []).forEach((img: { band_slug: string; path: string; role: string }) => {
-      if (!relatedImageMap[img.band_slug] || img.role === 'hero') {
-        relatedImageMap[img.band_slug] = storageUrl(img.path)
-      }
-    })
+      // Prefer hero image, fall back to first gallery image
+      ; (relatedImgs ?? []).forEach((img: { band_slug: string; path: string; role: string }) => {
+        if (!relatedImageMap[img.band_slug] || img.role === 'hero') {
+          relatedImageMap[img.band_slug] = storageUrl(img.path)
+        }
+      })
   }
 
   const related = relatedRows.map(row => {
@@ -142,8 +142,8 @@ export default async function BandPage(
 
   const band = bandRowToBand(bandRow)
 
-  const mailtoHref  = `mailto:info@v-m-p.de?subject=Bandanfrage%3A%20${encodeURIComponent(band.name)}&body=Band%3A%20${encodeURIComponent(band.name)}%0AVeranstaltung%3A%20%0ADatum%3A%20%0AOrt%3A%20`
-  const fbEmbedSrc  = band.facebookUrl
+  const mailtoHref = `mailto:info@v-m-p.com?subject=Bandanfrage%3A%20${encodeURIComponent(band.name)}&body=Band%3A%20${encodeURIComponent(band.name)}%0AVeranstaltung%3A%20%0ADatum%3A%20%0AOrt%3A%20`
+  const fbEmbedSrc = band.facebookUrl
     ? `https://www.facebook.com/plugins/page.php?href=${encodeURIComponent(band.facebookUrl)}&tabs=timeline&width=340&height=460&small_header=true&adapt_container_width=false&hide_cover=false&show_facepile=false`
     : undefined
 

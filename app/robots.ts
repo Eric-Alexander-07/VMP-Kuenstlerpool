@@ -9,6 +9,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ['/admin', '/api/'],
       },
     ],
-    sitemap: 'https://v-m-p.de/sitemap.xml',
+    sitemap: 'https://v-m-p.com/sitemap.xml',
   }
 }

@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Über uns – Livemusik im Rhein-Main-Gebiet │ VMP',
     description: '20+ Jahre Erfahrung im Event-Business. Direkter Kontakt, keine Agenturgebühren, Vollservice aus einer Hand.',
-    url: 'https://v-m-p.de/ueber-uns',
+    url: 'https://v-m-p.com/ueber-uns',
     type: 'profile',
     images: [{ url: '/og-image.jpg', width: 1200, height: 630, alt: 'Das Team von Vivid Music Productions' }],
   },
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     description: '20+ Jahre Erfahrung im Event-Business. Direkter Kontakt, keine Agenturgebühren.',
   },
   alternates: {
-    canonical: 'https://v-m-p.de/ueber-uns',
+    canonical: 'https://v-m-p.com/ueber-uns',
   },
 }
 
@@ -47,7 +47,7 @@ export default async function UeberUnsPage() {
 
   const bySection = (section: string) =>
     (data ?? []).filter((img: { section: string }) => img.section === section)
-               .map((img: { path: string }) => storageUrl(img.path))
+      .map((img: { path: string }) => storageUrl(img.path))
 
   return (
     <>

@@ -144,7 +144,7 @@ export default async function BandPage(
 
   const mailtoHref = `mailto:info@v-m-p.com?subject=Bandanfrage%3A%20${encodeURIComponent(band.name)}&body=Band%3A%20${encodeURIComponent(band.name)}%0AVeranstaltung%3A%20%0ADatum%3A%20%0AOrt%3A%20`
   const fbEmbedSrc = band.facebookUrl
-    ? `https://www.facebook.com/plugins/page.php?href=${encodeURIComponent(band.facebookUrl)}&tabs=timeline&width=340&height=460&small_header=true&adapt_container_width=false&hide_cover=false&show_facepile=false`
+    ? `https://www.facebook.com/plugins/page.php?href=${encodeURIComponent(band.facebookUrl)}&tabs=timeline&width=340&height=720&small_header=true&adapt_container_width=false&hide_cover=false&show_facepile=false`
     : undefined
 
   const avgRating = reviews.length

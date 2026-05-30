@@ -955,7 +955,7 @@ export default function BandPageClient({
                   <iframe
                     src={fbEmbedSrc}
                     width="340"
-                    height="460"
+                    height="720"
                     style={{ border: 'none', overflow: 'hidden', display: 'block', width: '100%' }}
                     allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
                   />

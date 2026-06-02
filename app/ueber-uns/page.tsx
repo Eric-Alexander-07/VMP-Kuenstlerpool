@@ -4,9 +4,9 @@ import type { Metadata } from 'next'
 import NavbarWrapper from '@/components/NavbarWrapper'
 import VmpFooter from '@/components/VmpFooter'
 import UeberUnsPageClient from '@/components/UeberUnsPageClient'
-import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { storageUrl } from '@/lib/db-images'
 import { getBandsMenuEntries } from '@/lib/bands'
+import { getPageImages } from '@/lib/vmp-data'
 
 export const metadata: Metadata = {
   title: 'Über uns – Livemusik im Rhein-Main-Gebiet │ VMP',
@@ -39,15 +39,13 @@ export const metadata: Metadata = {
 }
 
 export default async function UeberUnsPage() {
-  const sb = await createServerSupabaseClient()
-  const [{ data }, bandsMenu] = await Promise.all([
-    sb.from('page_images').select('path, section').eq('page', 'ueber-uns').order('sort_order', { ascending: true }),
+  const [data, bandsMenu] = await Promise.all([
+    getPageImages('ueber-uns'),
     getBandsMenuEntries(),
   ])
 
   const bySection = (section: string) =>
-    (data ?? []).filter((img: { section: string }) => img.section === section)
-      .map((img: { path: string }) => storageUrl(img.path))
+    data.filter(img => img.section === section).map(img => storageUrl(img.path))
 
   return (
     <>

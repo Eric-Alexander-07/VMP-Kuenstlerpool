@@ -4,9 +4,9 @@ import type { Metadata } from 'next'
 import NavbarWrapper from '@/components/NavbarWrapper'
 import VmpFooter from '@/components/VmpFooter'
 import TechnikPageClient from '@/components/TechnikPageClient'
-import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { storageUrl } from '@/lib/db-images'
 import { getBandsMenuEntries } from '@/lib/bands'
+import { getPageImages } from '@/lib/vmp-data'
 
 export const metadata: Metadata = {
   title: 'Veranstaltungstechnik – Vollservice für Live-Events und Tonstudio │ VMP',
@@ -41,15 +41,13 @@ export const metadata: Metadata = {
 }
 
 export default async function TechnikPage() {
-  const sb = await createServerSupabaseClient()
-  const [{ data }, bandsMenu] = await Promise.all([
-    sb.from('page_images').select('path, section').eq('page', 'technik').order('sort_order', { ascending: true }),
+  const [data, bandsMenu] = await Promise.all([
+    getPageImages('technik'),
     getBandsMenuEntries(),
   ])
 
   const bySection = (section: string) =>
-    (data ?? []).filter((img: { section: string }) => img.section === section)
-      .map((img: { path: string }) => storageUrl(img.path))
+    data.filter(img => img.section === section).map(img => storageUrl(img.path))
 
   return (
     <>

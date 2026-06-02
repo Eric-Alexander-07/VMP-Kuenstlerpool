@@ -1,13 +1,12 @@
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
-import { createClient } from '@supabase/supabase-js'
 import NavbarWrapper from '@/components/NavbarWrapper'
 import VmpFooter from '@/components/VmpFooter'
 import BandPageClient from '@/components/BandPageClient'
-import { getBandBySlug, getRelatedBands, getBandsMenuEntries } from '@/lib/bands'
+import { getRelatedBands, getBandsMenuEntries } from '@/lib/bands'
 import { bandRowToBand, getCategoryLabel } from '@/types/band'
-import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { storageUrl } from '@/lib/db-images'
+import { getBands, getBandBySlug, getAllBandImages } from '@/lib/vmp-data'
 
 const BASE_URL = 'https://v-m-p.com'
 
@@ -16,15 +15,8 @@ export const revalidate = 3600
 // ── Static paths ───────────────────────────────────────────────────
 
 export async function generateStaticParams() {
-  const sb = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  )
-  const { data } = await sb
-    .from('bands')
-    .select('slug')
-    .eq('published', true)
-  return (data ?? []).map((r: { slug: string }) => ({ slug: r.slug }))
+  const bands = await getBands()
+  return bands.map(b => ({ slug: b.slug }))
 }
 
 // ── Metadata ───────────────────────────────────────────────────────
@@ -33,23 +25,12 @@ export async function generateMetadata(
   { params }: { params: Promise<{ slug: string }> }
 ): Promise<Metadata> {
   const { slug } = await params
-  const band = await getBandBySlug(slug)
-  if (!band) return { title: 'Künstler nicht gefunden | VMP', robots: { index: false } }
+  const bandData = await getBandBySlug(slug)
+  if (!bandData) return { title: 'Künstler nicht gefunden | VMP', robots: { index: false } }
 
-  // Fetch hero image for OG (public client — safe at build time)
-  const sb = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  )
-  const { data: heroImg } = await sb
-    .from('band_images')
-    .select('path')
-    .eq('band_slug', slug)
-    .eq('role', 'hero')
-    .limit(1)
-    .single()
-
-  const ogImageUrl = heroImg ? storageUrl((heroImg as { path: string }).path) : '/og-image.jpg'
+  const { band, images } = bandData
+  const heroImg = images.find(img => img.role === 'hero')
+  const ogImageUrl = heroImg ? storageUrl(heroImg.path) : '/og-image.jpg'
   const description = band.short_description || band.tagline
   const title = `${band.name} │ VMP`
   const url = `${BASE_URL}/${slug}`
@@ -92,42 +73,33 @@ export default async function BandPage(
   { params }: { params: Promise<{ slug: string }> }
 ) {
   const { slug } = await params
-  const [bandRow, sb, bandsMenu] = await Promise.all([
+  const [bandData, allBandImages, bandsMenu] = await Promise.all([
     getBandBySlug(slug),
-    createServerSupabaseClient(),
+    getAllBandImages(),
     getBandsMenuEntries(),
   ])
-  if (!bandRow) notFound()
+  if (!bandData) notFound()
 
-  const [{ data: imgData }, { data: reviewData }] = await Promise.all([
-    sb.from('band_images').select('path, role').eq('band_slug', slug).order('sort_order', { ascending: true }),
-    sb.from('reviews').select('name, rating, text, date, platform').eq('band_slug', slug).order('created_at', { ascending: true }),
-  ])
+  const { band: bandRow, images: imgData, reviews: reviewData } = bandData
 
-  const heroRecord = imgData?.find((img: { role: string }) => img.role === 'hero')
-  const heroUrl = heroRecord ? storageUrl((heroRecord as { path: string }).path) : undefined
+  const heroRecord = imgData.find(img => img.role === 'hero')
+  const heroUrl = heroRecord ? storageUrl(heroRecord.path) : undefined
   const dbImages = imgData
-    ?.filter((img: { role: string }) => img.role === 'gallery')
-    .map((img: { path: string }) => storageUrl(img.path))
+    .filter(img => img.role === 'gallery')
+    .map(img => storageUrl(img.path))
 
-  const reviews = (reviewData ?? []) as import('@/lib/bands-data').Review[]
+  const reviews = reviewData as import('@/lib/bands-data').Review[]
 
   const categoryLabel = getCategoryLabel(bandRow.category)
 
   const relatedRows = await getRelatedBands(slug, bandRow.category)
 
-  // Fetch the first available image for each related band
   const relatedSlugs = relatedRows.map(b => b.slug)
-  let relatedImageMap: Record<string, string> = {}
+  const relatedImageMap: Record<string, string> = {}
   if (relatedSlugs.length > 0) {
-    const { data: relatedImgs } = await sb
-      .from('band_images')
-      .select('band_slug, path, role')
-      .in('band_slug', relatedSlugs)
-      .order('sort_order', { ascending: true })
-
-      // Prefer hero image, fall back to first gallery image
-      ; (relatedImgs ?? []).forEach((img: { band_slug: string; path: string; role: string }) => {
+    allBandImages
+      .filter(img => relatedSlugs.includes(img.band_slug))
+      .forEach(img => {
         if (!relatedImageMap[img.band_slug] || img.role === 'hero') {
           relatedImageMap[img.band_slug] = storageUrl(img.path)
         }

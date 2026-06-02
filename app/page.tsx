@@ -42,31 +42,30 @@ import BandFinderSection from '@/components/BandFinderSection'
 import UspSection from '@/components/UspSection'
 import KontaktCta from '@/components/KontaktCta'
 import VmpFooter from '@/components/VmpFooter'
-import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { storageUrl } from '@/lib/db-images'
 import { getBandsMenuEntries } from '@/lib/bands'
 import { getCategoryLabel } from '@/types/band'
+import { getBands, getAllBandImages, getHeroImages, getEventImages } from '@/lib/vmp-data'
 
 export default async function HomePage() {
-  const sb = await createServerSupabaseClient()
-
-  const [{ data: heroData }, { data: eventData }, bandsMenu, { data: bandsData }, { data: showcaseData }] = await Promise.all([
-    sb.from('hero_images').select('path, label').order('sort_order', { ascending: true }),
-    sb.from('event_images').select('path, category').order('sort_order', { ascending: true }),
+  const [heroData, eventData, bandsMenu, bandsData, allBandImages] = await Promise.all([
+    getHeroImages(),
+    getEventImages(),
     getBandsMenuEntries(),
-    sb.from('bands').select('slug, name, category, tagline, short_description').eq('published', true).order('sort_order', { ascending: true }),
-    sb.from('band_images').select('band_slug, path').eq('role', 'showcase').order('sort_order', { ascending: true }),
+    getBands(),
+    getAllBandImages(),
   ])
 
   const showcaseImageMap: Record<string, string> = {}
-  showcaseData?.forEach((img: { band_slug: string; path: string }) => {
-    if (!showcaseImageMap[img.band_slug]) showcaseImageMap[img.band_slug] = storageUrl(img.path)
-  })
+  allBandImages
+    .filter(img => img.role === 'showcase')
+    .forEach(img => {
+      if (!showcaseImageMap[img.band_slug]) showcaseImageMap[img.band_slug] = storageUrl(img.path)
+    })
 
-  const bands = (bandsData ?? []) as { slug: string; name: string; category: 'partyband' | 'tribute' | 'easy-listening'; tagline: string; short_description: string }[]
-  const weeklyBand = bands.length > 0 ? (() => {
+  const weeklyBand = bandsData.length > 0 ? (() => {
     const weekNumber = Math.floor(Date.now() / (7 * 24 * 60 * 60 * 1000))
-    const b = bands[weekNumber % bands.length]
+    const b = bandsData[weekNumber % bandsData.length]
     return {
       name: b.name,
       genre: b.tagline,
@@ -77,15 +76,12 @@ export default async function HomePage() {
     }
   })() : undefined
 
-  const heroSlides = heroData?.length
-    ? heroData.map((img: { path: string; label: string }) => ({
-      src: storageUrl(img.path),
-      label: img.label,
-    }))
+  const heroSlides = heroData.length
+    ? heroData.map(img => ({ src: storageUrl(img.path), label: img.label }))
     : undefined
 
   const categoryImages: Record<string, string[]> = {}
-  eventData?.forEach((img: { path: string; category: string }) => {
+  eventData.forEach(img => {
     if (!categoryImages[img.category]) categoryImages[img.category] = []
     categoryImages[img.category].push(storageUrl(img.path))
   })

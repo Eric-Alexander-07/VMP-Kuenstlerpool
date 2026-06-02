@@ -5,9 +5,9 @@ import NavbarWrapper from '@/components/NavbarWrapper'
 import BandShowcase from '@/components/BandShowcase'
 import BandsCta from '@/components/BandsCta'
 import VmpFooter from '@/components/VmpFooter'
-import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { storageUrl } from '@/lib/db-images'
 import { getBandsByCategory, getBandsMenuEntries, bandsToBandCards } from '@/lib/bands'
+import { getAllBandImages } from '@/lib/vmp-data'
 
 export const metadata: Metadata = {
   title: 'Unser Band Repertoire buchen │ Vivid Music Productions',
@@ -42,26 +42,20 @@ export const metadata: Metadata = {
 }
 
 export default async function BandsPage() {
-  const [{ partyBands, tributeBands, easyBands }, bandsMenu, showcaseData] = await Promise.all([
+  const [{ partyBands, tributeBands, easyBands }, bandsMenu, allBandImages] = await Promise.all([
     getBandsByCategory(),
     getBandsMenuEntries(),
-    (async () => {
-      const sb = await createServerSupabaseClient()
-      const { data } = await sb
-        .from('band_images')
-        .select('band_slug, path')
-        .eq('role', 'showcase')
-        .order('sort_order', { ascending: true })
-      return data
-    })(),
+    getAllBandImages(),
   ])
 
   const showcaseImages: Record<string, string> = {}
-  showcaseData?.forEach((img: { band_slug: string; path: string }) => {
-    if (!showcaseImages[img.band_slug]) {
-      showcaseImages[img.band_slug] = storageUrl(img.path)
-    }
-  })
+  allBandImages
+    .filter(img => img.role === 'showcase')
+    .forEach(img => {
+      if (!showcaseImages[img.band_slug]) {
+        showcaseImages[img.band_slug] = storageUrl(img.path)
+      }
+    })
 
   return (
     <main>

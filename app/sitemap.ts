@@ -1,7 +1,7 @@
 import type { MetadataRoute } from 'next'
 import { getBandsForNav } from '@/lib/bands'
 
-export const dynamic = 'force-dynamic'
+export const revalidate = 3600
 
 const BASE_URL = 'https://v-m-p.com'
 

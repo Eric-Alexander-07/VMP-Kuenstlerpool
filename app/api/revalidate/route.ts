@@ -1,44 +1,54 @@
-import { revalidateTag, revalidatePath } from 'next/cache'
+import { revalidateTag } from 'next/cache'
 import { NextRequest, NextResponse } from 'next/server'
 
-// Triggered by a Supabase Database Webhook on INSERT/UPDATE/DELETE to `bands`.
-// Set the webhook HTTP header: Authorization: Bearer <REVALIDATE_SECRET>
-//
-// Revalidates nav, bands overview, and the specific band page if slug is provided.
-// Add REVALIDATE_SECRET=<random-string> to .env.local
+// Supabase Database Webhook endpoint.
+// Called on INSERT/UPDATE/DELETE for any of the 7 data tables.
+// Auth: ?secret=<REVALIDATION_SECRET> query parameter.
+
+const TABLE_TAGS: Record<string, string[]> = {
+  bands:          ['bands'],
+  band_images:    ['band-images', 'bands'],
+  reviews:        ['reviews', 'bands'],
+  hero_images:    ['hero-images'],
+  gallery_images: ['gallery-images'],
+  event_images:   ['event-images'],
+  page_images:    ['page-images'],
+}
 
 export async function POST(req: NextRequest) {
-  const secret = req.headers.get('authorization')?.replace('Bearer ', '')
+  const secret = req.nextUrl.searchParams.get('secret')
 
-  if (secret !== process.env.REVALIDATE_SECRET) {
+  const expectedSecret = process.env.REVALIDATION_SECRET ?? process.env.REVALIDATE_SECRET
+  if (!secret || secret !== expectedSecret) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
-  let slug: string | undefined
+  let table: string | undefined
+  let record: Record<string, unknown> | undefined
 
   try {
     const body = await req.json()
-    slug = body?.record?.slug ?? body?.old_record?.slug
+    table = body?.table
+    record = body?.record ?? body?.old_record
   } catch {
-    // body is optional — full revalidation if not parseable
+    // unparseable body — still process if table was in query string
   }
 
-  // Always revalidate nav and category list
-  revalidateTag('bands-nav')
-  revalidateTag('bands-category')
-  revalidatePath('/bands')
+  const tags = table ? TABLE_TAGS[table] : undefined
 
-  if (slug) {
-    revalidateTag(`band-${slug}`)
-    revalidatePath(`/${slug}`)
-  } else {
-    // No slug → invalidate all band pages
-    revalidateTag('bands-all')
+  if (!tags) {
+    return NextResponse.json(
+      { error: 'Unknown or missing table', table: table ?? null },
+      { status: 400 }
+    )
   }
+
+  tags.forEach(tag => revalidateTag(tag))
 
   return NextResponse.json({
     revalidated: true,
-    slug: slug ?? 'all',
-    time: new Date().toISOString(),
+    tags,
+    table,
+    record: record ?? null,
   })
 }

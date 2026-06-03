@@ -56,7 +56,7 @@ const MEDIA_PARTNERS: {
   website?: string
 }[] = [
   {
-    name: 'Hans Jürgen Luft (Lufti) DA',
+    name: 'Hans Jürgen Luft (Lufti)',
     role: 'Eventfotografie',
     specialty: 'Live-Events · Konzerte · Veranstaltungen',
     type: 'photo',
@@ -66,7 +66,7 @@ const MEDIA_PARTNERS: {
     role: 'Eventfotografie',
     specialty: 'Live-Events · Konzerte · Veranstaltungen',
     type: 'photo',
-    website: 'http://wmphoto.info/',
+    website: 'https://www.instagram.com/photographerwmphoto',
   },
   {
     name: 'Oliver Haremsa',
@@ -106,7 +106,6 @@ const MEDIA_PARTNERS: {
     role: 'Videoproduktion',
     specialty: 'Event-Videos · Konzerte · Live-Mitschnitte',
     type: 'video',
-    website: 'https://www.youtube.com/@wrongman111',
   },
   {
     name: 'CAM Movies',

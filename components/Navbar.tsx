@@ -73,9 +73,9 @@ export const NAV_ITEMS = [
   { label: 'Galerie',             href: '/galerie',     dropdown: false },
   { label: 'Technik & Tonstudio', href: '/technik',     dropdown: false },
   { label: 'Über uns',            href: '/ueber-uns',   dropdown: false },
-  { label: 'Partner',             href: '/partner',     dropdown: false },
   { label: 'Social Media',        href: '/#social',     dropdown: false },
   { label: 'Kontakt',             href: '/#kontakt',    dropdown: false },
+  { label: 'Partner',             href: '/partner',     dropdown: false },
 ]
 
 const BANDS_MENU_STATIC: BandsMenuEntry[] = [

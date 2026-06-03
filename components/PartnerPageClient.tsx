@@ -46,8 +46,7 @@ function MusicIcon() {
   )
 }
 
-// ── Placeholder media partners ────────────────────────────────────────
-// TODO: Ersetze diese Platzhalter mit echten Namen und Websites
+// ── Media partners ────────────────────────────────────────────────────
 
 const MEDIA_PARTNERS: {
   name: string
@@ -57,22 +56,71 @@ const MEDIA_PARTNERS: {
   website?: string
 }[] = [
   {
-    name: 'Fotograf Placeholder',
+    name: 'Hans Jürgen Luft (Lufti) DA',
     role: 'Eventfotografie',
-    specialty: 'Live-Events · Concerts · Hochzeiten',
+    specialty: 'Live-Events · Konzerte · Veranstaltungen',
     type: 'photo',
   },
   {
-    name: 'Fotograf Placeholder',
+    name: 'Michael Wagner',
     role: 'Eventfotografie',
-    specialty: 'Corporate Events · Portraits · Bands',
+    specialty: 'Live-Events · Konzerte · Veranstaltungen',
+    type: 'photo',
+    website: 'http://wmphoto.info/',
+  },
+  {
+    name: 'Oliver Haremsa',
+    role: 'Eventfotografie',
+    specialty: 'Live-Events · Konzerte · Veranstaltungen',
+    type: 'photo',
+    website: 'https://www.instagram.com/emeraldpicsbyoh?igsh=cXpwNTc1c3VzdXhr',
+  },
+  {
+    name: 'Marvin Stang',
+    role: 'Eventfotografie',
+    specialty: 'Live-Events · Konzerte · Veranstaltungen',
     type: 'photo',
   },
   {
-    name: 'Videograf Placeholder',
+    name: 'Jochen Hasmanis',
     role: 'Videoproduktion',
-    specialty: 'Event-Videos · Musikvideos · Social Media',
+    specialty: 'Event-Videos · Konzerte · Live-Mitschnitte',
     type: 'video',
+    website: 'https://www.frame-spotting.de',
+  },
+  {
+    name: 'Evelyne Papparazzi',
+    role: 'Videoproduktion',
+    specialty: 'Event-Videos · Konzerte · Live-Mitschnitte',
+    type: 'video',
+    website: 'https://youtube.com/@thepaparazzi001?si=sw-DsKcTaF6PBk8W',
+  },
+  {
+    name: 'Damir Klaushofer',
+    role: 'Videoproduktion',
+    specialty: 'Event-Videos · Konzerte · Live-Mitschnitte',
+    type: 'video',
+  },
+  {
+    name: 'Klaus Allert',
+    role: 'Videoproduktion',
+    specialty: 'Event-Videos · Konzerte · Live-Mitschnitte',
+    type: 'video',
+    website: 'https://www.youtube.com/@wrongman111',
+  },
+  {
+    name: 'CAM Movies',
+    role: 'Videoproduktion',
+    specialty: 'Event-Videos · Konzerte · Live-Mitschnitte',
+    type: 'video',
+    website: 'https://www.chrisundarthur.de',
+  },
+  {
+    name: 'Michael Meinzinger',
+    role: 'Videoproduktion',
+    specialty: 'Event-Videos · Konzerte · Live-Mitschnitte',
+    type: 'video',
+    website: 'https://www.instagram.com/michael_meinzinger?igsh=eG95OXdtN2RyN2M5',
   },
 ]
 

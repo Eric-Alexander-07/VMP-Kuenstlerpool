@@ -71,32 +71,6 @@ export const getBandsByCategory = unstable_cache(
   { revalidate: 60, tags: ['bands-category'] }
 )
 
-// ── getBandBySlug ─────────────────────────────────────────────────────
-// Full band row by slug. Per-band cache with 3600s revalidation.
-
-export async function getBandBySlug(slug: string): Promise<BandRow | null> {
-  return unstable_cache(
-    async (s: string): Promise<BandRow | null> => {
-      const { data, error } = await publicClient()
-        .from('bands')
-        .select('*')
-        .eq('slug', s)
-        .eq('published', true)
-        .single()
-
-      if (error) {
-        if (error.code !== 'PGRST116') {
-          console.error('[getBandBySlug]', error.message)
-        }
-        return null
-      }
-      return data as BandRow
-    },
-    [`band-${slug}`],
-    { revalidate: 3600, tags: [`band-${slug}`, 'bands-all'] }
-  )(slug)
-}
-
 // ── getRelatedBands ───────────────────────────────────────────────────
 // Up to 3 other published bands in the same category.
 

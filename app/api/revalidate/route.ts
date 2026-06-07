@@ -7,8 +7,8 @@ import { NextRequest, NextResponse } from 'next/server'
 
 const TABLE_TAGS: Record<string, string[]> = {
   bands:          ['bands'],
-  band_images:    ['band-images', 'bands'],
-  reviews:        ['reviews', 'bands'],
+  band_images:    ['band-images'],
+  reviews:        ['reviews'],
   hero_images:    ['hero-images'],
   gallery_images: ['gallery-images'],
   event_images:   ['event-images'],

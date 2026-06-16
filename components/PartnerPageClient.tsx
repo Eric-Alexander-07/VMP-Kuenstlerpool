@@ -10,7 +10,7 @@ import type { BandNav } from '@/types/band'
 
 function CameraIcon() {
   return (
-    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
       <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
       <circle cx="12" cy="13" r="4"/>
     </svg>
@@ -19,7 +19,7 @@ function CameraIcon() {
 
 function VideoIcon() {
   return (
-    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
       <polygon points="23 7 16 12 23 17 23 7"/>
       <rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
     </svg>
@@ -150,73 +150,55 @@ function MediaPartnerCard({ partner, index, inView }: {
 }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 16 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.45, delay: index * 0.08 }}
+      transition={{ duration: 0.4, delay: index * 0.06 }}
+      whileHover={{ y: -3, boxShadow: '0 8px 24px rgba(28,25,23,0.10)', borderColor: 'rgba(139,26,26,0.5)' }}
       style={{
         backgroundColor: '#fff',
         border: '1px solid var(--color-border)',
-        borderRadius: 16,
-        padding: '32px 28px',
+        borderRadius: 12,
+        padding: '18px 20px',
         display: 'flex',
         flexDirection: 'column',
-        gap: 16,
+        gap: 6,
+        position: 'relative',
+        transition: 'border-color 0.2s',
       }}
     >
-      {/* Icon */}
+      {/* Icon — small, top-right corner, no background */}
       <div style={{
-        width: 56,
-        height: 56,
-        borderRadius: 14,
-        backgroundColor: 'var(--color-dark)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        color: 'var(--color-orange)',
-        flexShrink: 0,
+        position: 'absolute',
+        top: 16,
+        right: 16,
+        color: 'rgba(28,25,23,0.2)',
       }}>
         {partner.type === 'photo' ? <CameraIcon /> : <VideoIcon />}
       </div>
 
       {/* Role tag */}
-      <div>
-        <span style={{
-          display: 'inline-block',
-          fontSize: 10,
-          fontWeight: 600,
-          fontFamily: 'var(--font-body)',
-          letterSpacing: '0.14em',
-          textTransform: 'uppercase',
-          color: 'var(--color-orange)',
-          backgroundColor: 'rgba(234,88,12,0.08)',
-          padding: '3px 10px',
-          borderRadius: 20,
-        }}>
-          {partner.role}
-        </span>
-      </div>
+      <span style={{
+        fontSize: 9,
+        fontWeight: 600,
+        fontFamily: 'var(--font-body)',
+        letterSpacing: '0.14em',
+        textTransform: 'uppercase',
+        color: 'var(--color-orange)',
+      }}>
+        {partner.role}
+      </span>
 
       {/* Name */}
-      <div>
-        <h3 style={{
-          fontFamily: 'var(--font-display)',
-          fontWeight: 700,
-          fontSize: 20,
-          color: 'var(--color-dark)',
-          lineHeight: 1.2,
-          marginBottom: 6,
-        }}>
-          {partner.name}
-        </h3>
-        <p style={{
-          fontFamily: 'var(--font-body)',
-          fontSize: 13,
-          color: 'var(--color-muted)',
-          lineHeight: 1.6,
-        }}>
-          {partner.specialty}
-        </p>
-      </div>
+      <h3 style={{
+        fontFamily: 'var(--font-display)',
+        fontWeight: 700,
+        fontSize: 16,
+        color: 'var(--color-dark)',
+        lineHeight: 1.25,
+        paddingRight: 28,
+      }}>
+        {partner.name}
+      </h3>
 
       {/* Website link (optional) */}
       {partner.website && (
@@ -227,16 +209,16 @@ function MediaPartnerCard({ partner, index, inView }: {
           style={{
             display: 'inline-flex',
             alignItems: 'center',
-            gap: 6,
+            gap: 5,
             fontFamily: 'var(--font-body)',
-            fontSize: 13,
+            fontSize: 11,
             fontWeight: 600,
             color: 'var(--color-orange)',
             textDecoration: 'none',
-            marginTop: 'auto',
+            marginTop: 4,
           }}
         >
-          Website besuchen <ExternalLinkIcon />
+          Website <ExternalLinkIcon />
         </a>
       )}
     </motion.div>

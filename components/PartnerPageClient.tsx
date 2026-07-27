@@ -123,6 +123,14 @@ const MEDIA_PARTNERS: {
   },
 ]
 
+// ── Externe Bandwebsites ──────────────────────────────────────────────
+// Bands mit eigener Website: Link zeigt dorthin statt auf die VMP-Unterseite.
+
+const BAND_WEBSITES: Record<string, string> = {
+  'we-rock':        'https://werock-rockband.de/',
+  'spirit-of-soul': 'https://www.spiritofsoul.com/',
+}
+
 // ── Category helpers ──────────────────────────────────────────────────
 
 function getCategoryLabel(category: BandNav['category']): string {
@@ -232,9 +240,13 @@ function BandLinkCard({ band, index, inView }: {
   index: number
   inView: boolean
 }) {
+  const externalUrl = BAND_WEBSITES[band.slug]
+
   return (
     <motion.a
-      href={`/${band.slug}`}
+      href={externalUrl ?? `/${band.slug}`}
+      target={externalUrl ? '_blank' : undefined}
+      rel={externalUrl ? 'noopener noreferrer' : undefined}
       initial={{ opacity: 0, x: -8 }}
       animate={inView ? { opacity: 1, x: 0 } : {}}
       transition={{ duration: 0.35, delay: index * 0.05 }}

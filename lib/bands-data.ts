@@ -66,7 +66,7 @@ Groove Control ist bundesweit buchbar und bringt auf Wunsch das komplette Bühne
     news: [
       { date: '15. Feb 2025', headline: 'Groove Control spielt auf dem Wiesbadener Stadtfest 2025' },
       { date: '03. Jan 2025', headline: 'Neues Programm: Jetzt auch mit Akustik-Set buchbar' },
-      { date: '10. Nov 2024', headline: 'Ausverkaufte Firmenfeier-Saison – Termine 2025 jetzt buchen' },
+      { date: '10. Nov 2024', headline: 'Ausverkaufte Firmenfeier-Saison – Termine 2025 jetzt anfragen' },
     ],
     facebookUrl: 'https://www.facebook.com/partybanddeluxe/',
   },

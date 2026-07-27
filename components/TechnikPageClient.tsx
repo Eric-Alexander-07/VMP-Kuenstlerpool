@@ -227,7 +227,7 @@ export default function TechnikPageClient({ heroUrl, mainUrl, thumbnailUrls, son
               <Eyebrow>Veranstaltungsservice</Eyebrow>
               <SectionHeading>Band &amp; Technik aus einer Hand!</SectionHeading>
               <BodyText>
-                Sie möchten eine Band buchen und haben noch keine Bühne, Licht und keine Beschallung für Ihre Gäste oder Zuschauer? Wir verstehen uns als Volldienstleister in allen Bereichen rund um Ihre Veranstaltung. Wir bieten attraktive Komplettpakete mit Band, Beschallung, Licht und Bühne – realisiert von erfahrenen Veranstaltungstechnikern.
+                Sie möchten eine Band anfragen und haben noch keine Bühne, Licht und keine Beschallung für Ihre Gäste oder Zuschauer? Wir verstehen uns als Volldienstleister in allen Bereichen rund um Ihre Veranstaltung. Wir bieten attraktive Komplettpakete mit Band, Beschallung, Licht und Bühne – realisiert von erfahrenen Veranstaltungstechnikern.
               </BodyText>
 
               {/* Features */}

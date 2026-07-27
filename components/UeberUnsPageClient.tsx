@@ -179,7 +179,7 @@ export default function UeberUnsPageClient({ heroUrl, introUrl, teamUrls, bandsM
                 marginBottom: 32,
                 maxWidth: 460,
               }}>
-                Bei Interesse an einer Buchung beraten wir Sie gerne im Detail, telefonisch oder auch per E-Mail. Der Schlüssel zum Erfolg einer jeden Veranstaltung liegt unserer Meinung in der richtigen Kommunikation bzw. im Vertrauen. Und das kann man nur durch einen persönlichen Kontakt aufbauen.
+                Bei Interesse an einer Anfrage beraten wir Sie gerne im Detail, telefonisch oder auch per E-Mail. Der Schlüssel zum Erfolg einer jeden Veranstaltung liegt unserer Meinung in der richtigen Kommunikation bzw. im Vertrauen. Und das kann man nur durch einen persönlichen Kontakt aufbauen.
               </p>
 
               {/* Contact */}
@@ -382,7 +382,7 @@ export default function UeberUnsPageClient({ heroUrl, introUrl, teamUrls, bandsM
             className="font-display font-bold text-white mb-14 text-center"
             style={{ fontSize: 'clamp(28px, 4vw, 40px)' }}
           >
-            Warum direkt bei uns buchen?
+            Warum direkt bei uns anfragen?
           </motion.h2>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">

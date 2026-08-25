@@ -7,6 +7,7 @@ import { getRelatedBands, getBandsMenuEntries } from '@/lib/bands'
 import { bandRowToBand, getCategoryLabel } from '@/types/band'
 import { storageUrl } from '@/lib/db-images'
 import { getBands, getBandBySlug, getAllBandImages } from '@/lib/vmp-data'
+import { buildInquiryMailHref } from '@/lib/inquiryMail'
 
 const BASE_URL = 'https://v-m-p.com'
 
@@ -114,7 +115,7 @@ export default async function BandPage(
 
   const band = bandRowToBand(bandRow)
 
-  const mailtoHref = `mailto:info@v-m-p.com?subject=Bandanfrage%3A%20${encodeURIComponent(band.name)}&body=Band%3A%20${encodeURIComponent(band.name)}%0AVeranstaltung%3A%20%0ADatum%3A%20%0AOrt%3A%20`
+  const mailtoHref = buildInquiryMailHref({ bandName: band.name })
   const fbEmbedSrc = band.facebookUrl
     ? `https://www.facebook.com/plugins/page.php?href=${encodeURIComponent(band.facebookUrl)}&tabs=timeline&width=340&height=720&small_header=true&adapt_container_width=false&hide_cover=false&show_facepile=false`
     : undefined

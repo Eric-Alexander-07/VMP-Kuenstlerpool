@@ -1,4 +1,4 @@
-export const revalidate = 60
+export const revalidate = 86400
 
 import type { Metadata } from 'next'
 import NavbarWrapper from '@/components/NavbarWrapper'
@@ -51,6 +51,19 @@ export default function DatenschutzPage() {
               </h2>
               <p className="font-body" style={{ fontSize: 15, color: 'var(--color-muted)', lineHeight: 1.8 }}>
                 Wir übermitteln Ihre personenbezogenen Daten nur dann an Dritte, wenn Sie eingewilligt haben.
+              </p>
+            </div>
+
+            <div style={{ borderTop: '1px solid var(--color-border)', paddingTop: 32 }}>
+              <h2 className="font-display font-bold mb-4"
+                style={{ fontSize: 20, color: 'var(--color-dark)', letterSpacing: '0.06em' }}>
+                KONTAKTFORMULAR UND E-MAIL-VERSAND
+              </h2>
+              <p className="font-body" style={{ fontSize: 15, color: 'var(--color-muted)', lineHeight: 1.8 }}>
+                Wenn Sie das Kontaktformular auf dieser Website nutzen, übermitteln wir Ihre Angaben (Name, E-Mail-Adresse, optional Telefonnummer, Veranstaltungsdatum und Anlass sowie Ihre Nachricht) per E-Mail an unser Postfach. Zusätzlich erhalten Sie automatisch eine Bestätigung Ihrer Anfrage an die von Ihnen angegebene E-Mail-Adresse. Die Angaben werden nicht in einer Datenbank dieser Website gespeichert, sondern ausschließlich per E-Mail verarbeitet. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b bzw. f DSGVO (Bearbeitung Ihrer Anfrage).
+              </p>
+              <p className="font-body mt-4" style={{ fontSize: 15, color: 'var(--color-muted)', lineHeight: 1.8 }}>
+                Für den technischen Versand dieser E-Mails setzen wir als Auftragsverarbeiter die <strong style={{ color: 'var(--color-dark)', fontWeight: 600 }}>Resend, Inc.</strong> (USA) ein. Resend ist nach dem EU-US Data Privacy Framework (DPF) zertifiziert und hat zusätzlich EU-Standardvertragsklauseln vereinbart (resend.com/legal/dpa).
               </p>
             </div>
 

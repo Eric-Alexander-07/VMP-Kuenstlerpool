@@ -13,6 +13,11 @@ function publicClient() {
 
 // ── getBandsForNav ────────────────────────────────────────────────────
 // Minimal data for the nav dropdown. Cached 3600s.
+// Wichtig: Die Navbar steckt auf JEDER Seite. Next nimmt als ISR-Intervall
+// einer Seite das kuerzeste Intervall aller darin genutzten Caches — ein
+// kurzer Wert hier wuerde also saemtliche Seiten haeufiger neu rendern.
+// Aktuelle Aenderungen kommen ueber revalidateTag('bands-nav') sofort durch
+// (Admin-Actions + Supabase-Webhook), die Zeit ist nur das Sicherheitsnetz.
 
 export const getBandsForNav = unstable_cache(
   async (): Promise<BandNav[]> => {
@@ -29,7 +34,7 @@ export const getBandsForNav = unstable_cache(
     return (data ?? []) as BandNav[]
   },
   ['bands-nav-3'],
-  { revalidate: 60, tags: ['bands-nav'] }
+  { revalidate: 3600, tags: ['bands-nav'] }
 )
 
 // ── getBandsMenuEntries ────────────────────────────────────────────────
@@ -68,7 +73,7 @@ export const getBandsByCategory = unstable_cache(
     }
   },
   ['bands-category-3'],
-  { revalidate: 60, tags: ['bands-category'] }
+  { revalidate: 3600, tags: ['bands-category'] }
 )
 
 // ── getRelatedBands ───────────────────────────────────────────────────

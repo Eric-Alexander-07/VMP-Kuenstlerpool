@@ -1,6 +1,7 @@
 'use client'
 
 import Image from 'next/image'
+import { INQUIRY_MAIL_HREF } from '@/lib/inquiryMail'
 
 const FOOTER_NAV = [
   { label: 'Home',                 href: '#'           },
@@ -139,7 +140,7 @@ export default function VmpFooter() {
               +49 (0) 177-5719570
             </a>
             <a
-              href="mailto:info@v-m-p.com"
+              href={INQUIRY_MAIL_HREF}
               className="font-body font-semibold transition-opacity hover:opacity-75"
               style={{ fontSize: 14, color: 'rgba(255,255,255,0.55)', textDecoration: 'none' }}
             >

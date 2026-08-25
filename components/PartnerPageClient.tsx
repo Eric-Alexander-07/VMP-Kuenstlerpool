@@ -128,7 +128,8 @@ const MEDIA_PARTNERS: {
 
 const BAND_WEBSITES: Record<string, string> = {
   'we-rock':        'https://werock-rockband.de/',
-  'spirit-of-soul': 'https://www.spiritofsoul.com/',
+  'spirit-of-soul': 'https://spiritofsoul.com/',
+  'groove-control': 'https://groovecontrol.info/',
 }
 
 // ── Category helpers ──────────────────────────────────────────────────

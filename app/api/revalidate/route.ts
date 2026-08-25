@@ -5,8 +5,11 @@ import { NextRequest, NextResponse } from 'next/server'
 // Called on INSERT/UPDATE/DELETE for any of the 7 data tables.
 // Auth: ?secret=<REVALIDATION_SECRET> query parameter.
 
+// Die bands-Tabelle wird von zwei Datenschichten gecacht (lib/vmp-data.ts und
+// lib/bands.ts) — alle deren Tags muessen hier stehen, sonst bleiben Navbar
+// und Kategorie-Listen nach einer direkten DB-Aenderung stehen.
 const TABLE_TAGS: Record<string, string[]> = {
-  bands:          ['bands'],
+  bands:          ['bands', 'bands-nav', 'bands-category', 'bands-all'],
   band_images:    ['band-images'],
   reviews:        ['reviews'],
   hero_images:    ['hero-images'],
@@ -43,11 +46,17 @@ export async function POST(req: NextRequest) {
     )
   }
 
-  tags.forEach(tag => revalidateTag(tag))
+  // Bandspezifischer Tag zusaetzlich, damit die Detailseite sofort nachzieht.
+  // bands hat `slug`, band_images/reviews haben `band_slug`.
+  const rawSlug = record?.slug ?? record?.band_slug
+  const slug = typeof rawSlug === 'string' ? rawSlug : undefined
+  const allTags = slug ? [...tags, `band-${slug}`] : tags
+
+  allTags.forEach(tag => revalidateTag(tag))
 
   return NextResponse.json({
     revalidated: true,
-    tags,
+    tags: allTags,
     table,
     record: record ?? null,
   })

@@ -2,6 +2,7 @@
 
 import { useRef, useState } from 'react'
 import { motion, useInView } from 'framer-motion'
+import { INQUIRY_MAIL_HREF, buildInquiryMailHref } from '@/lib/inquiryMail'
 
 const TRUST_ITEMS = [
   'Direktkontakt – keine Agenturgebühren',
@@ -40,22 +41,70 @@ const labelStyle: React.CSSProperties = {
   fontFamily: 'var(--font-body)',
 }
 
-export default function KontaktCta() {
+interface Props {
+  /** Vorbelegte Band — z. B. wenn der Kontakt von einer Bandseite aus geöffnet wird. */
+  bandName?: string
+}
+
+export default function KontaktCta({ bandName }: Props = {}) {
   const ref = useRef<HTMLDivElement>(null)
   const inView = useInView(ref, { once: true, margin: '-80px' })
 
-  const [form, setForm] = useState({ name: '', email: '', anlass: '', message: '' })
+  // Nachrichtenfeld startet leer — die Fragen stehen als Checkliste daneben,
+  // im Feld selbst nur als Platzhalter-Hinweis.
+  const [form, setForm] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    date: '',
+    anlass: '',
+    message: '',
+  })
   const [focused, setFocused] = useState<string | null>(null)
+  const [sending, setSending] = useState(false)
+  const [sent, setSent] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  // Honeypot: Bots füllen das versteckte Feld aus, echte Nutzer nie.
+  const [website, setWebsite] = useState('')
 
   const set = (k: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
     setForm(f => ({ ...f, [k]: e.target.value }))
 
-  const buildMailto = () => {
-    const subject = encodeURIComponent(`Bandanfrage${form.anlass ? ` – ${form.anlass}` : ''}`)
-    const body = encodeURIComponent(
-      `Name: ${form.name}\nE-Mail: ${form.email}\nAnlass: ${form.anlass}\n\n${form.message}`
-    )
-    return `mailto:info@v-m-p.com?subject=${subject}&body=${body}`
+  /** Fallback, falls der Versand scheitert — öffnet das Mailprogramm. */
+  const buildMailto = () => buildInquiryMailHref({ ...form, bandName })
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    setSending(true)
+    setError(null)
+
+    try {
+      const res = await fetch('/api/kontakt', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: form.name,
+          email: form.email,
+          phone: form.phone,
+          date: form.date,
+          occasion: form.anlass,
+          band: bandName,
+          message: form.message,
+          website,
+        }),
+      })
+      const data = await res.json()
+      if (!res.ok || !data.ok) throw new Error(data.error)
+      setSent(true)
+    } catch (err) {
+      setError(
+        err instanceof Error && err.message
+          ? err.message
+          : 'Die Anfrage konnte nicht gesendet werden. Bitte versuchen Sie es erneut oder schreiben Sie uns direkt an info@v-m-p.com.'
+      )
+    } finally {
+      setSending(false)
+    }
   }
 
   const borderFor = (k: string) => focused === k
@@ -184,7 +233,7 @@ export default function KontaktCta() {
             {/* Email button */}
             <div>
               <a
-                href="mailto:info@v-m-p.com"
+                href={INQUIRY_MAIL_HREF}
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-body font-semibold text-white transition-opacity hover:opacity-85"
                 style={{ backgroundColor: 'var(--color-orange)', fontSize: 14, textDecoration: 'none' }}
               >
@@ -258,6 +307,34 @@ export default function KontaktCta() {
             transition={{ delay: 0.18, duration: 0.5 }}
             className="flex flex-col gap-5"
           >
+            {sent ? (
+              <div
+                className="rounded-xl text-center"
+                style={{
+                  backgroundColor: '#fff',
+                  border: '1px solid var(--color-border)',
+                  padding: '48px 32px',
+                }}
+              >
+                <span
+                  className="inline-flex items-center justify-center rounded-full mb-5"
+                  style={{ width: 52, height: 52, backgroundColor: 'var(--color-orange-light)' }}
+                >
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--color-orange)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg>
+                </span>
+                <p className="font-display font-bold" style={{ fontSize: 26, color: 'var(--color-dark)', letterSpacing: '0.04em' }}>
+                  Anfrage gesendet
+                </p>
+                <p className="font-body mt-3" style={{ fontSize: 14, color: 'var(--color-muted)', lineHeight: 1.7 }}>
+                  Vielen Dank! Eine Bestätigung ist gerade an{' '}
+                  <span style={{ color: 'var(--color-dark)', fontWeight: 600 }}>{form.email}</span>{' '}
+                  unterwegs. Wir melden uns in der Regel innerhalb von 24&nbsp;Stunden persönlich bei Ihnen.
+                </p>
+              </div>
+            ) : (
+            <form onSubmit={handleSubmit} className="flex flex-col gap-5">
             {/* Name + Email row */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
@@ -296,6 +373,39 @@ export default function KontaktCta() {
               </div>
             </div>
 
+            {/* Telefon + Datum row */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label htmlFor="kontakt-telefon" style={labelStyle}>Telefon</label>
+                <input
+                  id="kontakt-telefon"
+                  type="tel"
+                  placeholder="Für Rückfragen"
+                  value={form.phone}
+                  onChange={set('phone')}
+                  onFocus={() => setFocused('phone')}
+                  onBlur={() => setFocused(null)}
+                  style={{ ...inputStyle, border: borderFor('phone') }}
+                />
+              </div>
+              <div>
+                <label htmlFor="kontakt-datum" style={labelStyle}>Veranstaltungsdatum</label>
+                <input
+                  id="kontakt-datum"
+                  type="date"
+                  value={form.date}
+                  onChange={set('date')}
+                  onFocus={() => setFocused('date')}
+                  onBlur={() => setFocused(null)}
+                  style={{
+                    ...inputStyle,
+                    border: borderFor('date'),
+                    color: form.date ? 'var(--color-dark)' : '#A09890',
+                  }}
+                />
+              </div>
+            </div>
+
             {/* Anlass */}
             <div>
               <label htmlFor="kontakt-anlass" style={labelStyle}>Anlass</label>
@@ -325,11 +435,15 @@ export default function KontaktCta() {
 
             {/* Message */}
             <div>
-              <label htmlFor="kontakt-nachricht" style={labelStyle}>Ihre Nachricht</label>
+              <label htmlFor="kontakt-nachricht" style={labelStyle}>
+                Angaben zur Veranstaltung
+              </label>
               <textarea
                 id="kontakt-nachricht"
-                rows={6}
-                placeholder="Bitte schildern Sie Ihre Veranstaltung und gehen Sie auf die obigen Punkte ein …"
+                rows={9}
+                required
+                aria-required="true"
+                placeholder="Beantworten Sie einfach die Fragen aus der Checkliste – was Sie noch nicht wissen, lassen Sie offen."
                 value={form.message}
                 onChange={set('message')}
                 onFocus={() => setFocused('message')}
@@ -338,29 +452,69 @@ export default function KontaktCta() {
                   ...inputStyle,
                   border: borderFor('message'),
                   resize: 'vertical',
-                  minHeight: 140,
+                  minHeight: 200,
+                  lineHeight: 1.7,
                 }}
               />
             </div>
 
+            {/* Honeypot — für Menschen unsichtbar, Bots füllen ihn aus */}
+            <input
+              type="text"
+              name="website"
+              tabIndex={-1}
+              autoComplete="off"
+              aria-hidden="true"
+              value={website}
+              onChange={e => setWebsite(e.target.value)}
+              style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, opacity: 0 }}
+            />
+
+            {error && (
+              <div
+                className="rounded-lg"
+                style={{
+                  backgroundColor: 'var(--color-orange-light)',
+                  border: '1px solid var(--color-orange)',
+                  padding: '12px 14px',
+                }}
+              >
+                <p className="font-body" style={{ fontSize: 13, color: 'var(--color-orange-text)', lineHeight: 1.6 }}>
+                  {error}{' '}
+                  <a href={buildMailto()} style={{ color: 'var(--color-orange-text)', fontWeight: 600 }}>
+                    Anfrage stattdessen per E-Mail-Programm senden
+                  </a>
+                </p>
+              </div>
+            )}
+
             {/* Submit */}
-            <a
-              href={buildMailto()}
+            <button
+              type="submit"
+              disabled={sending}
               className="w-full flex items-center justify-center rounded-full font-body font-semibold text-white transition-opacity hover:opacity-90"
               style={{
                 backgroundColor: 'var(--color-orange)',
                 padding: '14px 24px',
                 fontSize: 15,
-                textDecoration: 'none',
-                boxShadow: '0 4px 20px rgba(234,88,12,0.25)',
+                border: 'none',
+                cursor: sending ? 'wait' : 'pointer',
+                opacity: sending ? 0.7 : 1,
+                boxShadow: '0 4px 20px rgba(139,26,26,0.25)',
               }}
             >
-              Anfrage senden
-            </a>
+              {sending ? 'Wird gesendet …' : 'Anfrage senden'}
+            </button>
 
-            <p className="font-body text-center" style={{ fontSize: 11, color: 'var(--color-subtle)' }}>
-              Klick öffnet Ihr E-Mail-Programm mit vorausgefüllter Nachricht.
+            <p className="font-body text-center" style={{ fontSize: 11, color: 'var(--color-subtle)', lineHeight: 1.6 }}>
+              Mit dem Absenden werden Ihre Angaben zur Bearbeitung Ihrer Anfrage per E-Mail
+              verarbeitet. Näheres in unserer{' '}
+              <a href="/datenschutz" style={{ color: 'var(--color-subtle)', textDecoration: 'underline' }}>
+                Datenschutzerklärung
+              </a>.
             </p>
+            </form>
+            )}
           </motion.div>
 
         </div>

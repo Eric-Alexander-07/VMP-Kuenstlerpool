@@ -5,6 +5,7 @@ import { motion, useInView } from 'framer-motion'
 import Image from 'next/image'
 import InlineNavBar from './InlineNavBar'
 import type { BandsMenuEntry } from './Navbar'
+import { INQUIRY_MAIL_HREF } from '@/lib/inquiryMail'
 
 // ─── Helpers ──────────────────────────────────────────────────────────
 
@@ -185,7 +186,7 @@ export default function UeberUnsPageClient({ heroUrl, introUrl, teamUrls, bandsM
               {/* Contact */}
               <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
                 <a
-                  href="mailto:info@v-m-p.com"
+                  href={INQUIRY_MAIL_HREF}
                   style={{
                     display: 'inline-flex',
                     alignItems: 'center',
